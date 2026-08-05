@@ -11,10 +11,10 @@ internal fun Project.configureKotlinAndroid(
     extension: ApplicationExtension,
 ) {
     extension.apply {
-        compileSdk = 36
+        compileSdk = 37
 
         compileSdk {
-            version = release(36) {
+            version = release(37) {
                 minorApiLevel = 1
             }
         }
@@ -22,7 +22,7 @@ internal fun Project.configureKotlinAndroid(
         defaultConfig.apply {
             applicationId = "com.qello.app"
             minSdk = 28
-            targetSdk = 36
+            targetSdk = 37
             versionCode = 1
             versionName = "1.0"
 
@@ -50,10 +50,10 @@ internal fun Project.configureKotlinAndroid(
     extension: LibraryExtension,
 ) {
     extension.apply {
-        compileSdk = 36
+        compileSdk = 37
 
         compileSdk {
-            version = release(36) {
+            version = release(37) {
                 minorApiLevel = 1
             }
         }
