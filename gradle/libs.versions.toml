@@ -18,6 +18,7 @@ datastorePreferences = "1.2.1"
 room = "2.8.4"
 secretsGradlePlugin = "2.0.1"
 playServicesLocation = "21.4.0"
+timber = "5.0.1"
 
 javaxInject = "1"
 junit = "4.13.2"
@@ -83,6 +84,8 @@ androidx-room-compiler = { group = "androidx.room", name = "room-compiler", vers
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
+
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
