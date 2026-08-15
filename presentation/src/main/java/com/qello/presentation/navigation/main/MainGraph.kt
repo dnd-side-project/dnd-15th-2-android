@@ -5,6 +5,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.qello.presentation.ui.screen.main.MainScreen
+import com.qello.presentation.ui.screen.main.my.MyScreen
 import com.qello.presentation.ui.screen.main.notification.NotificationScreen
 import com.qello.presentation.ui.screen.main.question.QuestionCompleteScreen
 import com.qello.presentation.ui.screen.main.question.QuestionComposeScreen
@@ -39,6 +40,7 @@ fun MainGraph() {
                     onNavigateToNotification = { mainBackStack.add(MainNavKey.Notification) },
                     onNavigateToReceivedQuestion = { mainBackStack.add(MainNavKey.ReceivedQuestionList) },
                     onNavigateToSentQuestion = { mainBackStack.add(MainNavKey.SentQuestionList) },
+                    onNavigateToMy = { mainBackStack.add(MainNavKey.My) },
                 )
             }
 
@@ -87,6 +89,10 @@ fun MainGraph() {
 
             entry<MainNavKey.SentQuestionDetail> { key ->
                 SentQuestionDetailScreen(questionId = key.questionId)
+            }
+
+            entry<MainNavKey.My> {
+                MyScreen()
             }
 
             entry<MainNavKey.QuestionComplete> { key ->

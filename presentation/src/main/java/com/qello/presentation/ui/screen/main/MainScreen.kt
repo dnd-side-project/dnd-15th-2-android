@@ -16,6 +16,7 @@ fun MainScreen(
     onNavigateToNotification: () -> Unit,
     onNavigateToReceivedQuestion: () -> Unit,
     onNavigateToSentQuestion: () -> Unit,
+    onNavigateToMy: () -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxSize().padding(24.dp),
@@ -26,5 +27,6 @@ fun MainScreen(
         Button(onClick = onNavigateToNotification) { Text("알림") }
         Button(onClick = onNavigateToReceivedQuestion) { Text("내게 온 질문") }
         Button(onClick = onNavigateToSentQuestion) { Text("내가 보낸 질문") }
+        Button(onClick = onNavigateToMy) { Text("마이") }
     }
 }

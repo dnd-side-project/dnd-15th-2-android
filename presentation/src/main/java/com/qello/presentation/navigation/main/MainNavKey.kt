@@ -34,4 +34,7 @@ sealed interface MainNavKey : NavKey {
 
     @Serializable
     data class SentQuestionDetail(val questionId: Int) : MainNavKey
+
+    @Serializable
+    data object My : MainNavKey
 }
