@@ -19,4 +19,7 @@ sealed interface MainNavKey : NavKey {
 
     @Serializable
     data class QuestionComplete(val primaryButtonText: String) : MainNavKey
+
+    @Serializable
+    data object Notification : MainNavKey
 }

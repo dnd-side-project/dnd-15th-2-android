@@ -5,6 +5,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.qello.presentation.ui.screen.main.MainScreen
+import com.qello.presentation.ui.screen.main.notification.NotificationScreen
 import com.qello.presentation.ui.screen.main.question.QuestionCompleteScreen
 import com.qello.presentation.ui.screen.main.question.QuestionComposeScreen
 import com.qello.presentation.ui.screen.main.question.QuestionDirectionScreen
@@ -31,6 +32,7 @@ fun MainGraph() {
             entry<MainNavKey.Main> {
                 MainScreen(
                     onNavigateToQuestionCompose = { mainBackStack.add(MainNavKey.QuestionCompose) },
+                    onNavigateToNotification = { mainBackStack.add(MainNavKey.Notification) },
                 )
             }
 
@@ -55,6 +57,10 @@ fun MainGraph() {
                         mainBackStack.add(MainNavKey.QuestionComplete(primaryButtonText = "재설문 보러가기"))
                     },
                 )
+            }
+
+            entry<MainNavKey.Notification> {
+                NotificationScreen()
             }
 
             entry<MainNavKey.QuestionComplete> { key ->
