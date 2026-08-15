@@ -8,6 +8,7 @@ import com.qello.presentation.ui.screen.main.MainScreen
 import com.qello.presentation.ui.screen.main.question.QuestionCompleteScreen
 import com.qello.presentation.ui.screen.main.question.QuestionComposeScreen
 import com.qello.presentation.ui.screen.main.question.QuestionDirectionScreen
+import com.qello.presentation.ui.screen.main.question.QuestionSuggestComposeScreen
 
 @Composable
 fun MainGraph() {
@@ -36,17 +37,29 @@ fun MainGraph() {
             entry<MainNavKey.QuestionCompose> {
                 QuestionComposeScreen(
                     onNext = { mainBackStack.add(MainNavKey.QuestionDirection) },
+                    onNavigateToSuggest = { mainBackStack.add(MainNavKey.QuestionSuggestCompose) },
                 )
             }
 
             entry<MainNavKey.QuestionDirection> {
                 QuestionDirectionScreen(
-                    onSendComplete = { mainBackStack.add(MainNavKey.QuestionComplete) },
+                    onSendComplete = {
+                        mainBackStack.add(MainNavKey.QuestionComplete(primaryButtonText = "새 질문 보내기"))
+                    },
                 )
             }
 
-            entry<MainNavKey.QuestionComplete> {
+            entry<MainNavKey.QuestionSuggestCompose> {
+                QuestionSuggestComposeScreen(
+                    onSendComplete = {
+                        mainBackStack.add(MainNavKey.QuestionComplete(primaryButtonText = "재설문 보러가기"))
+                    },
+                )
+            }
+
+            entry<MainNavKey.QuestionComplete> { key ->
                 QuestionCompleteScreen(
+                    primaryButtonText = key.primaryButtonText,
                     onSendAnother = {
                         popToMain()
                         mainBackStack.add(MainNavKey.QuestionCompose)
