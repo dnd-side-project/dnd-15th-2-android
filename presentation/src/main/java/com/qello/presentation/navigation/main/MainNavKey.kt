@@ -22,4 +22,10 @@ sealed interface MainNavKey : NavKey {
 
     @Serializable
     data object Notification : MainNavKey
+
+    @Serializable
+    data object ReceivedQuestionList : MainNavKey
+
+    @Serializable
+    data class ReceivedQuestionDetail(val questionId: Int) : MainNavKey
 }

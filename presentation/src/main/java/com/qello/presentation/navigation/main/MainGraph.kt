@@ -10,6 +10,8 @@ import com.qello.presentation.ui.screen.main.question.QuestionCompleteScreen
 import com.qello.presentation.ui.screen.main.question.QuestionComposeScreen
 import com.qello.presentation.ui.screen.main.question.QuestionDirectionScreen
 import com.qello.presentation.ui.screen.main.question.QuestionSuggestComposeScreen
+import com.qello.presentation.ui.screen.main.received.ReceivedQuestionDetailScreen
+import com.qello.presentation.ui.screen.main.received.ReceivedQuestionListScreen
 
 @Composable
 fun MainGraph() {
@@ -33,6 +35,7 @@ fun MainGraph() {
                 MainScreen(
                     onNavigateToQuestionCompose = { mainBackStack.add(MainNavKey.QuestionCompose) },
                     onNavigateToNotification = { mainBackStack.add(MainNavKey.Notification) },
+                    onNavigateToReceivedQuestion = { mainBackStack.add(MainNavKey.ReceivedQuestionList) },
                 )
             }
 
@@ -61,6 +64,16 @@ fun MainGraph() {
 
             entry<MainNavKey.Notification> {
                 NotificationScreen()
+            }
+
+            entry<MainNavKey.ReceivedQuestionList> {
+                ReceivedQuestionListScreen(
+                    onItemClick = { id -> mainBackStack.add(MainNavKey.ReceivedQuestionDetail(questionId = id)) },
+                )
+            }
+
+            entry<MainNavKey.ReceivedQuestionDetail> { key ->
+                ReceivedQuestionDetailScreen(questionId = key.questionId)
             }
 
             entry<MainNavKey.QuestionComplete> { key ->
