@@ -9,7 +9,6 @@ plugins {
 
 android {
     namespace = "com.qello.data"
-
 }
 
 dependencies {

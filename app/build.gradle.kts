@@ -5,7 +5,6 @@ plugins {
 
 android {
     namespace = "com.qello.app"
-
 }
 
 dependencies {
