@@ -20,6 +20,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
             dependencies {
                 add("implementation", libs.findLibrary("androidx.core.ktx").get())
                 add("implementation", libs.findLibrary("androidx.appcompat").get())
+                add("implementation", libs.findLibrary("timber").get())
 
                 add("testImplementation", libs.findBundle("test.unit").get())
                 add("androidTestImplementation", libs.findBundle("test.android").get())
