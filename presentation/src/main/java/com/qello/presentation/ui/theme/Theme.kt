@@ -1,57 +1,78 @@
 package com.qello.presentation.ui.theme
 
-import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
-
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
-)
-
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
-)
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ReadOnlyComposable
+import com.qello.presentation.ui.designsystem.LocalQelloButtonColorsScheme
+import com.qello.presentation.ui.designsystem.LocalQelloCategoryColorsScheme
+import com.qello.presentation.ui.designsystem.LocalQelloColorScheme
+import com.qello.presentation.ui.designsystem.LocalQelloTextFieldColorsScheme
+import com.qello.presentation.ui.designsystem.LocalQelloTypography
+import com.qello.presentation.ui.designsystem.QelloBorderWidth
+import com.qello.presentation.ui.designsystem.QelloButtonColors
+import com.qello.presentation.ui.designsystem.QelloButtonColorsScheme
+import com.qello.presentation.ui.designsystem.QelloCategoryColors
+import com.qello.presentation.ui.designsystem.QelloCategoryColorsScheme
+import com.qello.presentation.ui.designsystem.QelloColorScheme
+import com.qello.presentation.ui.designsystem.QelloColors
+import com.qello.presentation.ui.designsystem.QelloIconSize
+import com.qello.presentation.ui.designsystem.QelloRadius
+import com.qello.presentation.ui.designsystem.QelloSpacing
+import com.qello.presentation.ui.designsystem.QelloTextFieldColors
+import com.qello.presentation.ui.designsystem.QelloTextFieldColorsScheme
+import com.qello.presentation.ui.designsystem.QelloTypography
+import com.qello.presentation.ui.designsystem.Typography
 
 @Composable
 fun QelloTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+    CompositionLocalProvider(
+        LocalQelloColorScheme provides QelloColorScheme,
+        LocalQelloButtonColorsScheme provides QelloButtonColorsScheme,
+        LocalQelloCategoryColorsScheme provides QelloCategoryColorsScheme,
+        LocalQelloTextFieldColorsScheme provides QelloTextFieldColorsScheme,
+        LocalQelloTypography provides Typography,
+    ) {
+        content()
     }
+}
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+object QelloTheme {
+    val colors: QelloColors
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalQelloColorScheme.current
+
+    val buttonColors: QelloButtonColors
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalQelloButtonColorsScheme.current
+
+    val categoryColors: QelloCategoryColors
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalQelloCategoryColorsScheme.current
+
+    val textFieldColors: QelloTextFieldColors
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalQelloTextFieldColorsScheme.current
+
+    val typography: QelloTypography
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalQelloTypography.current
+
+    val spacing: QelloSpacing
+        get() = QelloSpacing
+
+    val radius: QelloRadius
+        get() = QelloRadius
+
+    val iconSize: QelloIconSize
+        get() = QelloIconSize
+
+    val borderWidth: QelloBorderWidth
+        get() = QelloBorderWidth
 }
