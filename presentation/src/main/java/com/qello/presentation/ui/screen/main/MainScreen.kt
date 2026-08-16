@@ -13,6 +13,10 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun MainScreen(
     onNavigateToQuestionCompose: () -> Unit,
+    onNavigateToNotification: () -> Unit,
+    onNavigateToReceivedQuestion: () -> Unit,
+    onNavigateToSentQuestion: () -> Unit,
+    onNavigateToMy: () -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxSize().padding(24.dp),
@@ -20,5 +24,9 @@ fun MainScreen(
     ) {
         Text("Main Screen")
         Button(onClick = onNavigateToQuestionCompose) { Text("질문 보내기") }
+        Button(onClick = onNavigateToNotification) { Text("알림") }
+        Button(onClick = onNavigateToReceivedQuestion) { Text("내게 온 질문") }
+        Button(onClick = onNavigateToSentQuestion) { Text("내가 보낸 질문") }
+        Button(onClick = onNavigateToMy) { Text("마이") }
     }
 }

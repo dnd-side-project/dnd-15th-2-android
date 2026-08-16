@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun QuestionCompleteScreen(
+    primaryButtonText: String,
     onSendAnother: () -> Unit,
     onNavigateHome: () -> Unit,
 ) {
@@ -21,7 +22,7 @@ fun QuestionCompleteScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
     ) {
         Text("질문을 보냈어요!")
-        Button(onClick = onSendAnother) { Text("내 질문 보러가기") }
+        Button(onClick = onSendAnother) { Text(primaryButtonText) }
         Button(onClick = onNavigateHome) { Text("홈으로 돌아가기") }
     }
 }
