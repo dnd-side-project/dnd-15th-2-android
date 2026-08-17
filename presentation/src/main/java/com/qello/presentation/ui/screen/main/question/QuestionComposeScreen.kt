@@ -14,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.qello.presentation.component.QelloTextArea
 
 @Composable
 fun QuestionComposeScreen(
@@ -23,15 +24,28 @@ fun QuestionComposeScreen(
     var isWriteSectionVisible by remember { mutableStateOf(false) }
 
     Column(
-        modifier = Modifier.fillMaxSize().padding(24.dp),
+        modifier = Modifier.fillMaxSize().padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
     ) {
         Text("질문 선택 Section")
         Button(onClick = { isWriteSectionVisible = true }) { Text("이 질문 선택하기") }
         Button(onClick = onNavigateToSuggest) { Text("질문 제안하러가기") }
 
+        var content by remember { mutableStateOf("") }
+
         if (isWriteSectionVisible) {
-            Text("질문 작성 Section (선택 후 아래에 등장)")
+            QelloTextArea(
+                value = content,
+                onValueChange = { content = it },
+            )
+
+            QelloTextArea(
+                value = content,
+                onValueChange = { content = it },
+                isError = true,
+                supportingText = "에러 메세지!!",
+            )
+
             Button(onClick = onNext) { Text("다음") }
         }
     }
