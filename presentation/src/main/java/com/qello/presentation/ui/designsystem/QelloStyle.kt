@@ -39,6 +39,7 @@ object QelloIconSize {
     val size32: Dp = 32.dp
     val size40: Dp = 40.dp
     val size48: Dp = 48.dp
+    val size80: Dp = 80.dp
 }
 
 object QelloBorderWidth {
