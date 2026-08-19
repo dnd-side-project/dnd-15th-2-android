@@ -1,4 +1,4 @@
-package com.qello.presentation.component
+package com.qello.presentation.component.text
 
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
