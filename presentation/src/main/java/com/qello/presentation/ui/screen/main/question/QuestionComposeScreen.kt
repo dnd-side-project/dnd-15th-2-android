@@ -373,15 +373,17 @@ fun QuestionComposeScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(bottom = QelloTheme.spacing.spacing24),
-                            horizontalArrangement = Arrangement.SpaceBetween,
+                            horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing8),
                         ) {
                             QelloSmallButton(
                                 text = "질문 제안하러 가기",
+                                modifier = Modifier.weight(1f),
                                 colors = QelloTheme.buttonColors.darkButtonColors,
                                 onClick = onNavigateToSuggest,
                             )
                             QelloSmallButton(
                                 text = "방향 설정하러 가기",
+                                modifier = Modifier.weight(1f),
                                 onClick = onNext,
                             )
                         }
