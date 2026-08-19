@@ -36,6 +36,7 @@ private enum class NotificationTab(val label: String) {
 }
 
 private data class NotificationUiModel(
+    val questionId: Int,
     val title: String,
     val description: String,
     val timeAgo: String,
@@ -46,6 +47,8 @@ private data class NotificationUiModel(
 @Composable
 fun NotificationScreen(
     onBack: () -> Unit,
+    onNavigateToReceivedDetail: (Int) -> Unit,
+    onNavigateToSentDetail: (Int) -> Unit,
 ) {
     var selectedTab by remember { mutableIntStateOf(0) }
 
@@ -77,6 +80,15 @@ fun NotificationScreen(
         val allItems = remember {
             listOf(
                 NotificationUiModel(
+                    questionId = 1,
+                    title = "북동쪽에서 질문이 도착했어요.",
+                    description = "새로운 친구가 당신에게 질문을 보냈어요. 지금 확인해보세요.",
+                    timeAgo = "1시간 전",
+                    isUnread = true,
+                    category = NotificationTab.RECEIVED,
+                ),
+                NotificationUiModel(
+                    questionId = 1,
                     title = "내 질문에 새 답변이 달렸어요.",
                     description = "보낸 질문에 답변이 도착했어요. 어떤 이야기인지 확인해보세요.",
                     timeAgo = "3시간 전",
@@ -84,6 +96,7 @@ fun NotificationScreen(
                     category = NotificationTab.SENT,
                 ),
                 NotificationUiModel(
+                    questionId = 2,
                     title = "내 질문에 공감을 눌렀어요.",
                     description = "다른 사용자가 내 질문에 공감을 눌렀어요.",
                     timeAgo = "1일 전",
@@ -149,7 +162,13 @@ fun NotificationScreen(
                         description = item.description,
                         timeAgo = item.timeAgo,
                         isUnread = item.isUnread,
-                        onClick = {},
+                        onClick = {
+                            when (item.category) {
+                                NotificationTab.RECEIVED -> onNavigateToReceivedDetail(item.questionId)
+                                NotificationTab.SENT -> onNavigateToSentDetail(item.questionId)
+                                NotificationTab.ALL -> Unit
+                            }
+                        },
                         onMoreClick = {},
                     )
                 }
