@@ -81,7 +81,11 @@ fun MainGraph() {
             }
 
             entry<MainNavKey.Notification> {
-                NotificationScreen()
+                NotificationScreen(
+                    onBack = { mainBackStack.removeLastOrNull() },
+                    onNavigateToReceivedDetail = { id -> mainBackStack.add(MainNavKey.ReceivedQuestionDetail(questionId = id)) },
+                    onNavigateToSentDetail = { id -> mainBackStack.add(MainNavKey.SentQuestionDetail(questionId = id)) },
+                )
             }
 
             entry<MainNavKey.ReceivedQuestionList> {

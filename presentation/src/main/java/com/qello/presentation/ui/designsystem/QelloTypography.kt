@@ -60,7 +60,7 @@ val Typography = QelloTypography(
     ),
     body2 = baseTextStyle.copy(
         fontWeight = FontWeight.Medium,
-        fontSize = 16.sp,
+        fontSize = 14.sp,
         lineHeight = 21.sp,
         letterSpacing = (-0.8).sp
     ),
