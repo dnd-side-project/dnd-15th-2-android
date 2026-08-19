@@ -15,6 +15,7 @@ import com.qello.presentation.ui.designsystem.QelloCategoryColors
 import com.qello.presentation.ui.designsystem.QelloCategoryColorsScheme
 import com.qello.presentation.ui.designsystem.QelloColorScheme
 import com.qello.presentation.ui.designsystem.QelloColors
+import com.qello.presentation.ui.designsystem.QelloGradient
 import com.qello.presentation.ui.designsystem.QelloIconSize
 import com.qello.presentation.ui.designsystem.QelloRadius
 import com.qello.presentation.ui.designsystem.QelloSpacing
@@ -75,4 +76,7 @@ object QelloTheme {
 
     val borderWidth: QelloBorderWidth
         get() = QelloBorderWidth
+
+    val gradient: QelloGradient
+        get() = QelloGradient
 }
