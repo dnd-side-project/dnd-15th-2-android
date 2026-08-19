@@ -16,9 +16,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.qello.presentation.component.QelloBackButton
-import com.qello.presentation.component.QelloLargeButton
-import com.qello.presentation.component.QelloText
-import com.qello.presentation.component.QelloTextArea
+import com.qello.presentation.component.button.QelloLargeButton
+import com.qello.presentation.component.text.QelloText
+import com.qello.presentation.component.text.QelloTextArea
 import com.qello.presentation.ui.theme.QelloTheme
 import kotlinx.coroutines.delay
 
