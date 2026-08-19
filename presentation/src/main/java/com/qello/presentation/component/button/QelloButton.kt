@@ -13,13 +13,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.ui.designsystem.QelloStateThemeColors
@@ -102,5 +106,31 @@ fun QelloSmallButton(
         contentPadding = PaddingValues(
             vertical = QelloTheme.spacing.spacing16,
         ),
+    )
+}
+
+@Composable
+fun QelloIconButton(
+    painter: Painter,
+    modifier: Modifier = Modifier,
+    contentDescription: String? = null,
+    size: Dp = QelloTheme.iconSize.size24,
+    tint: Color = QelloTheme.colors.label.strong,
+    onClick: () -> Unit,
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+
+    Icon(
+        painter = painter,
+        contentDescription = contentDescription,
+        tint = tint,
+        modifier = modifier
+            .size(size)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                role = Role.Button,
+                onClick = onClick,
+            ),
     )
 }
