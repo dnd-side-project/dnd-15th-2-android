@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="bottom_bar_width">378dp</dimen>
+    <dimen name="bottom_bar_container_height">103dp</dimen>
+    <dimen name="bottom_bar_visible_height">80dp</dimen>
+    <dimen name="bottom_bar_center_image_size">70dp</dimen>
+    <dimen name="bottom_bar_left_icon_start">75dp</dimen>
+    <dimen name="bottom_bar_left_icon_top">17dp</dimen>
+    <dimen name="bottom_bar_right_icon_end">74dp</dimen>
+    <dimen name="bottom_bar_right_icon_top">18dp</dimen>
+
+    <dimen name="bottom_bar_center_image_offset_x">0.8dp</dimen>
+    <dimen name="bottom_bar_center_image_offset_y">0.9dp</dimen>
+
+</resources>
