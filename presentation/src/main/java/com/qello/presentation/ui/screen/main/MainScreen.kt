@@ -26,6 +26,7 @@ import com.qello.presentation.component.button.QelloSmallButton
 import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.ui.theme.QelloTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
     onNavigateToQuestionCompose: () -> Unit,
@@ -45,91 +46,89 @@ fun MainScreen(
         },
         onCenterClick = onNavigateToQuestionCompose,
     ) {
+        var showQuestionSendSheet by remember { mutableStateOf(false) }
+
         Column(
-            modifier = Modifier.fillMaxSize().padding(horizontal = QelloTheme.spacing.spacing20),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             QelloText("Main Screen")
-    var showQuestionSendSheet by remember { mutableStateOf(false) }
 
-    Column(
-        modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        QelloText("Main Screen")
-
-        QelloLargeButton(
-            text = "질문 보내기",
-        ) {
-            showQuestionSendSheet = true
-        }
-        QelloLargeButton(
-            text = "알림",
-            colors = QelloTheme.buttonColors.darkButtonColors,
-        ) {
-            onNavigateToNotification()
-        }
-        QelloSmallButton(
-            text = "내게 온 질문",
-        ) {
-            onNavigateToReceivedQuestion()
-        }
-        QelloSmallButton(
-            text = "내가 보낸 질문",
-            colors = QelloTheme.buttonColors.darkButtonColors,
-        ) {
-            onNavigateToSentQuestion()
-        }
-        QelloSmallButton(
-            text = "마이",
-            colors = QelloTheme.buttonColors.lightButtonColors,
-        ) {
-            onNavigateToMy()
-        }
-    }
-
-    // 바텀시트
-    if (showQuestionSendSheet) {
-        ModalBottomSheet(
-            onDismissRequest = { showQuestionSendSheet = false },
-            containerColor = Color.Transparent,
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        QelloTheme.gradient.backgroundStrong,
-                        RoundedCornerShape(topStart = QelloTheme.radius.radius24, topEnd = QelloTheme.radius.radius24),
-                    )
-                    .padding(horizontal = QelloTheme.spacing.spacing20)
-                    .padding(vertical = 38.dp),
+            QelloLargeButton(
+                text = "질문 보내기",
             ) {
-                QelloText(
-                    text = "전 세계 사람들에게",
-                    style = QelloTheme.typography.heading1,
-                    color = QelloTheme.colors.label.strong,
-                )
-                QelloText(
-                    text = "질문을 보내보세요!",
-                    style = QelloTheme.typography.heading1,
-                    color = QelloTheme.colors.label.strong,
-                )
+                showQuestionSendSheet = true
+            }
+            QelloLargeButton(
+                text = "알림",
+                colors = QelloTheme.buttonColors.darkButtonColors,
+            ) {
+                onNavigateToNotification()
+            }
+            QelloSmallButton(
+                text = "내게 온 질문",
+            ) {
+                onNavigateToReceivedQuestion()
+            }
+            QelloSmallButton(
+                text = "내가 보낸 질문",
+                colors = QelloTheme.buttonColors.darkButtonColors,
+            ) {
+                onNavigateToSentQuestion()
+            }
+            QelloSmallButton(
+                text = "마이",
+                colors = QelloTheme.buttonColors.lightButtonColors,
+            ) {
+                onNavigateToMy()
+            }
+        }
 
-                Spacer(Modifier.height(QelloTheme.spacing.spacing8))
-
-                QelloText(
-                    text = "궁금한 것을 질문하고, 다양한 사람들의 답변을 받아보세요.",
-                    style = QelloTheme.typography.caption1,
-                    color = QelloTheme.colors.label.normal2,
-                )
-
-                Spacer(Modifier.height(44.dp))
-
-                QelloLargeButton(
-                    text = "질문하러가기",
+        // 바텀시트
+        if (showQuestionSendSheet) {
+            ModalBottomSheet(
+                onDismissRequest = { showQuestionSendSheet = false },
+                containerColor = Color.Transparent,
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            QelloTheme.gradient.backgroundStrong,
+                            RoundedCornerShape(topStart = QelloTheme.radius.radius24, topEnd = QelloTheme.radius.radius24),
+                        )
+                        .padding(horizontal = QelloTheme.spacing.spacing20)
+                        .padding(vertical = 38.dp),
                 ) {
-                    showQuestionSendSheet = false
-                    onNavigateToQuestionCompose()
+                    QelloText(
+                        text = "전 세계 사람들에게",
+                        style = QelloTheme.typography.heading1,
+                        color = QelloTheme.colors.label.strong,
+                    )
+                    QelloText(
+                        text = "질문을 보내보세요!",
+                        style = QelloTheme.typography.heading1,
+                        color = QelloTheme.colors.label.strong,
+                    )
+
+                    Spacer(Modifier.height(QelloTheme.spacing.spacing8))
+
+                    QelloText(
+                        text = "궁금한 것을 질문하고, 다양한 사람들의 답변을 받아보세요.",
+                        style = QelloTheme.typography.caption1,
+                        color = QelloTheme.colors.label.normal2,
+                    )
+
+                    Spacer(Modifier.height(44.dp))
+
+                    QelloLargeButton(
+                        text = "질문하러가기",
+                    ) {
+                        showQuestionSendSheet = false
+                        onNavigateToQuestionCompose()
+                    }
                 }
             }
         }

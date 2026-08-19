@@ -47,7 +47,7 @@ fun MainGraph() {
 
             entry<MainNavKey.QuestionCompose> {
                 QuestionComposeScreen(
-                    onBack = { mainBackStack.removeLastOrNull() },
+                    onBack = { navigator.removeLast() },
                     onNext = { navigator.add(MainNavKey.QuestionDirection) },
                     onNavigateToSuggest = { navigator.add(MainNavKey.QuestionSuggestCompose) },
                 )
@@ -55,17 +55,17 @@ fun MainGraph() {
 
             entry<MainNavKey.QuestionDirection> {
                 QuestionDirectionScreen(
-                    onBack = { mainBackStack.removeLastOrNull() },
+                    onBack = { navigator.removeLast() },
                     onSendComplete = {
                         navigator.add(MainNavKey.QuestionComplete(primaryButtonText = "새 질문 보내기"))
-                        mainBackStack.add(MainNavKey.QuestionComplete(primaryButtonText = "내 질문 보러 가기"))
+                        navigator.add(MainNavKey.QuestionComplete(primaryButtonText = "내 질문 보러 가기"))
                     },
                 )
             }
 
             entry<MainNavKey.QuestionSuggestCompose> {
                 QuestionSuggestComposeScreen(
-                    onBack = { mainBackStack.removeLastOrNull() },
+                    onBack = { navigator.removeLast() },
                     onSendComplete = {
                         navigator.add(MainNavKey.QuestionComplete(primaryButtonText = "재설문 보러가기"))
                     },
