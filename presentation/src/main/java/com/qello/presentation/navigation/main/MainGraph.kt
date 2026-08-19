@@ -81,7 +81,9 @@ fun MainGraph() {
             }
 
             entry<MainNavKey.Notification> {
-                NotificationScreen()
+                NotificationScreen(
+                    onBack = { mainBackStack.removeLastOrNull() },
+                )
             }
 
             entry<MainNavKey.ReceivedQuestionList> {
