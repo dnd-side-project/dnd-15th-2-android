@@ -1,4 +1,4 @@
-package com.qello.presentation.component
+package com.qello.presentation.component.button
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

@@ -62,7 +62,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.qello.presentation.component.QelloBackButton
+import com.qello.presentation.component.button.QelloBackButton
 import com.qello.presentation.component.button.QelloLargeButton
 import com.qello.presentation.component.button.QelloSmallButton
 import com.qello.presentation.component.text.QelloText
