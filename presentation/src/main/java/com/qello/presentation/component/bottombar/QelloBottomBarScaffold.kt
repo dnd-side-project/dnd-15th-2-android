@@ -9,6 +9,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.qello.presentation.ui.theme.QelloTheme
 
+/**
+ * 하단바가 있는 화면에서 사용할 Scaffold
+ * */
 @Composable
 fun QelloBottomBarScaffold(
     selectedTab: HomeBottomBarTab,

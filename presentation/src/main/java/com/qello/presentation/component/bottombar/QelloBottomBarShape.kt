@@ -77,6 +77,9 @@ fun QelloBottomBarItem(
 
 private const val DesignReferenceWidthDp = 412f
 
+/**
+ * 각 기종별 가로 픽셀을 도출하여 알맞은 비율로 보여지게 만듬
+ * */
 @SuppressLint("ConfigurationScreenWidthHeight")
 @Composable
 private fun rememberBottomBarDensity(): Density {
