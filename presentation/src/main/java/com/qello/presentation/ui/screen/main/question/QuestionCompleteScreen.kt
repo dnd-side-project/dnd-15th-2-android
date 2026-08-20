@@ -17,8 +17,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.qello.presentation.component.QelloSmallButton
-import com.qello.presentation.component.QelloText
+import com.qello.presentation.component.button.QelloSmallButton
+import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.ui.theme.QelloTheme
 
 @Composable

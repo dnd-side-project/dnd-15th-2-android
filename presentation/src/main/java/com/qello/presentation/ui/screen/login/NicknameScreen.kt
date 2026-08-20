@@ -14,7 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.qello.presentation.component.QelloTextField
+import com.qello.presentation.component.text.QelloTextField
 
 @Composable
 fun NicknameScreen(

@@ -7,9 +7,10 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.navigation3.runtime.entryProvider
-import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
+import com.qello.presentation.navigation.TopLevelBackStack
 import com.qello.presentation.ui.screen.main.MainScreen
 import com.qello.presentation.ui.screen.main.my.MyScreen
 import com.qello.presentation.ui.screen.main.notification.NotificationScreen
@@ -24,21 +25,11 @@ import com.qello.presentation.ui.screen.main.sent.SentQuestionListScreen
 
 @Composable
 fun MainGraph() {
-    val mainBackStack = rememberNavBackStack(MainNavKey.Main)
-
-    fun popToMain() {
-        while (mainBackStack.size > 1) {
-            mainBackStack.removeLastOrNull()
-        }
-    }
+    val navigator = remember { TopLevelBackStack<MainNavKey>(MainNavKey.Main) }
 
     NavDisplay(
-        backStack = mainBackStack,
-        onBack = {
-            if (mainBackStack.size > 1) {
-                mainBackStack.removeLastOrNull()
-            }
-        },
+        backStack = navigator.backStack,
+        onBack = { navigator.removeLast() },
         // 기본 크로스페이드는 전환 중간에 두 화면이 동시에 반투명해지면서 뒤쪽 배경이 비쳐 깜빡임처럼 보임.
         // 새 화면이 위에서 덮고, 이전 화면은 그대로 있다가 뒤로가기 때만 걷히도록 해서 배경이 비치지 않게 함.
         transitionSpec = { fadeIn(animationSpec = tween(300)) togetherWith ExitTransition.None },
@@ -46,51 +37,54 @@ fun MainGraph() {
         entryProvider = entryProvider {
             entry<MainNavKey.Main> {
                 MainScreen(
-                    onNavigateToQuestionCompose = { mainBackStack.add(MainNavKey.QuestionCompose) },
-                    onNavigateToNotification = { mainBackStack.add(MainNavKey.Notification) },
-                    onNavigateToReceivedQuestion = { mainBackStack.add(MainNavKey.ReceivedQuestionList) },
-                    onNavigateToSentQuestion = { mainBackStack.add(MainNavKey.SentQuestionList) },
-                    onNavigateToMy = { mainBackStack.add(MainNavKey.My) },
+                    onNavigateToQuestionCompose = { navigator.add(MainNavKey.QuestionCompose) },
+                    onNavigateToNotification = { navigator.add(MainNavKey.Notification) },
+                    onNavigateToReceivedQuestion = { navigator.addTopLevel(MainNavKey.ReceivedQuestionList) },
+                    onNavigateToSentQuestion = { navigator.addTopLevel(MainNavKey.SentQuestionList) },
+                    onNavigateToMy = { navigator.add(MainNavKey.My) },
                 )
             }
 
             entry<MainNavKey.QuestionCompose> {
                 QuestionComposeScreen(
-                    onBack = { mainBackStack.removeLastOrNull() },
-                    onNext = { mainBackStack.add(MainNavKey.QuestionDirection) },
-                    onNavigateToSuggest = { mainBackStack.add(MainNavKey.QuestionSuggestCompose) },
+                    onBack = { navigator.removeLast() },
+                    onNext = { navigator.add(MainNavKey.QuestionDirection) },
+                    onNavigateToSuggest = { navigator.add(MainNavKey.QuestionSuggestCompose) },
                 )
             }
 
             entry<MainNavKey.QuestionDirection> {
                 QuestionDirectionScreen(
-                    onBack = { mainBackStack.removeLastOrNull() },
+                    onBack = { navigator.removeLast() },
                     onSendComplete = {
-                        mainBackStack.add(MainNavKey.QuestionComplete(primaryButtonText = "내 질문 보러 가기"))
+                        navigator.add(MainNavKey.QuestionComplete(primaryButtonText = "새 질문 보내기"))
+                        navigator.add(MainNavKey.QuestionComplete(primaryButtonText = "내 질문 보러 가기"))
                     },
                 )
             }
 
             entry<MainNavKey.QuestionSuggestCompose> {
                 QuestionSuggestComposeScreen(
-                    onBack = { mainBackStack.removeLastOrNull() },
+                    onBack = { navigator.removeLast() },
                     onSendComplete = {
-                        mainBackStack.add(MainNavKey.QuestionComplete(primaryButtonText = "재설문 보러가기"))
+                        navigator.add(MainNavKey.QuestionComplete(primaryButtonText = "재설문 보러가기"))
                     },
                 )
             }
 
             entry<MainNavKey.Notification> {
                 NotificationScreen(
-                    onBack = { mainBackStack.removeLastOrNull() },
-                    onNavigateToReceivedDetail = { id -> mainBackStack.add(MainNavKey.ReceivedQuestionDetail(questionId = id)) },
-                    onNavigateToSentDetail = { id -> mainBackStack.add(MainNavKey.SentQuestionDetail(questionId = id)) },
+                    onBack = { navigator.removeLast() },
+                    onNavigateToReceivedDetail = { id -> navigator.add(MainNavKey.ReceivedQuestionDetail(questionId = id)) },
+                    onNavigateToSentDetail = { id -> navigator.add(MainNavKey.SentQuestionDetail(questionId = id)) },
                 )
             }
 
             entry<MainNavKey.ReceivedQuestionList> {
                 ReceivedQuestionListScreen(
-                    onItemClick = { id -> mainBackStack.add(MainNavKey.ReceivedQuestionDetail(questionId = id)) },
+                    onItemClick = { id -> navigator.add(MainNavKey.ReceivedQuestionDetail(questionId = id)) },
+                    onNavigateToSentQuestion = { navigator.addTopLevel(MainNavKey.SentQuestionList) },
+                    onNavigateHome = { navigator.addTopLevel(MainNavKey.Main) },
                 )
             }
 
@@ -100,26 +94,24 @@ fun MainGraph() {
 
             entry<MainNavKey.SentQuestionList> {
                 SentQuestionListScreen(
-                    onItemClick = { id -> mainBackStack.add(MainNavKey.SentQuestionDetail(questionId = id)) },
+                    onItemClick = { id -> navigator.add(MainNavKey.SentQuestionDetail(questionId = id)) },
+                    onNavigateToReceivedQuestion = { navigator.addTopLevel(MainNavKey.ReceivedQuestionList) },
+                    onNavigateHome = { navigator.addTopLevel(MainNavKey.Main) },
                 )
             }
 
             entry<MainNavKey.SentQuestionDetail> { key ->
                 SentQuestionDetailScreen(questionId = key.questionId)
             }
-
-            entry<MainNavKey.My> {
-                MyScreen()
-            }
-
+            entry<MainNavKey.My> { MyScreen() }
             entry<MainNavKey.QuestionComplete> { key ->
                 QuestionCompleteScreen(
                     primaryButtonText = key.primaryButtonText,
                     onSendAnother = {
-                        popToMain()
-                        mainBackStack.add(MainNavKey.QuestionCompose)
+                        navigator.popToTopLevelStart()
+                        navigator.add(MainNavKey.QuestionCompose)
                     },
-                    onNavigateHome = { popToMain() },
+                    onNavigateHome = { navigator.popToTopLevelStart() },
                 )
             }
         },

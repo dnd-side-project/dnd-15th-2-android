@@ -14,4 +14,6 @@ dependencies {
     implementation(project(":domain"))
 
     implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.bundles.mapbox)
 }

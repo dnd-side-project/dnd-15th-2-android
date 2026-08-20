@@ -1,4 +1,4 @@
-package com.qello.presentation.component
+package com.qello.presentation.component.item
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import com.qello.presentation.R
+import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.ui.theme.QelloTheme
 
 @Composable

@@ -22,6 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.qello.presentation.component.bottombar.HomeBottomBarTab
+import com.qello.presentation.component.bottombar.QelloBottomBarScaffold
 
 private data class SentQuestionItem(
     val id: Int,
@@ -37,41 +39,51 @@ private val mockItems = listOf(
 @Composable
 fun SentQuestionListScreen(
     onItemClick: (Int) -> Unit,
+    onNavigateToReceivedQuestion: () -> Unit,
+    onNavigateHome: () -> Unit,
 ) {
     var unansweredOnly by remember { mutableStateOf(false) }
 
     val filtered = mockItems.filter { !unansweredOnly || !it.isAnswered }
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        Text("내가 보낸 질문", modifier = Modifier.padding(16.dp))
+    QelloBottomBarScaffold(
+        selectedTab = HomeBottomBarTab.SENT,
+        onTabClick = { tab ->
+            if (tab == HomeBottomBarTab.RECEIVED) onNavigateToReceivedQuestion()
+        },
+        onCenterClick = onNavigateHome,
+    ) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            Text("내가 보낸 질문", modifier = Modifier.padding(16.dp))
 
-        Row(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Checkbox(checked = unansweredOnly, onCheckedChange = { unansweredOnly = it })
-            Text("답변 없는 질문만 보기")
-        }
-
-        if (filtered.isEmpty()) {
-            Box(
-                modifier = Modifier.fillMaxSize().padding(24.dp),
-                contentAlignment = Alignment.Center,
+            Row(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text("보낸 질문이 없어요")
+                Checkbox(checked = unansweredOnly, onCheckedChange = { unansweredOnly = it })
+                Text("답변 없는 질문만 보기")
             }
-        } else {
-            LazyColumn(modifier = Modifier.padding(16.dp)) {
-                items(filtered) { item ->
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 12.dp)
-                            .clickable { onItemClick(item.id) },
-                    ) {
-                        Box(modifier = Modifier.size(56.dp).background(Color(0xFFE7A9A0)))
-                        Text(item.question, modifier = Modifier.padding(top = 8.dp))
-                        Text(if (item.isAnswered) "답변 있음" else "답변 없음")
+
+            if (filtered.isEmpty()) {
+                Box(
+                    modifier = Modifier.fillMaxSize().padding(24.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text("보낸 질문이 없어요")
+                }
+            } else {
+                LazyColumn(modifier = Modifier.padding(16.dp)) {
+                    items(filtered) { item ->
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 12.dp)
+                                .clickable { onItemClick(item.id) },
+                        ) {
+                            Box(modifier = Modifier.size(56.dp).background(Color(0xFFE7A9A0)))
+                            Text(item.question, modifier = Modifier.padding(top = 8.dp))
+                            Text(if (item.isAnswered) "답변 있음" else "답변 없음")
+                        }
                     }
                 }
             }

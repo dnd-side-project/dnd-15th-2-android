@@ -23,10 +23,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.qello.presentation.component.QelloBackButton
-import com.qello.presentation.component.QelloNotificationItem
-import com.qello.presentation.component.QelloTabRow
-import com.qello.presentation.component.QelloText
+import com.qello.presentation.component.button.QelloBackButton
+import com.qello.presentation.component.item.QelloNotificationItem
+import com.qello.presentation.component.tab.QelloTabRow
+import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.ui.theme.QelloTheme
 
 private enum class NotificationTab(val label: String) {
