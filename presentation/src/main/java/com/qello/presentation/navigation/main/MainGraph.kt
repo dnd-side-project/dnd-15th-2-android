@@ -100,6 +100,7 @@ fun MainGraph() {
                 SentQuestionListScreen(
                     onItemClick = { id -> navigator.add(MainNavKey.SentQuestionDetail(questionId = id)) },
                     onNavigateToReceivedQuestion = { navigator.addTopLevel(MainNavKey.ReceivedQuestionList) },
+                    onNavigateToNotification = { navigator.add(MainNavKey.Notification) },
                     onNavigateHome = { navigator.addTopLevel(MainNavKey.Main) },
                 )
             }

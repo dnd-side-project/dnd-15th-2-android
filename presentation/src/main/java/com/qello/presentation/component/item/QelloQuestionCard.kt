@@ -23,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.qello.presentation.R
 import com.qello.presentation.component.text.QelloText
+import com.qello.presentation.ui.designsystem.QelloColorPalette
 import com.qello.presentation.ui.theme.QelloTheme
 
 @Composable
@@ -38,6 +39,7 @@ fun QelloQuestionCard(
     onClick: () -> Unit,
     onMoreClick: () -> Unit,
     modifier: Modifier = Modifier,
+    badgeText: String? = null,
 ) {
     val cardShape = RoundedCornerShape(QelloTheme.radius.radius20)
 
@@ -53,11 +55,18 @@ fun QelloQuestionCard(
                 onClick = onClick,
             ),
     ) {
+        if (badgeText != null) {
+            QuestionCardBadge(
+                text = badgeText,
+                modifier = Modifier.padding(start = 10.dp, top = 10.dp, bottom = 8.dp),
+            )
+        }
+
         if (hasPhoto) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 10.dp, end = 10.dp, top = 10.dp)
+                    .padding(start = 10.dp, end = 10.dp, top = if (badgeText != null) 0.dp else 10.dp)
                     .aspectRatio(16f / 10f)
                     .clip(RoundedCornerShape(15.dp))
                     .background(QelloTheme.colors.imagefield.default),
@@ -119,6 +128,22 @@ fun QelloQuestionCard(
             }
         }
     }
+}
+
+@Composable
+private fun QuestionCardBadge(text: String, modifier: Modifier = Modifier) {
+    val badgeShape = RoundedCornerShape(QelloTheme.radius.radiusFull)
+
+    QelloText(
+        text = text,
+        style = QelloTheme.typography.caption2,
+        color = QelloColorPalette.Orange50,
+        modifier = modifier
+            .clip(badgeShape)
+            .background(QelloColorPalette.Orange20)
+            .border(QelloTheme.borderWidth.borderHalf, QelloColorPalette.Orange50, badgeShape)
+            .padding(horizontal = QelloTheme.spacing.spacing12, vertical = QelloTheme.spacing.spacing4),
+    )
 }
 
 @Composable
