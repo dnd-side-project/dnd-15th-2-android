@@ -90,7 +90,10 @@ fun MainGraph() {
             }
 
             entry<MainNavKey.ReceivedQuestionDetail> { key ->
-                ReceivedQuestionDetailScreen(questionId = key.questionId)
+                ReceivedQuestionDetailScreen(
+                    questionId = key.questionId,
+                    onBack = { navigator.removeLast() },
+                )
             }
 
             entry<MainNavKey.SentQuestionList> {

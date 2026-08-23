@@ -6,13 +6,14 @@ import androidx.compose.ui.res.painterResource
 import com.qello.presentation.R
 
 @Composable
-fun QelloBackButton(
+fun QelloMoreButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     QelloSquareIconButton(
-        painter = painterResource(R.drawable.ic_back),
+        painter = painterResource(R.drawable.ic_more),
         onClick = onClick,
         modifier = modifier,
+        iconRotation = 90f,
     )
 }

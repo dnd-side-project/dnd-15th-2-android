@@ -7,6 +7,7 @@ object QelloSpacing {
     val spacing0: Dp = 0.dp
     val spacing2: Dp = 2.dp
     val spacing4: Dp = 4.dp
+    val spacing6: Dp = 6.dp
     val spacing8: Dp = 8.dp
     val spacing12: Dp = 12.dp
     val spacing16: Dp = 16.dp
