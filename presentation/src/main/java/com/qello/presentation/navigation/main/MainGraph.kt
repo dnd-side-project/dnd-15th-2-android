@@ -106,7 +106,10 @@ fun MainGraph() {
             }
 
             entry<MainNavKey.SentQuestionDetail> { key ->
-                SentQuestionDetailScreen(questionId = key.questionId)
+                SentQuestionDetailScreen(
+                    questionId = key.questionId,
+                    onBack = { navigator.removeLast() },
+                )
             }
             entry<MainNavKey.My> { MyScreen() }
             entry<MainNavKey.QuestionComplete> { key ->
