@@ -16,8 +16,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,7 +28,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.qello.presentation.R
 import com.qello.presentation.component.bottombar.HomeBottomBarTab
@@ -163,58 +162,58 @@ fun ReceivedQuestionListScreen(
                     .background(QelloTheme.colors.background.normalStrong),
             )
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = QelloTheme.spacing.spacing20)
-                    .padding(top = QelloTheme.spacing.spacing12),
-                horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing8),
-            ) {
-                Direction.entries.forEach { direction ->
-                    DirectionChip(
-                        label = direction.label,
-                        selected = selectedDirection == direction,
-                        onClick = { selectedDirection = direction },
-                    )
+            if (mockItems.isNotEmpty()) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = QelloTheme.spacing.spacing20)
+                        .padding(top = QelloTheme.spacing.spacing12),
+                    horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing8),
+                ) {
+                    Direction.entries.forEach { direction ->
+                        DirectionChip(
+                            label = direction.label,
+                            selected = selectedDirection == direction,
+                            onClick = { selectedDirection = direction },
+                        )
+                    }
                 }
-            }
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = QelloTheme.spacing.spacing20)
-                    .padding(top = QelloTheme.spacing.spacing20, bottom = QelloTheme.spacing.spacing12),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                QelloText(
-                    text = "내 위치 | 대구",
-                    style = QelloTheme.typography.caption2,
-                    color = QelloTheme.colors.label.assistive,
-                    modifier = Modifier.weight(1f),
-                )
 
                 Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = QelloTheme.spacing.spacing20)
+                        .padding(top = QelloTheme.spacing.spacing20, bottom = QelloTheme.spacing.spacing12),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing8),
-                    modifier = Modifier.clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
-                    ) { answeredOnly = !answeredOnly },
                 ) {
                     QelloText(
-                        text = "답변한 글만 보기",
+                        text = "내 위치 | 대구",
                         style = QelloTheme.typography.caption2,
                         color = QelloTheme.colors.label.assistive,
+                        modifier = Modifier.weight(1f),
                     )
 
-                    Box(
-                        modifier = Modifier
-                            .size(19.dp)
-                            .clip(CircleShape)
-                            .background(
-                                if (answeredOnly) QelloTheme.colors.primary.normal else QelloTheme.colors.background.normalStrong,
-                            ),
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing8),
+                        modifier = Modifier.clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                        ) { answeredOnly = !answeredOnly },
+                    ) {
+                        QelloText(
+                            text = "답변한 글만 보기",
+                            style = QelloTheme.typography.caption2,
+                            color = if (answeredOnly) QelloTheme.colors.label.strong else QelloTheme.colors.label.assistive,
+                        )
+
+                        Icon(
+                            painter = painterResource(R.drawable.icon_check),
+                            contentDescription = null,
+                            tint = if (answeredOnly) QelloTheme.colors.label.strong else QelloTheme.colors.label.assistive,
+                            modifier = Modifier.size(width = 18.dp, height = 12.dp),
+                        )
+                    }
                 }
             }
 
@@ -227,25 +226,18 @@ fun ReceivedQuestionListScreen(
                     contentAlignment = Alignment.Center,
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Box(
-                            modifier = Modifier
-                                .size(98.dp)
-                                .clip(RoundedCornerShape(QelloTheme.radius.radius20))
-                                .background(QelloTheme.colors.primary.normal),
+                        Icon(
+                            painter = painterResource(R.drawable.icon_message),
+                            contentDescription = null,
+                            tint = QelloTheme.colors.label.assistive,
+                            modifier = Modifier.size(width = 65.dp, height = 51.2.dp),
                         )
 
                         Spacer(Modifier.height(QelloTheme.spacing.spacing20))
 
                         QelloText(
-                            text = "아직 받은 질문이 없어요",
+                            text = "받은 질문이 없어요!",
                             style = QelloTheme.typography.caption2,
-                            color = QelloTheme.colors.label.assistive,
-                            modifier = Modifier.padding(horizontal = QelloTheme.spacing.spacing20),
-                        )
-
-                        QelloText(
-                            text = "다른 사람들에게 질문을 받아보세요!",
-                            style = QelloTheme.typography.caption2.copy(textAlign = TextAlign.Center),
                             color = QelloTheme.colors.label.assistive,
                             modifier = Modifier.padding(horizontal = QelloTheme.spacing.spacing20),
                         )

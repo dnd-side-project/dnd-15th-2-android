@@ -16,8 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,7 +26,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.qello.presentation.R
 import com.qello.presentation.component.bottombar.HomeBottomBarTab
@@ -61,7 +59,7 @@ private val mockItems = listOf(
         likeCount = 7,
         postedAt = "12:00:00",
         distance = "00km",
-        newReplyCount = 4,
+        newReplyCount = 0,
     ),
     SentQuestionItem(
         id = 2,
@@ -73,7 +71,7 @@ private val mockItems = listOf(
         likeCount = 7,
         postedAt = "12:00:00",
         distance = "00km",
-        newReplyCount = 3,
+        newReplyCount = 0,
     ),
 )
 
@@ -154,16 +152,14 @@ fun SentQuestionListScreen(
                     QelloText(
                         text = "답변 온 질문만 보기",
                         style = QelloTheme.typography.caption2,
-                        color = QelloTheme.colors.label.assistive,
+                        color = if (answeredOnly) QelloTheme.colors.label.strong else QelloTheme.colors.label.assistive,
                     )
 
-                    Box(
-                        modifier = Modifier
-                            .size(19.dp)
-                            .clip(CircleShape)
-                            .background(
-                                if (answeredOnly) QelloTheme.colors.primary.normal else QelloTheme.colors.background.normalStrong,
-                            ),
+                    Icon(
+                        painter = painterResource(R.drawable.icon_check),
+                        contentDescription = null,
+                        tint = if (answeredOnly) QelloTheme.colors.label.strong else QelloTheme.colors.label.assistive,
+                        modifier = Modifier.size(width = 18.dp, height = 12.dp),
                     )
                 }
             }
@@ -177,25 +173,18 @@ fun SentQuestionListScreen(
                     contentAlignment = Alignment.Center,
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Box(
-                            modifier = Modifier
-                                .size(98.dp)
-                                .clip(RoundedCornerShape(QelloTheme.radius.radius20))
-                                .background(QelloTheme.colors.primary.normal),
+                        Icon(
+                            painter = painterResource(R.drawable.icon_message),
+                            contentDescription = null,
+                            tint = QelloTheme.colors.label.assistive,
+                            modifier = Modifier.size(width = 65.dp, height = 51.2.dp),
                         )
 
                         Spacer(Modifier.height(QelloTheme.spacing.spacing20))
 
                         QelloText(
-                            text = "아직 보낸 질문이 없어요",
+                            text = "보낸 질문이 없어요",
                             style = QelloTheme.typography.caption2,
-                            color = QelloTheme.colors.label.assistive,
-                            modifier = Modifier.padding(horizontal = QelloTheme.spacing.spacing20),
-                        )
-
-                        QelloText(
-                            text = "누군가에게 질문을 보내보세요!",
-                            style = QelloTheme.typography.caption2.copy(textAlign = TextAlign.Center),
                             color = QelloTheme.colors.label.assistive,
                             modifier = Modifier.padding(horizontal = QelloTheme.spacing.spacing20),
                         )
