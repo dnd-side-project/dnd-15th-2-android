@@ -9,6 +9,10 @@ object QelloGradient {
         colors = listOf(QelloColorPalette.Navy10, QelloColorPalette.Bule20),
     )
 
+    val backgroundDefault: Brush = Brush.verticalGradient(
+        colors = listOf(QelloColorPalette.Neutral0, QelloColorPalette.Bule10),
+    )
+
     // 좌상단 -> 우하단 대각선. end에 Offset.Infinite를 주면 실제 그려지는 영역 크기에 맞춰
     // 대각선 방향으로 자동으로 늘어남 (컴포넌트 크기가 달라져도 항상 대각선 유지).
     val cardHighlight: Brush = Brush.linearGradient(

@@ -84,24 +84,32 @@ fun MainGraph() {
                 ReceivedQuestionListScreen(
                     onItemClick = { id -> navigator.add(MainNavKey.ReceivedQuestionDetail(questionId = id)) },
                     onNavigateToSentQuestion = { navigator.addTopLevel(MainNavKey.SentQuestionList) },
+                    onNavigateToNotification = { navigator.add(MainNavKey.Notification) },
                     onNavigateHome = { navigator.addTopLevel(MainNavKey.Main) },
                 )
             }
 
             entry<MainNavKey.ReceivedQuestionDetail> { key ->
-                ReceivedQuestionDetailScreen(questionId = key.questionId)
+                ReceivedQuestionDetailScreen(
+                    questionId = key.questionId,
+                    onBack = { navigator.removeLast() },
+                )
             }
 
             entry<MainNavKey.SentQuestionList> {
                 SentQuestionListScreen(
                     onItemClick = { id -> navigator.add(MainNavKey.SentQuestionDetail(questionId = id)) },
                     onNavigateToReceivedQuestion = { navigator.addTopLevel(MainNavKey.ReceivedQuestionList) },
+                    onNavigateToNotification = { navigator.add(MainNavKey.Notification) },
                     onNavigateHome = { navigator.addTopLevel(MainNavKey.Main) },
                 )
             }
 
             entry<MainNavKey.SentQuestionDetail> { key ->
-                SentQuestionDetailScreen(questionId = key.questionId)
+                SentQuestionDetailScreen(
+                    questionId = key.questionId,
+                    onBack = { navigator.removeLast() },
+                )
             }
             entry<MainNavKey.My> { MyScreen() }
             entry<MainNavKey.QuestionComplete> { key ->
