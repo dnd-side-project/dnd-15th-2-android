@@ -53,9 +53,9 @@ fun QuestionSuggestComposeScreen(
         ) {
             Spacer(Modifier.height(24.dp + QelloTheme.iconSize.size48 + 57.dp))
 
-            Column(modifier = Modifier.padding(horizontal = QelloTheme.spacing.spacing8)) {
+            Column(modifier = Modifier.padding(horizontal = QelloTheme.spacing.spacing4)) {
                 QelloText(
-                    text = "질문을 보내고 있어요!",
+                    text = "질문 제안을 보내고 있어요!",
                     style = QelloTheme.typography.heading1,
                     color = QelloTheme.colors.label.strong,
                 )
@@ -68,7 +68,7 @@ fun QuestionSuggestComposeScreen(
                 Spacer(Modifier.height(QelloTheme.spacing.spacing8))
 
                 QelloText(
-                    text = "켈로에서 많은 사람들과 질문하며 알아가요",
+                    text = "제안해주신 질문을 소중하게 검토할게요.",
                     style = QelloTheme.typography.caption1,
                     color = QelloTheme.colors.primary.normal,
                 )
@@ -106,7 +106,7 @@ fun QuestionSuggestComposeScreen(
                     .weight(1f)
                     .padding(horizontal = QelloTheme.spacing.spacing20),
             ) {
-                Column(modifier = Modifier.padding(horizontal = QelloTheme.spacing.spacing8)) {
+                Column(modifier = Modifier.padding(horizontal = QelloTheme.spacing.spacing4)) {
                     QelloText(
                         text = "어떤 질문을",
                         style = QelloTheme.typography.heading1,
@@ -119,9 +119,9 @@ fun QuestionSuggestComposeScreen(
                     )
 
                     QelloText(
-                        text = "마음에 드는 질문을 골라 보내보세요.",
+                        text = "떠오르는 질문을 자유롭게 남겨주세요.",
                         style = QelloTheme.typography.caption1,
-                        color = QelloTheme.colors.label.normal1,
+                        color = QelloTheme.colors.label.normal2,
                         modifier = Modifier.padding(top = QelloTheme.spacing.spacing8),
                     )
                 }

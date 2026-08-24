@@ -40,7 +40,7 @@ fun QuestionCompleteScreen(
     ) {
         Spacer(Modifier.height(24.dp + QelloTheme.iconSize.size48 + 57.dp))
 
-        Column(modifier = Modifier.padding(horizontal = QelloTheme.spacing.spacing8)) {
+        Column(modifier = Modifier.padding(horizontal = QelloTheme.spacing.spacing4)) {
             QelloText(
                 text = titleLine1,
                 style = QelloTheme.typography.heading1,
