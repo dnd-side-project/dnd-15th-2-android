@@ -16,15 +16,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.qello.presentation.R
 import com.qello.presentation.component.button.QelloSmallButton
 import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.ui.theme.QelloTheme
 
 @Composable
 fun QuestionCompleteScreen(
+    titleLine1: String,
+    titleLine2: String,
+    caption: String,
     primaryButtonText: String,
-    direction: String = "동쪽", // TODO: 방향 선택 API 연동되면 실제 값으로 교체
     onSendAnother: () -> Unit,
     onNavigateHome: () -> Unit,
 ) {
@@ -34,34 +38,36 @@ fun QuestionCompleteScreen(
             .background(QelloTheme.gradient.backgroundStrong)
             .padding(horizontal = QelloTheme.spacing.spacing20),
     ) {
-        Spacer(Modifier.height(QelloTheme.spacing.spacing64))
+        Spacer(Modifier.height(24.dp + QelloTheme.iconSize.size48 + 57.dp))
 
-        QelloText(
-            text = "${direction}으로 질문을 보냈어요!",
-            style = QelloTheme.typography.heading1,
-            color = QelloTheme.colors.label.strong,
-        )
+        Column(modifier = Modifier.padding(horizontal = QelloTheme.spacing.spacing8)) {
+            QelloText(
+                text = titleLine1,
+                style = QelloTheme.typography.heading1,
+                color = QelloTheme.colors.label.strong,
+            )
 
-        QelloText(
-            text = "곧 답변이 도착할 거예요",
-            style = QelloTheme.typography.heading1,
-            color = QelloTheme.colors.label.strong,
-        )
+            QelloText(
+                text = titleLine2,
+                style = QelloTheme.typography.heading1,
+                color = QelloTheme.colors.label.strong,
+            )
 
-        Spacer(Modifier.height(QelloTheme.spacing.spacing8))
+            Spacer(Modifier.height(QelloTheme.spacing.spacing8))
 
-        QelloText(
-            text = "켈로에서 많은 사람들과 질문하며 알아가요",
-            style = QelloTheme.typography.caption1,
-            color = QelloTheme.colors.primary.normal,
-        )
+            QelloText(
+                text = caption,
+                style = QelloTheme.typography.caption1,
+                color = QelloTheme.colors.primary.normal,
+            )
+        }
 
         Spacer(Modifier.weight(1f))
 
         Box(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .size(240.dp)
+                .size(300.dp)
                 .clip(RoundedCornerShape(QelloTheme.radius.radius24))
                 .background(QelloTheme.colors.imagefield.default),
         )
@@ -80,7 +86,7 @@ fun QuestionCompleteScreen(
                 onClick = onSendAnother,
             )
             QelloSmallButton(
-                text = "홈으로 돌아가기",
+                text = stringResource(R.string.navigate_home_button),
                 onClick = onNavigateHome,
             )
         }
