@@ -65,6 +65,7 @@ fun MainGraph() {
                                 titleLine2 = "곧 답변이 도착할 거예요",
                                 caption = "켈로에서 많은 사람들과 질문하며 알아가요",
                                 primaryButtonText = "내 질문 보러 가기",
+                                retryDestination = MainNavKey.QuestionCompose,
                             ),
                         )
                     },
@@ -72,7 +73,8 @@ fun MainGraph() {
             }
 
             entry<MainNavKey.QuestionSuggestCompose> {
-                val suggestRetryButtonText = stringResource(R.string.question_suggest_retry_button)
+                val goHomeButtonText = stringResource(R.string.question_suggest_go_home_button)
+                val goSendButtonText = stringResource(R.string.question_suggest_go_send_button)
 
                 QuestionSuggestComposeScreen(
                     onBack = { navigator.removeLast() },
@@ -82,8 +84,9 @@ fun MainGraph() {
                                 titleLine1 = "질문 제안을 보냈어요!",
                                 titleLine2 = "곧 검토가 진행될 거예요",
                                 caption = "검토가 완료되면 알림을 드릴게요!",
-                                primaryButtonText = suggestRetryButtonText,
-                                retryDestination = MainNavKey.QuestionSuggestCompose,
+                                primaryButtonText = goHomeButtonText,
+                                secondaryButtonText = goSendButtonText,
+                                secondaryDestination = MainNavKey.QuestionCompose,
                             ),
                         )
                     },
@@ -136,11 +139,15 @@ fun MainGraph() {
                     titleLine2 = key.titleLine2,
                     caption = key.caption,
                     primaryButtonText = key.primaryButtonText,
+                    secondaryButtonText = key.secondaryButtonText ?: stringResource(R.string.navigate_home_button),
                     onSendAnother = {
                         navigator.popToTopLevelStart()
-                        navigator.add(key.retryDestination)
+                        key.retryDestination?.let { navigator.add(it) }
                     },
-                    onNavigateHome = { navigator.popToTopLevelStart() },
+                    onNavigateHome = {
+                        navigator.popToTopLevelStart()
+                        key.secondaryDestination?.let { navigator.add(it) }
+                    },
                 )
             }
         },

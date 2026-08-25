@@ -4,7 +4,8 @@
     <string name="bottom_bar_sent_label">내가 보낸 질문</string>
 
     <string name="question_suggest_button">질문 제안하기</string>
-    <string name="question_suggest_retry_button">제안한 질문 바꾸기</string>
     <string name="navigate_home_button">홈으로 돌아가기</string>
+    <string name="question_suggest_go_home_button">홈으로 이동하기</string>
+    <string name="question_suggest_go_send_button">질문 보내러 가기</string>
 
 </resources>

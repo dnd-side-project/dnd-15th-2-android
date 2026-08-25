@@ -23,7 +23,9 @@ sealed interface MainNavKey : NavKey {
         val titleLine2: String,
         val caption: String,
         val primaryButtonText: String,
-        val retryDestination: MainNavKey = QuestionCompose,
+        val retryDestination: MainNavKey? = null,
+        val secondaryButtonText: String? = null,
+        val secondaryDestination: MainNavKey? = null,
     ) : MainNavKey
 
     @Serializable

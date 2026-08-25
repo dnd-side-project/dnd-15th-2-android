@@ -16,9 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.qello.presentation.R
 import com.qello.presentation.component.button.QelloSmallButton
 import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.ui.theme.QelloTheme
@@ -29,6 +27,7 @@ fun QuestionCompleteScreen(
     titleLine2: String,
     caption: String,
     primaryButtonText: String,
+    secondaryButtonText: String,
     onSendAnother: () -> Unit,
     onNavigateHome: () -> Unit,
 ) {
@@ -86,7 +85,7 @@ fun QuestionCompleteScreen(
                 onClick = onSendAnother,
             )
             QelloSmallButton(
-                text = stringResource(R.string.navigate_home_button),
+                text = secondaryButtonText,
                 onClick = onNavigateHome,
             )
         }
