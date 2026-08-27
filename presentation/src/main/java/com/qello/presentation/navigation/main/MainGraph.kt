@@ -57,8 +57,7 @@ fun MainGraph() {
                 QuestionDirectionScreen(
                     onBack = { navigator.removeLast() },
                     onSendComplete = {
-                        navigator.add(MainNavKey.QuestionComplete(primaryButtonText = "새 질문 보내기"))
-                        navigator.add(MainNavKey.QuestionComplete(primaryButtonText = "내 질문 보러 가기"))
+                        navigator.add(MainNavKey.QuestionComplete(type = QuestionCompleteType.SEND_QUESTION))
                     },
                 )
             }
@@ -67,7 +66,7 @@ fun MainGraph() {
                 QuestionSuggestComposeScreen(
                     onBack = { navigator.removeLast() },
                     onSendComplete = {
-                        navigator.add(MainNavKey.QuestionComplete(primaryButtonText = "재설문 보러가기"))
+                        navigator.add(MainNavKey.QuestionComplete(type = QuestionCompleteType.SUGGEST_QUESTION))
                     },
                 )
             }
@@ -113,13 +112,22 @@ fun MainGraph() {
             }
             entry<MainNavKey.My> { MyScreen() }
             entry<MainNavKey.QuestionComplete> { key ->
+                val content = key.type.toContent()
+
                 QuestionCompleteScreen(
-                    primaryButtonText = key.primaryButtonText,
+                    titleLine1 = content.titleLine1,
+                    titleLine2 = content.titleLine2,
+                    caption = content.caption,
+                    primaryButtonText = content.primaryButtonText,
+                    secondaryButtonText = content.secondaryButtonText,
                     onSendAnother = {
                         navigator.popToTopLevelStart()
-                        navigator.add(MainNavKey.QuestionCompose)
+                        content.retryDestination?.let { navigator.add(it) }
                     },
-                    onNavigateHome = { navigator.popToTopLevelStart() },
+                    onNavigateHome = {
+                        navigator.popToTopLevelStart()
+                        content.secondaryDestination?.let { navigator.add(it) }
+                    },
                 )
             }
         },
