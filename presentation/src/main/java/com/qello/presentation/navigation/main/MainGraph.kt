@@ -8,10 +8,8 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.res.stringResource
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
-import com.qello.presentation.R
 import com.qello.presentation.navigation.TopLevelBackStack
 import com.qello.presentation.ui.screen.main.MainScreen
 import com.qello.presentation.ui.screen.main.my.MyScreen
@@ -59,36 +57,16 @@ fun MainGraph() {
                 QuestionDirectionScreen(
                     onBack = { navigator.removeLast() },
                     onSendComplete = {
-                        navigator.add(
-                            MainNavKey.QuestionComplete(
-                                titleLine1 = "동쪽으로 질문을 보냈어요!",
-                                titleLine2 = "곧 답변이 도착할 거예요",
-                                caption = "켈로에서 많은 사람들과 질문하며 알아가요",
-                                primaryButtonText = "내 질문 보러 가기",
-                                retryDestination = MainNavKey.QuestionCompose,
-                            ),
-                        )
+                        navigator.add(MainNavKey.QuestionComplete(type = QuestionCompleteType.SEND_QUESTION))
                     },
                 )
             }
 
             entry<MainNavKey.QuestionSuggestCompose> {
-                val goHomeButtonText = stringResource(R.string.question_suggest_go_home_button)
-                val goSendButtonText = stringResource(R.string.question_suggest_go_send_button)
-
                 QuestionSuggestComposeScreen(
                     onBack = { navigator.removeLast() },
                     onSendComplete = {
-                        navigator.add(
-                            MainNavKey.QuestionComplete(
-                                titleLine1 = "질문 제안을 보냈어요!",
-                                titleLine2 = "곧 검토가 진행될 거예요",
-                                caption = "검토가 완료되면 알림을 드릴게요!",
-                                primaryButtonText = goHomeButtonText,
-                                secondaryButtonText = goSendButtonText,
-                                secondaryDestination = MainNavKey.QuestionCompose,
-                            ),
-                        )
+                        navigator.add(MainNavKey.QuestionComplete(type = QuestionCompleteType.SUGGEST_QUESTION))
                     },
                 )
             }
@@ -134,19 +112,21 @@ fun MainGraph() {
             }
             entry<MainNavKey.My> { MyScreen() }
             entry<MainNavKey.QuestionComplete> { key ->
+                val content = key.type.toContent()
+
                 QuestionCompleteScreen(
-                    titleLine1 = key.titleLine1,
-                    titleLine2 = key.titleLine2,
-                    caption = key.caption,
-                    primaryButtonText = key.primaryButtonText,
-                    secondaryButtonText = key.secondaryButtonText ?: stringResource(R.string.navigate_home_button),
+                    titleLine1 = content.titleLine1,
+                    titleLine2 = content.titleLine2,
+                    caption = content.caption,
+                    primaryButtonText = content.primaryButtonText,
+                    secondaryButtonText = content.secondaryButtonText,
                     onSendAnother = {
                         navigator.popToTopLevelStart()
-                        key.retryDestination?.let { navigator.add(it) }
+                        content.retryDestination?.let { navigator.add(it) }
                     },
                     onNavigateHome = {
                         navigator.popToTopLevelStart()
-                        key.secondaryDestination?.let { navigator.add(it) }
+                        content.secondaryDestination?.let { navigator.add(it) }
                     },
                 )
             }

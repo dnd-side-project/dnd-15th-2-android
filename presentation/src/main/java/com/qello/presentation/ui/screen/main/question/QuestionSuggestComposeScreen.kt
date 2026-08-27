@@ -45,13 +45,16 @@ fun QuestionSuggestComposeScreen(
             onSendComplete()
         }
 
+        // 뒤로가기 버튼이 있는 화면(패딩 24dp + 버튼 48dp)과 버튼-텍스트 간격(57dp)을 더해 시작 위치를 맞춤
+        val headerTopSpacing = 24.dp + QelloTheme.iconSize.size48 + 57.dp
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(QelloTheme.gradient.backgroundStrong)
                 .padding(horizontal = QelloTheme.spacing.spacing20),
         ) {
-            Spacer(Modifier.height(24.dp + QelloTheme.iconSize.size48 + 57.dp))
+            Spacer(Modifier.height(headerTopSpacing))
 
             Column(modifier = Modifier.padding(horizontal = QelloTheme.spacing.spacing4)) {
                 QelloText(

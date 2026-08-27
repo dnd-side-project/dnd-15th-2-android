@@ -19,13 +19,7 @@ sealed interface MainNavKey : NavKey {
 
     @Serializable
     data class QuestionComplete(
-        val titleLine1: String,
-        val titleLine2: String,
-        val caption: String,
-        val primaryButtonText: String,
-        val retryDestination: MainNavKey? = null,
-        val secondaryButtonText: String? = null,
-        val secondaryDestination: MainNavKey? = null,
+        val type: QuestionCompleteType,
     ) : MainNavKey
 
     @Serializable
