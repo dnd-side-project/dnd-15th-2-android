@@ -18,6 +18,7 @@ import com.qello.presentation.ui.screen.main.question.QuestionCompleteScreen
 import com.qello.presentation.ui.screen.main.question.QuestionComposeScreen
 import com.qello.presentation.ui.screen.main.question.QuestionDirectionScreen
 import com.qello.presentation.ui.screen.main.question.QuestionSuggestComposeScreen
+import com.qello.presentation.ui.screen.main.question.QuestionSuggestListScreen
 import com.qello.presentation.ui.screen.main.received.ReceivedQuestionDetailScreen
 import com.qello.presentation.ui.screen.main.received.ReceivedQuestionListScreen
 import com.qello.presentation.ui.screen.main.sent.SentQuestionDetailScreen
@@ -42,6 +43,7 @@ fun MainGraph() {
                     onNavigateToReceivedQuestion = { navigator.addTopLevel(MainNavKey.ReceivedQuestionList) },
                     onNavigateToSentQuestion = { navigator.addTopLevel(MainNavKey.SentQuestionList) },
                     onNavigateToMy = { navigator.add(MainNavKey.My) },
+                    onNavigateToQuestionSuggestList = { navigator.add(MainNavKey.QuestionSuggestList) },
                 )
             }
 
@@ -68,6 +70,13 @@ fun MainGraph() {
                     onSendComplete = {
                         navigator.add(MainNavKey.QuestionComplete(type = QuestionCompleteType.SUGGEST_QUESTION))
                     },
+                )
+            }
+
+            entry<MainNavKey.QuestionSuggestList> {
+                QuestionSuggestListScreen(
+                    onBack = { navigator.removeLast() },
+                    onNavigateToSuggestCompose = { navigator.add(MainNavKey.QuestionSuggestCompose) },
                 )
             }
 
