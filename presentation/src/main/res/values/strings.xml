@@ -3,4 +3,27 @@
     <string name="bottom_bar_received_label">내게 온 질문</string>
     <string name="bottom_bar_sent_label">내가 보낸 질문</string>
 
+    <!-- Login -->
+    <string name="login_active_question_count">현재 수 많은 질문과 답변이 오가고 있어요.</string>
+    <string name="login_button">로그인</string>
+
+    <!-- App intro sheet -->
+    <string name="login_intro_title">전 세계 사람들에게\n질문을 보내보세요!</string>
+    <string name="login_intro_description">궁금한 것을 질문하고, 다양한 사람들의 답변을 받아보세요.</string>
+    <string name="login_intro_next">다음으로</string>
+
+    <!-- Permission sheet -->
+    <string name="login_permission_title">질문을 보내기 위해서\n방향과 위치 정보가 필요해요.</string>
+    <string name="login_permission_description">위치와 방향을 바탕으로 여러 사람들에게 질문을 보내요.</string>
+    <string name="login_permission_location_title">위치  (필수)</string>
+    <string name="login_permission_location_description">위치 정보를 바탕으로 질문과 답변을 주고 받아요..</string>
+    <string name="login_permission_notification_title">알림</string>
+    <string name="login_permission_notification_description">답변, 질문이 도착하면 알림으로 알려드려요.</string>
+    <string name="login_permission_allow">권한 허용하기</string>
+
+    <!-- Permanently denied guide -->
+    <string name="login_permission_settings_title">권한이 차단되어 있어요</string>
+    <string name="login_permission_settings_message">설정 &gt; 권한에서 %1$s 권한을 허용해주세요.</string>
+    <string name="login_permission_settings_confirm">설정으로 이동</string>
+    <string name="login_permission_settings_dismiss">닫기</string>
 </resources>
