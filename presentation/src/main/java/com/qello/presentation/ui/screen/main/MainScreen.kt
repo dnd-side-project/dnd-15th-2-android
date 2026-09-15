@@ -35,7 +35,7 @@ import com.qello.presentation.component.bottombar.QelloBottomBarScaffold
 import com.qello.presentation.component.button.QelloIconButton
 import com.qello.presentation.component.button.QelloLargeButton
 import com.qello.presentation.component.text.QelloText
-import com.qello.presentation.ui.theme.QelloTheme
+import com.qello.presentation.ui.designsystem.theme.QelloTheme
 
 @Suppress("COMPOSE_APPLIER_CALL_MISMATCH")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -95,7 +95,7 @@ fun MainScreen(
             }
 
             QelloIconButton(
-                painter = painterResource(R.drawable.icon_earth),
+                painter = painterResource(R.drawable.icon_hamburgerbar),
             ) {
                 onNavigateToMy()
             }

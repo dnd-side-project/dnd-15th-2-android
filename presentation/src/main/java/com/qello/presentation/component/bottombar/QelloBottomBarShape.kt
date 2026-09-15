@@ -29,7 +29,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Density
 import com.qello.presentation.R
 import com.qello.presentation.component.text.QelloText
-import com.qello.presentation.ui.theme.QelloTheme
+import com.qello.presentation.ui.designsystem.theme.QelloTheme
 
 @Composable
 fun QelloBottomBarItem(

@@ -27,7 +27,7 @@ import com.qello.presentation.component.button.QelloBackButton
 import com.qello.presentation.component.item.QelloNotificationItem
 import com.qello.presentation.component.tab.QelloTabRow
 import com.qello.presentation.component.text.QelloText
-import com.qello.presentation.ui.theme.QelloTheme
+import com.qello.presentation.ui.designsystem.theme.QelloTheme
 
 private enum class NotificationTab(val label: String) {
     ALL("전체"),

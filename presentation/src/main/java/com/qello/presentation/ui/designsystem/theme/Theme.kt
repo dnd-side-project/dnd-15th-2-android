@@ -1,4 +1,4 @@
-package com.qello.presentation.ui.theme
+package com.qello.presentation.ui.designsystem.theme
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider

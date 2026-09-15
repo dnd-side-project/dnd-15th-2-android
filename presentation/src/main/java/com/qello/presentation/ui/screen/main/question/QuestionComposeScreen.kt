@@ -68,7 +68,7 @@ import com.qello.presentation.component.button.QelloSmallButton
 import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.component.text.QelloTextArea
 import com.qello.presentation.ui.designsystem.QelloColorPalette
-import com.qello.presentation.ui.theme.QelloTheme
+import com.qello.presentation.ui.designsystem.theme.QelloTheme
 import kotlinx.coroutines.delay
 import kotlin.math.absoluteValue
 
