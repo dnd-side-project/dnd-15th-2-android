@@ -3,6 +3,9 @@
     <string name="bottom_bar_received_label">내게 온 질문</string>
     <string name="bottom_bar_sent_label">내가 보낸 질문</string>
 
+    <!-- Component -->
+    <string name="component_text_field_placeholder">텍스트를 입력해주세요.</string>
+
     <!-- Login -->
     <string name="login_active_question_count">현재 수 많은 질문과 답변이 오가고 있어요.</string>
     <string name="login_button">로그인</string>
@@ -26,4 +29,17 @@
     <string name="login_permission_settings_message">설정 &gt; 권한에서 %1$s 권한을 허용해주세요.</string>
     <string name="login_permission_settings_confirm">설정으로 이동</string>
     <string name="login_permission_settings_dismiss">닫기</string>
+
+    <!-- Nickname -->
+    <string name="nickname_label">닉네임</string>
+    <string name="nickname_placeholder">사용하고 싶은 닉네임을 적어주세요.</string>
+    <string name="nickname_sign_up">가입하기</string>
+    <string name="nickname_profile_image_description">프로필 사진 선택</string>
+    <string name="nickname_error_blank">닉네임을 입력해주세요.</string>
+    <string name="nickname_error_out_of_length">닉네임은 %1$d자 이상 %2$d자 이하로 입력해주세요.</string>
+    <string name="nickname_error_save_failed">저장에 실패했어요. 잠시 후 다시 시도해주세요.</string>
+
+    <!-- Welcome -->
+    <string name="welcome_title">%1$s님\n환영합니다!</string>
+    <string name="welcome_start">시작하기</string>
 </resources>
