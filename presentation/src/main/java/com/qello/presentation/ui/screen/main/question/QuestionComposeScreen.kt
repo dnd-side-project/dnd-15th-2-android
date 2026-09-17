@@ -1,9 +1,5 @@
 package com.qello.presentation.ui.screen.main.question
 
-import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
@@ -12,7 +8,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -41,6 +36,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -50,23 +46,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.StrokeJoin
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.qello.presentation.R
 import com.qello.presentation.component.button.QelloBackButton
 import com.qello.presentation.component.button.QelloLargeButton
 import com.qello.presentation.component.button.QelloSmallButton
 import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.component.text.QelloTextArea
+import com.qello.presentation.media.rememberSinglePhotoPicker
 import com.qello.presentation.ui.designsystem.QelloColorPalette
 import com.qello.presentation.ui.designsystem.theme.QelloTheme
 import kotlinx.coroutines.delay
@@ -97,13 +90,12 @@ fun QuestionComposeScreen(
     onNavigateToSuggest: () -> Unit,
 ) {
     var isSelected by remember { mutableStateOf(false) }
-    var photoUri by remember { mutableStateOf<Uri?>(null) }
+    var photoUri by remember { mutableStateOf<String?>(null) }
     var content by remember { mutableStateOf("") }
     val hasContent = photoUri != null || content.isNotBlank()
 
-    val photoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { uri -> if (uri != null) photoUri = uri },
+    val photoPicker = rememberSinglePhotoPicker(
+        onPhotoPicked = { uri -> photoUri = uri },
     )
 
     val progressFraction by animateFloatAsState(
@@ -112,6 +104,7 @@ fun QuestionComposeScreen(
     )
 
     val photoSectionBringIntoViewRequester = remember { BringIntoViewRequester() }
+
     LaunchedEffect(isSelected) {
         if (isSelected) {
             delay(150)
@@ -121,6 +114,7 @@ fun QuestionComposeScreen(
 
     val scrollState = rememberScrollState()
     val imeVisible = WindowInsets.isImeVisible
+
     LaunchedEffect(imeVisible) {
         if (imeVisible) {
             repeat(8) {
@@ -294,12 +288,6 @@ fun QuestionComposeScreen(
                             Column(modifier = Modifier.padding(horizontal = screenHorizontalPadding)) {
                                 Spacer(Modifier.height(QelloTheme.spacing.spacing20))
 
-                                val photoPickerRequest = {
-                                    photoPickerLauncher.launch(
-                                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
-                                    )
-                                }
-
                                 if (photoUri != null) {
                                     AsyncImage(
                                         model = photoUri,
@@ -309,7 +297,7 @@ fun QuestionComposeScreen(
                                             .fillMaxWidth()
                                             .height(160.dp)
                                             .clip(RoundedCornerShape(QelloTheme.radius.radius20))
-                                            .clickable { photoPickerRequest() },
+                                            .clickable { photoPicker.launch() },
                                     )
                                 } else {
                                     Box(
@@ -318,39 +306,15 @@ fun QuestionComposeScreen(
                                             .height(160.dp)
                                             .clip(RoundedCornerShape(QelloTheme.radius.radius20))
                                             .background(QelloTheme.colors.imagefield.default)
-                                            .clickable { photoPickerRequest() },
+                                            .clickable { photoPicker.launch() },
                                         contentAlignment = Alignment.Center,
                                     ) {
-                                        Canvas(modifier = Modifier.size(QelloTheme.iconSize.size48)) {
-                                            val strokeWidthPx = 1.6.dp.toPx()
-                                            val iconColor = QelloColorPalette.Navy30
-
-                                            drawRoundRect(
-                                                color = iconColor,
-                                                cornerRadius = CornerRadius(4.dp.toPx(), 4.dp.toPx()),
-                                                style = Stroke(width = strokeWidthPx),
-                                            )
-
-                                            drawCircle(
-                                                color = iconColor,
-                                                radius = size.width * 0.09f,
-                                                center = Offset(size.width * 0.32f, size.height * 0.32f),
-                                                style = Stroke(width = strokeWidthPx),
-                                            )
-
-                                            val mountainPath = Path().apply {
-                                                moveTo(size.width * 0.15f, size.height * 0.75f)
-                                                lineTo(size.width * 0.4f, size.height * 0.5f)
-                                                lineTo(size.width * 0.55f, size.height * 0.65f)
-                                                lineTo(size.width * 0.7f, size.height * 0.45f)
-                                                lineTo(size.width * 0.88f, size.height * 0.75f)
-                                            }
-                                            drawPath(
-                                                path = mountainPath,
-                                                color = iconColor,
-                                                style = Stroke(width = strokeWidthPx, cap = StrokeCap.Round, join = StrokeJoin.Round),
-                                            )
-                                        }
+                                        Icon(
+                                            painter = painterResource(R.drawable.icon_picture),
+                                            contentDescription = null,
+                                            modifier = Modifier.size(QelloTheme.iconSize.size48),
+                                            tint = QelloColorPalette.Navy30,
+                                        )
                                     }
                                 }
 
