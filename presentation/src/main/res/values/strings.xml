@@ -40,6 +40,8 @@
     <string name="nickname_error_save_failed">저장에 실패했어요. 잠시 후 다시 시도해주세요.</string>
 
     <!-- Welcome -->
-    <string name="welcome_title">%1$s님\n환영합니다!</string>
+    <string name="welcome_title_nickname">%1$s님</string>
+    <string name="welcome_title_greeting">켈로에 오신걸 환영해요!</string>
+    <string name="welcome_description">켈로에서 많은 사람들과 질문을 나눠보세요.</string>
     <string name="welcome_start">시작하기</string>
 </resources>
