@@ -20,21 +20,29 @@ class UserPreferencesDataSource @Inject constructor(
     val userAccount: Flow<UserAccount> = dataStore.data.map { preferences ->
         UserAccount(
             installationId = preferences[Keys.INSTALLATION_ID],
+            userId = preferences[Keys.USER_ID],
             nickname = preferences[Keys.NICKNAME],
         )
     }
 
-    suspend fun saveAccount(nickname: String) {
-        try {
-            dataStore.edit { preferences ->
-                if (preferences[Keys.INSTALLATION_ID].isNullOrBlank()) {
-                    preferences[Keys.INSTALLATION_ID] = createInstallationId()
-                }
-                preferences[Keys.NICKNAME] = nickname
+    suspend fun getOrCreateInstallationId(): String {
+        val preferences = dataStore.edit { preferences ->
+            if (preferences[Keys.INSTALLATION_ID].isNullOrBlank()) {
+                preferences[Keys.INSTALLATION_ID] = createInstallationId()
             }
+        }
+        return checkNotNull(preferences[Keys.INSTALLATION_ID])
+    }
 
-        } catch (ioException: IOException) {
-            Timber.e(ioException, "Failed to save user account")
+    suspend fun saveAccount(
+        nickname: String,
+        userId: String,
+        deviceSecret: String,
+    ) {
+        dataStore.edit { preferences ->
+            preferences[Keys.USER_ID] = userId
+            preferences[Keys.NICKNAME] = nickname
+            preferences[Keys.DEVICE_SECRET] = deviceSecret
         }
     }
 
@@ -43,6 +51,8 @@ class UserPreferencesDataSource @Inject constructor(
 
     private object Keys {
         val INSTALLATION_ID = stringPreferencesKey("installationId")
+        val USER_ID = stringPreferencesKey("userId")
         val NICKNAME = stringPreferencesKey("nickname")
+        val DEVICE_SECRET = stringPreferencesKey("deviceSecret")
     }
 }
