@@ -5,10 +5,20 @@ plugins {
     alias(libs.plugins.qello.android.dataStore)
     alias(libs.plugins.qello.android.room)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.secrets.gradle.plugin)
 }
 
 android {
     namespace = "com.qello.data"
+
+    buildFeatures {
+        buildConfig = true
+    }
+}
+
+secrets {
+    propertiesFileName = "local.properties"
+    ignoreList.add("MAPBOX_ACCESS_TOKEN")
 }
 
 dependencies {
