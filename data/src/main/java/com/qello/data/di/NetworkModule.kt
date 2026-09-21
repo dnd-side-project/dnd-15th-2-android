@@ -1,8 +1,12 @@
 package com.qello.data.di
 
+import com.qello.data.BuildConfig
 import com.qello.data.remote.response.ErrorResponse
 import com.qello.domain.result.AppError
+import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.okhttp.OkHttp
@@ -22,6 +26,8 @@ import timber.log.Timber
 import java.io.IOException
 import javax.inject.Singleton
 
+@Module
+@InstallIn(SingletonComponent::class)
 object NetworkModule {
     @Provides
     @Singleton
