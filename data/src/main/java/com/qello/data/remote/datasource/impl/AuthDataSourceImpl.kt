@@ -25,10 +25,10 @@ class AuthDataSourceImpl @Inject constructor(
                 installationId = installationId,
                 nickname = nickname,
                 platform = "ANDROID",
-                timezone = "",
-                countryCode = "",
-                coarseRegionCode = "",
-                locale = "",
+                timezone = "Asia/Seoul",
+                countryCode = "KR",
+                coarseRegionCode = "KR-11",
+                locale = "ko_KR",
             ),
         )
     }.body<ApiResponse<RegisterDeviceResponse>>().data
