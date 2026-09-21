@@ -6,6 +6,5 @@ data class NicknameUiState(
     val nickname: String = "",
     val profileImageUri: String? = null,
     val nicknameError: NicknameError? = null,
-    val isSaveFailed: Boolean = false,
-    val registeredNickname: String? = null,
+    val isSubmitting: Boolean = false,
 )

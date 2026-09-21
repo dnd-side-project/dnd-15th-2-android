@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -22,6 +23,7 @@ import com.qello.presentation.R
 import com.qello.presentation.component.button.QelloBackButton
 import com.qello.presentation.component.button.QelloLargeButton
 import com.qello.presentation.component.item.QelloProfileImageField
+import com.qello.presentation.component.loading.QelloLoadingOverlay
 import com.qello.presentation.component.spacer.QelloSpacer
 import com.qello.presentation.component.text.QelloTextField
 import com.qello.presentation.media.rememberSinglePhotoPicker
@@ -39,6 +41,8 @@ fun NicknameScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val currentOnNavigateToWelcome by rememberUpdatedState(onNavigateToWelcome)
 
+    val resources = LocalResources.current
+
     val photoPicker = rememberSinglePhotoPicker(
         onPhotoPicked = viewModel::onProfileImagePicked,
     )
@@ -47,6 +51,7 @@ fun NicknameScreen(
         viewModel.sideEffect.collect { effect ->
             when (effect) {
                 is NicknameSideEffect.NavigateToWelcome -> currentOnNavigateToWelcome(effect.nickname)
+                is NicknameSideEffect.ShowSnackbar -> showSnackbar(resources.getString(effect.message))
             }
         }
     }
@@ -93,6 +98,10 @@ fun NicknameScreen(
             onClick = viewModel::onSignUpClick,
         )
     }
+
+    if (uiState.isSubmitting) {
+        QelloLoadingOverlay()
+    }
 }
 
 @Composable
@@ -103,4 +112,6 @@ private fun NicknameError.message(): String = when (this) {
         NicknameValidator.MIN_LENGTH,
         NicknameValidator.MAX_LENGTH,
     )
+    NicknameError.DUPLICATED -> stringResource(R.string.nickname_error_duplicated)
+    NicknameError.INAPPROPRIATE -> stringResource(R.string.nickname_error_inappropriate)
 }
