@@ -44,4 +44,17 @@
     <string name="welcome_title_greeting">켈로에 오신걸 환영해요!</string>
     <string name="welcome_description">켈로에서 많은 사람들과 질문을 나눠보세요.</string>
     <string name="welcome_start">시작하기</string>
+
+    <!-- Error 임시문구 -->
+    <string name="error_network">네트워크 연결을 확인해 주세요</string>
+    <string name="error_unauthorized">인증이 만료되었어요. 다시 시도해 주세요</string>
+    <string name="error_forbidden">현재 이용할 수 없는 계정이에요</string>
+    <string name="error_not_found">요청한 정보를 찾을 수 없어요</string>
+    <string name="error_too_many_requests">잠시 후 다시 시도해 주세요</string>
+    <string name="error_service_unavailable">일시적으로 이용할 수 없어요. 잠시 후 다시 시도해 주세요</string>
+    <string name="error_server">서버에 문제가 생겼어요. 잠시 후 다시 시도해 주세요</string>
+    <string name="error_request_failed">요청을 처리하지 못했어요</string>
+
+    <string name="nickname_error_duplicated">이미 사용 중인 닉네임이에요</string>
+    <string name="nickname_error_inappropriate">사용할 수 없는 닉네임이에요</string>
 </resources>
