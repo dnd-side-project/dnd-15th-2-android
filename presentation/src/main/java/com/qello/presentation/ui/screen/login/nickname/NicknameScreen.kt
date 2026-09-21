@@ -33,6 +33,8 @@ fun NicknameScreen(
     onNavigateToWelcome: (nickname: String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: NicknameViewModel = hiltViewModel(),
+    showSnackbar: suspend (message: String) -> Unit,
+
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val currentOnNavigateToWelcome by rememberUpdatedState(onNavigateToWelcome)

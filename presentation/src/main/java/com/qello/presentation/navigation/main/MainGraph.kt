@@ -24,7 +24,9 @@ import com.qello.presentation.ui.screen.main.sent.SentQuestionDetailScreen
 import com.qello.presentation.ui.screen.main.sent.SentQuestionListScreen
 
 @Composable
-fun MainGraph() {
+fun MainGraph(
+    showSnackbar: suspend (message: String) -> Unit,
+) {
     val navigator = remember { TopLevelBackStack<MainNavKey>(MainNavKey.Main) }
 
     NavDisplay(

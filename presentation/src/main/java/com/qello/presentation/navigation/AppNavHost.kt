@@ -10,7 +10,10 @@ import com.qello.presentation.navigation.main.MainGraph
 import com.qello.presentation.ui.screen.splash.SplashScreen
 
 @Composable
-fun AppNavHost(modifier: Modifier = Modifier) {
+fun AppNavHost(
+    modifier: Modifier = Modifier,
+    showSnackbar: suspend (message: String) -> Unit,
+) {
     val rootBackStack = rememberNavBackStack(AppGraph.Splash)
 
     NavDisplay(
@@ -30,10 +33,13 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                         rootBackStack.removeLastOrNull()
                         rootBackStack.add(AppGraph.Main)
                     },
+                    showSnackbar = showSnackbar,
                 )
             }
             entry<AppGraph.Main> {
-                MainGraph()
+                MainGraph(
+                    showSnackbar = showSnackbar,
+                )
             }
         },
     )

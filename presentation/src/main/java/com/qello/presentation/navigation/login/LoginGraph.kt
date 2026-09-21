@@ -11,6 +11,7 @@ import com.qello.presentation.ui.screen.login.welcome.WelcomeScreen
 @Composable
 fun LoginGraph(
     onLoginFinished: () -> Unit,
+    showSnackbar: suspend (message: String) -> Unit,
 ) {
     val loginBackStack = rememberNavBackStack(LoginNavKey.Login)
 
@@ -35,6 +36,7 @@ fun LoginGraph(
                         loginBackStack.clear()
                         loginBackStack.add(LoginNavKey.Welcome(nickname))
                     },
+                    showSnackbar = showSnackbar,
                 )
             }
 
