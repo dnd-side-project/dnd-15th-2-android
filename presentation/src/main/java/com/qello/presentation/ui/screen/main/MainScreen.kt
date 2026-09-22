@@ -35,6 +35,7 @@ fun MainScreen(
     onNavigateToNotification: () -> Unit,
     onNavigateToReceivedQuestion: () -> Unit,
     onNavigateToSentQuestion: () -> Unit,
+    onNavigateToQuestionSuggestList: () -> Unit,
     onNavigateToMy: () -> Unit,
 ) {
     var showQuestionSendSheet by remember { mutableStateOf(false) }
@@ -73,7 +74,7 @@ fun MainScreen(
             QelloIconButton(
                 painter = painterResource(R.drawable.icon_hamburgerbar),
             ) {
-                onNavigateToMy()
+                onNavigateToQuestionSuggestList()
             }
         }
 
