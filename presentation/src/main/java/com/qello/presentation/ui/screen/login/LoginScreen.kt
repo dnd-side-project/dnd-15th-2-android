@@ -17,17 +17,18 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mapbox.geojson.Point
 import com.qello.presentation.R
 import com.qello.presentation.component.bottomsheet.QelloBottomSheet
 import com.qello.presentation.component.button.QelloLargeButton
+import com.qello.presentation.component.map.QelloMap
 import com.qello.presentation.component.spacer.QelloSpacer
 import com.qello.presentation.component.text.QelloText
+import com.qello.presentation.ui.designsystem.theme.QelloTheme
 import com.qello.presentation.ui.screen.login.component.AppIntroSheetContent
-import com.qello.presentation.ui.screen.login.component.LoginMapBackground
 import com.qello.presentation.ui.screen.login.component.PermissionSheetContent
 import com.qello.presentation.ui.screen.login.component.SettingsGuideDialog
 import com.qello.presentation.ui.screen.login.permission.rememberLoginPermissionRequester
-import com.qello.presentation.ui.designsystem.theme.QelloTheme
 
 @Composable
 fun LoginScreen(
@@ -57,7 +58,11 @@ fun LoginScreen(
     }
 
     Box(modifier = modifier.fillMaxSize()) {
-        LoginMapBackground(modifier = Modifier.fillMaxSize())
+        QelloMap(
+            initialCenter = Point.fromLngLat(0.0, 20.0),
+            initialZoom = 1.0,
+            modifier = Modifier.fillMaxSize()
+        )
 
         Column(
             modifier = Modifier

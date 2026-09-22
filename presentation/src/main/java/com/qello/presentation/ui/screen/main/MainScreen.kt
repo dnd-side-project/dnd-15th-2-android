@@ -16,18 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.mapbox.geojson.Point
-import com.mapbox.maps.extension.compose.MapboxMap
-import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportState
-import com.mapbox.maps.extension.compose.style.BooleanValue
-import com.mapbox.maps.extension.compose.style.standard.LightPresetValue
-import com.mapbox.maps.extension.compose.style.standard.MapboxStandardStyle
-import com.mapbox.maps.extension.compose.style.standard.rememberStandardStyleState
 import com.qello.presentation.R
 import com.qello.presentation.component.bottombar.HomeBottomBarTab
 import com.qello.presentation.component.bottombar.QelloBottomBarScaffold
 import com.qello.presentation.component.bottomsheet.QelloBottomSheet
 import com.qello.presentation.component.button.QelloIconButton
 import com.qello.presentation.component.button.QelloLargeButton
+import com.qello.presentation.component.map.QelloMap
 import com.qello.presentation.component.spacer.QelloSpacer
 import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.ui.designsystem.theme.QelloTheme
@@ -57,24 +52,10 @@ fun MainScreen(
             showQuestionSendSheet = true
         },
     ) {
-        MapboxMap(
-            modifier = Modifier.fillMaxSize(),
-            style = {
-                MapboxStandardStyle(
-                    standardStyleState = rememberStandardStyleState {
-                        configurationsState.apply {
-                            lightPreset = LightPresetValue.NIGHT
-                            show3dObjects = BooleanValue(false)
-                        }
-                    },
-                )
-            },
-            mapViewportState = rememberMapViewportState {
-                setCameraOptions {
-                    center(Point.fromLngLat(126.9780, 37.5665))
-                    zoom(10.0)
-                }
-            },
+        QelloMap(
+            initialCenter = Point.fromLngLat(126.9780, 37.5665),
+            initialZoom = 10.0,
+            modifier = Modifier.fillMaxSize()
         )
 
         Row(
