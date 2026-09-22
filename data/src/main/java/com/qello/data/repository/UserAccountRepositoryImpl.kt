@@ -1,7 +1,6 @@
 package com.qello.data.repository
 
 import com.qello.data.local.datastore.UserPreferencesDataSource
-import com.qello.data.remote.auth.AccessTokenHolder
 import com.qello.data.remote.datasource.AuthDataSource
 import com.qello.domain.model.UserAccount
 import com.qello.domain.repository.UserAccountRepository
@@ -13,7 +12,6 @@ import javax.inject.Inject
 class UserAccountRepositoryImpl @Inject constructor(
     private val userPreferencesDataSource: UserPreferencesDataSource,
     private val authDataSource: AuthDataSource,
-    private val accessTokenHolder: AccessTokenHolder,
 ) : UserAccountRepository {
 
     override val userAccount: Flow<UserAccount> = userPreferencesDataSource.userAccount
@@ -29,6 +27,12 @@ class UserAccountRepositoryImpl @Inject constructor(
                 deviceSecret = response.deviceSecret,
             )
         }
-        accessTokenHolder.update(response.accessToken)
+    }
+
+    override suspend fun isRegistered(): Boolean =
+        userPreferencesDataSource.getDeviceCredential() != null
+
+    override suspend fun clearAccount() {
+        userPreferencesDataSource.clearAccount()
     }
 }

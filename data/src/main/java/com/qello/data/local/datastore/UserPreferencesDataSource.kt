@@ -5,12 +5,11 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.qello.data.di.UserPreferences
+import com.qello.domain.model.DeviceCredential
 import com.qello.domain.model.UserAccount
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import timber.log.Timber
-import java.io.IOException
 import java.util.UUID
 import javax.inject.Inject
 
@@ -46,6 +45,29 @@ class UserPreferencesDataSource @Inject constructor(
         }
     }
 
+    suspend fun getDeviceCredential(): DeviceCredential? {
+        val preferences = dataStore.data.first()
+        val installationId = preferences[Keys.INSTALLATION_ID] ?: return null
+        val deviceSecret = preferences[Keys.DEVICE_SECRET] ?: return null
+        return DeviceCredential(installationId, deviceSecret)
+    }
+
+    suspend fun getAccessToken(): String? = dataStore.data.first()[Keys.ACCESS_TOKEN]
+
+    suspend fun saveAccessToken(accessToken: String) {
+        dataStore.edit { preferences -> preferences[Keys.ACCESS_TOKEN] = accessToken }
+    }
+
+    suspend fun clearAccount() {
+        dataStore.edit { preferences ->
+            preferences.remove(Keys.INSTALLATION_ID)
+            preferences.remove(Keys.USER_ID)
+            preferences.remove(Keys.NICKNAME)
+            preferences.remove(Keys.DEVICE_SECRET)
+            preferences.remove(Keys.ACCESS_TOKEN)
+        }
+    }
+
     private fun createInstallationId(): String =
         UUID.randomUUID().toString().replace("-", "")
 
@@ -54,5 +76,6 @@ class UserPreferencesDataSource @Inject constructor(
         val USER_ID = stringPreferencesKey("userId")
         val NICKNAME = stringPreferencesKey("nickname")
         val DEVICE_SECRET = stringPreferencesKey("deviceSecret")
+        val ACCESS_TOKEN = stringPreferencesKey("accessToken")
     }
 }

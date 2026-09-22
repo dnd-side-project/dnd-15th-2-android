@@ -7,4 +7,8 @@ interface UserAccountRepository {
     val userAccount: Flow<UserAccount>
 
     suspend fun createAccount(nickname: String)
+
+    suspend fun isRegistered(): Boolean
+
+    suspend fun clearAccount()
 }

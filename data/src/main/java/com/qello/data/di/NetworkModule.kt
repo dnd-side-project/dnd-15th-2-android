@@ -1,6 +1,8 @@
 package com.qello.data.di
 
 import com.qello.data.BuildConfig
+import com.qello.data.local.datastore.UserPreferencesDataSource
+import com.qello.data.remote.auth.TokenRefresher
 import com.qello.data.remote.response.ErrorResponse
 import com.qello.domain.result.AppError
 import dagger.Module
@@ -12,12 +14,16 @@ import io.ktor.client.call.body
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.providers.BearerTokens
+import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.http.HttpHeaders
+import io.ktor.http.encodedPath
 import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CancellationException
@@ -37,7 +43,11 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    internal fun providesHttpClient(json: Json): HttpClient = HttpClient(OkHttp) {
+    internal fun providesHttpClient(
+        json: Json,
+        userPreferencesDataSource: UserPreferencesDataSource,
+        tokenRefresher: TokenRefresher,
+    ): HttpClient = HttpClient(OkHttp) {
         expectSuccess = false
 
         defaultRequest {
@@ -64,7 +74,27 @@ object NetworkModule {
             sanitizeHeader { header -> header == HttpHeaders.Authorization }
         }
 
-        // TODO(다음 단계): install(Auth) { bearer { ... } } — 토큰 헤더 부착과 401 재발급
+        install(Auth) {
+            bearer {
+                cacheTokens = false
+
+                nonCancellableRefresh = true
+
+                loadTokens {
+                    userPreferencesDataSource.getAccessToken()?.let { token ->
+                        BearerTokens(accessToken = token, refreshToken = null)
+                    }
+                }
+
+                refreshTokens {
+                    tokenRefresher.refresh(this)
+                }
+
+                sendWithoutRequest { request ->
+                    !request.url.encodedPath.contains("/auth/")
+                }
+            }
+        }
 
         HttpResponseValidator {
             validateResponse { response ->
