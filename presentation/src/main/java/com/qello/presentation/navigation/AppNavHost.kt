@@ -22,9 +22,16 @@ fun AppNavHost(
         onBack = { rootBackStack.removeLastOrNull() },
         entryProvider = entryProvider {
             entry<AppGraph.Splash> {
+                // TODO: Nia의 Navigator 구현 하기
                 SplashScreen(
-                    onNavigateToLogin = { rootBackStack.add(AppGraph.Login) },
-                    onNavigateToMain = { rootBackStack.add(AppGraph.Main) },
+                    onNavigateToLogin = {
+                        rootBackStack.removeLastOrNull()
+                        rootBackStack.add(AppGraph.Login)
+                    },
+                    onNavigateToMain = {
+                        rootBackStack.removeLastOrNull()
+                        rootBackStack.add(AppGraph.Main)
+                    },
                 )
             }
             entry<AppGraph.Login> {
