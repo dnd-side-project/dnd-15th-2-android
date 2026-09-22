@@ -46,7 +46,7 @@ fun LoginScreen(
         viewModel.refreshPermissionState()
     }
 
-    LaunchedEffect(viewModel) {
+    LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { effect ->
             when (effect) {
                 is LoginSideEffect.RequestPermission -> permissionRequester.request(effect.permission)

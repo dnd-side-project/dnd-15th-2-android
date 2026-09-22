@@ -22,9 +22,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
-import timber.log.Timber
-import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -58,7 +55,7 @@ class NicknameViewModel @Inject constructor(
         initialValue = NicknameUiState(),
     )
 
-    private val _sideEffect = Channel<NicknameSideEffect>()
+    private val _sideEffect = Channel<NicknameSideEffect>(Channel.BUFFERED)
     val sideEffect: Flow<NicknameSideEffect> = _sideEffect.receiveAsFlow()
 
     fun onNicknameChanged(nickname: String) {

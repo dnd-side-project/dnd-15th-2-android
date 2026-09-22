@@ -47,7 +47,7 @@ fun NicknameScreen(
         onPhotoPicked = viewModel::onProfileImagePicked,
     )
 
-    LaunchedEffect(viewModel) {
+    LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { effect ->
             when (effect) {
                 is NicknameSideEffect.NavigateToWelcome -> currentOnNavigateToWelcome(effect.nickname)
