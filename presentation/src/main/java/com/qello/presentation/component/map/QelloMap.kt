@@ -8,7 +8,6 @@ import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportS
 import com.mapbox.maps.extension.compose.style.MapStyle
 
 object QelloMapDefaults {
-    // Mapbox Studio > Share > Style URL
     const val STYLE_URL = "mapbox://styles/qello-edp/cmt5o78uc006b01rk6wu90yln"
 }
 
