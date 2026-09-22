@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -36,7 +35,7 @@ import com.qello.presentation.component.item.QelloActionSheetItem
 import com.qello.presentation.component.item.QelloSuggestQuestionStatusItem
 import com.qello.presentation.component.tab.QelloTabRow
 import com.qello.presentation.component.text.QelloText
-import com.qello.presentation.ui.theme.QelloTheme
+import com.qello.presentation.ui.designsystem.theme.QelloTheme
 
 private enum class SuggestQuestionStatus {
     REVIEWING,

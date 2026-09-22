@@ -36,7 +36,7 @@ import com.qello.presentation.component.button.QelloIconButton
 import com.qello.presentation.component.item.QelloQuestionCard
 import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.ui.designsystem.QelloColorPalette
-import com.qello.presentation.ui.theme.QelloTheme
+import com.qello.presentation.ui.designsystem.theme.QelloTheme
 
 private enum class Direction(val label: String) {
     ALL("전체"),

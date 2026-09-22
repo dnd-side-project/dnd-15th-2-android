@@ -24,7 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.qello.presentation.R
@@ -33,7 +32,7 @@ import com.qello.presentation.component.bottombar.QelloBottomBarScaffold
 import com.qello.presentation.component.button.QelloIconButton
 import com.qello.presentation.component.item.QelloQuestionCard
 import com.qello.presentation.component.text.QelloText
-import com.qello.presentation.ui.theme.QelloTheme
+import com.qello.presentation.ui.designsystem.theme.QelloTheme
 
 private data class SentQuestionItem(
     val id: Int,

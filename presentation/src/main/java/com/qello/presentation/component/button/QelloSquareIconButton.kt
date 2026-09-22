@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.semantics.Role
 import com.qello.presentation.ui.designsystem.QelloColorPalette
-import com.qello.presentation.ui.theme.QelloTheme
+import com.qello.presentation.ui.designsystem.theme.QelloTheme
 
 @Composable
 internal fun QelloSquareIconButton(

@@ -20,7 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.ui.designsystem.QelloColorPalette
-import com.qello.presentation.ui.theme.QelloTheme
+import com.qello.presentation.ui.designsystem.theme.QelloTheme
 
 @Composable
 fun QelloActionSheetItem(
