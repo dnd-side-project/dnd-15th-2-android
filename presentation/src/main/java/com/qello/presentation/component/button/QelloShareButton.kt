@@ -11,7 +11,7 @@ fun QelloShareButton(
     modifier: Modifier = Modifier,
 ) {
     QelloSquareIconButton(
-        painter = painterResource(R.drawable.icon_upload),
+        painter = painterResource(R.drawable.ic_upload),
         onClick = onClick,
         modifier = modifier,
     )

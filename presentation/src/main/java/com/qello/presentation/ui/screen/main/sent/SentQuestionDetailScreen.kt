@@ -127,11 +127,11 @@ fun SentQuestionDetailScreen(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Row(horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing16)) {
-                        SentDetailStat(iconRes = R.drawable.icon_comment, value = "${mockComments.size}")
-                        SentDetailStat(iconRes = R.drawable.icon_heart, value = "7")
+                        SentDetailStat(iconRes = R.drawable.ic_comment, value = "${mockComments.size}")
+                        SentDetailStat(iconRes = R.drawable.ic_heart, value = "7")
                     }
 
-                    SentDetailStat(iconRes = R.drawable.icon_location, value = "00km")
+                    SentDetailStat(iconRes = R.drawable.ic_location, value = "00km")
                 }
 
                 Box(

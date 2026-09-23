@@ -117,13 +117,13 @@ fun QelloQuestionCard(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Row(horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing16)) {
-                    QuestionCardStat(iconRes = R.drawable.icon_comment, value = "$commentCount")
-                    QuestionCardStat(iconRes = R.drawable.icon_heart, value = "$likeCount")
+                    QuestionCardStat(iconRes = R.drawable.ic_comment, value = "$commentCount")
+                    QuestionCardStat(iconRes = R.drawable.ic_heart, value = "$likeCount")
                 }
 
                 Row(horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing16)) {
-                    QuestionCardStat(iconRes = R.drawable.icon_clock, value = postedAt)
-                    QuestionCardStat(iconRes = R.drawable.icon_location, value = distance)
+                    QuestionCardStat(iconRes = R.drawable.ic_clock, value = postedAt)
+                    QuestionCardStat(iconRes = R.drawable.ic_location, value = distance)
                 }
             }
         }

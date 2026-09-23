@@ -118,7 +118,7 @@ fun QuestionSuggestListScreen(
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Icon(
-                        painter = painterResource(R.drawable.icon_message),
+                        painter = painterResource(R.drawable.ic_message),
                         contentDescription = null,
                         tint = QelloTheme.colors.label.assistive,
                         modifier = Modifier.size(width = 64.dp, height = 51.2.dp),

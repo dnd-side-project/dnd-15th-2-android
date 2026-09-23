@@ -63,7 +63,7 @@ fun QelloProfileImageField(
     ) {
         if (imageUri == null) {
             Image(
-                painter = painterResource(R.drawable.icon_picture),
+                painter = painterResource(R.drawable.ic_picture),
                 contentDescription = null,
                 modifier = Modifier.size(
                     width = QelloProfileImageFieldDefaults.PlaceholderWidth,
