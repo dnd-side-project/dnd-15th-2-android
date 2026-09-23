@@ -10,4 +10,7 @@ sealed interface LoginNavKey : NavKey {
 
     @Serializable
     data object Nickname : LoginNavKey
+
+    @Serializable
+    data class Welcome(val nickname: String) : LoginNavKey
 }

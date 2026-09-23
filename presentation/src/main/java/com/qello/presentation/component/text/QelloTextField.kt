@@ -28,9 +28,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.qello.presentation.R
+import com.qello.presentation.component.spacer.QelloSpacer
 import com.qello.presentation.ui.designsystem.QelloTextFieldColors
-import com.qello.presentation.ui.theme.QelloTheme
+import com.qello.presentation.ui.designsystem.theme.QelloTheme
 
 @Composable
 fun QelloTextField(
@@ -38,6 +41,7 @@ fun QelloTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     label: String,
+    placeholder: String = stringResource(R.string.component_text_field_placeholder),
     isError: Boolean = false,
     supportingText: String? = null,
 ) {
@@ -51,7 +55,7 @@ fun QelloTextField(
             color = QelloTheme.colors.label.normal1,
         )
 
-        Spacer(Modifier.height(QelloTheme.spacing.spacing12))
+        QelloSpacer(QelloTheme.spacing.spacing12)
 
         OutlinedTextField(
             value = value,
@@ -60,7 +64,7 @@ fun QelloTextField(
                 .fillMaxWidth()
                 .height(56.dp),
             placeholder = {
-                QelloText(text = "텍스트를 입력해주세요.", style = QelloTheme.typography.body2, color = colors.label.default)
+                QelloText(text = placeholder, style = QelloTheme.typography.body2, color = colors.label.default)
             },
             singleLine = true,
             isError = isError,
@@ -80,7 +84,7 @@ fun QelloTextField(
         )
 
         if (isError && supportingText != null) {
-            Spacer(Modifier.height(QelloTheme.spacing.spacing8))
+            QelloSpacer(QelloTheme.spacing.spacing8)
 
             QelloText(
                 text = supportingText,
@@ -97,6 +101,7 @@ fun QelloTextArea(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    placeholder: String = stringResource(R.string.component_text_field_placeholder),
     maxLength: Int = 300,
     isError: Boolean = false,
     supportingText: String? = null,
@@ -135,7 +140,7 @@ fun QelloTextArea(
                     .fillMaxWidth(),
             ) {
                 if (value.isEmpty()) {
-                    QelloText(text = "텍스트를 입력해주세요.", style = QelloTheme.typography.body2, color = colors.label.default)
+                    QelloText(text = placeholder, style = QelloTheme.typography.body2, color = colors.label.default)
                 }
 
                 BasicTextField(

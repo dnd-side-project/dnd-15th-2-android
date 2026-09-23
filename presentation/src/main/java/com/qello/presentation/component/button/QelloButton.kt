@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.ui.designsystem.QelloStateThemeColors
-import com.qello.presentation.ui.theme.QelloTheme
+import com.qello.presentation.ui.designsystem.theme.QelloTheme
 
 @Composable
 private fun QelloButtonBase(
