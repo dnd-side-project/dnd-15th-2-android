@@ -43,7 +43,7 @@ import com.qello.presentation.component.button.QelloShareButton
 import com.qello.presentation.component.item.QelloCommentItem
 import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.ui.designsystem.QelloColorPalette
-import com.qello.presentation.ui.theme.QelloTheme
+import com.qello.presentation.ui.designsystem.theme.QelloTheme
 
 private data class CommentUiModel(
     val username: String,

@@ -35,8 +35,8 @@ fun MainScreen(
     onNavigateToNotification: () -> Unit,
     onNavigateToReceivedQuestion: () -> Unit,
     onNavigateToSentQuestion: () -> Unit,
-    onNavigateToMy: () -> Unit,
     onNavigateToQuestionSuggestList: () -> Unit,
+    onNavigateToMy: () -> Unit,
 ) {
     var showQuestionSendSheet by remember { mutableStateOf(false) }
 
