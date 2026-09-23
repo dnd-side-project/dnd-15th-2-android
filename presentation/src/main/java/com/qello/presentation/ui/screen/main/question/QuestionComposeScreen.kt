@@ -129,9 +129,9 @@ fun QuestionComposeScreen(
             .fillMaxSize()
             .background(QelloTheme.gradient.backgroundStrong),
     ) {
-        Spacer(Modifier.height(QelloTheme.spacing.spacing20))
+        Spacer(Modifier.height(24.dp))
 
-        Box(modifier = Modifier.padding(horizontal = screenHorizontalPadding)) {
+        Box(modifier = Modifier.padding(start = 18.dp)) {
             QelloBackButton(onClick = onBack)
         }
 
@@ -172,7 +172,7 @@ fun QuestionComposeScreen(
                     Spacer(Modifier.height(QelloTheme.spacing.spacing24))
 
                     AnimatedContent(targetState = isSelected, label = "heading") { selected ->
-                        Column {
+                        Column(modifier = Modifier.padding(horizontal = QelloTheme.spacing.spacing4)) {
                             if (selected) {
                                 QelloText(
                                     text = "사진 혹은",

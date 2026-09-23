@@ -18,7 +18,12 @@ sealed interface MainNavKey : NavKey {
     data object QuestionSuggestCompose : MainNavKey
 
     @Serializable
-    data class QuestionComplete(val primaryButtonText: String) : MainNavKey
+    data object QuestionSuggestList : MainNavKey
+
+    @Serializable
+    data class QuestionComplete(
+        val type: QuestionCompleteType,
+    ) : MainNavKey
 
     @Serializable
     data object Notification : MainNavKey
