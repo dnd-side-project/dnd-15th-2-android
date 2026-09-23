@@ -10,32 +10,44 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.qello.domain.validation.QuestionProposalError
+import com.qello.domain.validation.QuestionProposalValidator
+import com.qello.presentation.R
 import com.qello.presentation.component.button.QelloBackButton
 import com.qello.presentation.component.button.QelloLargeButton
 import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.component.text.QelloTextArea
 import com.qello.presentation.ui.designsystem.theme.QelloTheme
-import kotlinx.coroutines.delay
 
 @Composable
 fun QuestionSuggestComposeScreen(
     onBack: () -> Unit,
     onSendComplete: () -> Unit,
+    showSnackbar: suspend (message: String) -> Unit,
+    viewModel: QuestionSuggestComposeViewModel = hiltViewModel(),
 ) {
-    var suggestion by remember { mutableStateOf("") }
-    var isSending by remember { mutableStateOf(false) }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val currentOnSendComplete by rememberUpdatedState(onSendComplete)
 
-    if (isSending) {
-        LaunchedEffect(Unit) {
-            delay(1500)
-            onSendComplete()
+    val resources = LocalResources.current
+
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.collect { effect ->
+            when (effect) {
+                QuestionSuggestComposeSideEffect.NavigateToComplete -> currentOnSendComplete()
+                is QuestionSuggestComposeSideEffect.ShowSnackbar -> showSnackbar(resources.getString(effect.message))
+            }
         }
+    }
 
+    if (uiState.isSubmitting) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -90,17 +102,29 @@ fun QuestionSuggestComposeScreen(
                 Spacer(Modifier.height(QelloTheme.spacing.spacing24))
 
                 QelloTextArea(
-                    value = suggestion,
-                    onValueChange = { suggestion = it },
+                    value = uiState.proposedText,
+                    onValueChange = viewModel::onProposedTextChanged,
+                    maxLength = QuestionProposalValidator.MAX_LENGTH,
+                    isError = uiState.proposalError != null,
+                    supportingText = uiState.proposalError?.message(),
                 )
 
                 Spacer(Modifier.height(QelloTheme.spacing.spacing20))
 
                 QelloLargeButton(
                     text = "질문 제안하기",
-                    onClick = { isSending = true },
+                    onClick = viewModel::onSubmitClick,
                 )
             }
         }
     }
+}
+
+@Composable
+private fun QuestionProposalError.message(): String = when (this) {
+    QuestionProposalError.BLANK -> stringResource(R.string.question_suggest_error_blank)
+    QuestionProposalError.OUT_OF_LENGTH -> stringResource(
+        R.string.question_suggest_error_out_of_length,
+        QuestionProposalValidator.MAX_LENGTH,
+    )
 }
