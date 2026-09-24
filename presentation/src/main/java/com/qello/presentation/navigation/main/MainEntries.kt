@@ -18,6 +18,7 @@ import com.qello.presentation.ui.screen.main.sent.SentQuestionListScreen
 
 fun EntryProviderScope<NavKey>.mainEntries(
     navigator: Navigator,
+    showSnackbar: suspend (message: String) -> Unit,
 ) {
     entry<MainNavKey.Main> {
         MainScreen(
@@ -53,6 +54,7 @@ fun EntryProviderScope<NavKey>.mainEntries(
             onSendComplete = {
                 navigator.navigate(MainNavKey.QuestionComplete(type = QuestionCompleteType.SUGGEST_QUESTION))
             },
+            showSnackbar = showSnackbar,
         )
     }
 
@@ -60,6 +62,7 @@ fun EntryProviderScope<NavKey>.mainEntries(
         QuestionSuggestListScreen(
             onBack = { navigator.goBack() },
             onNavigateToSuggestCompose = { navigator.navigate(MainNavKey.QuestionSuggestCompose) },
+            showSnackbar = showSnackbar,
         )
     }
 

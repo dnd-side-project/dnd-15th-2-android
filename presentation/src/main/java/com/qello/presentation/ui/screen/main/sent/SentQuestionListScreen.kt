@@ -113,7 +113,7 @@ fun SentQuestionListScreen(
 
                 Row(horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing12)) {
                     QelloIconButton(
-                        painter = painterResource(R.drawable.icon_bell),
+                        painter = painterResource(R.drawable.ic_bell),
                         onClick = onNavigateToNotification,
                     )
 
@@ -155,7 +155,7 @@ fun SentQuestionListScreen(
                     )
 
                     Icon(
-                        painter = painterResource(R.drawable.icon_check),
+                        painter = painterResource(R.drawable.ic_check),
                         contentDescription = null,
                         tint = if (answeredOnly) QelloTheme.colors.label.strong else QelloTheme.colors.label.assistive,
                         modifier = Modifier.size(width = 18.dp, height = 12.dp),
@@ -173,7 +173,7 @@ fun SentQuestionListScreen(
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Icon(
-                            painter = painterResource(R.drawable.icon_message),
+                            painter = painterResource(R.drawable.ic_message),
                             contentDescription = null,
                             tint = QelloTheme.colors.label.assistive,
                             modifier = Modifier.size(width = 65.dp, height = 51.2.dp),

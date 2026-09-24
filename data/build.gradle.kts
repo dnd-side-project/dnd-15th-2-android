@@ -18,7 +18,6 @@ android {
 
 secrets {
     propertiesFileName = "local.properties"
-    ignoreList.add("MAPBOX_ACCESS_TOKEN")
 }
 
 dependencies {

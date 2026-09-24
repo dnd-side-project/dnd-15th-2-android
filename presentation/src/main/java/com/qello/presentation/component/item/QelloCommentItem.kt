@@ -109,7 +109,7 @@ fun QelloCommentItem(
                     horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing4),
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.icon_heart),
+                        painter = painterResource(R.drawable.ic_heart),
                         contentDescription = null,
                         tint = QelloTheme.colors.label.assistive,
                         modifier = Modifier.size(QelloTheme.iconSize.size16),
@@ -133,7 +133,7 @@ fun QelloCommentItem(
                         ),
                     ) {
                         Icon(
-                            painter = painterResource(R.drawable.icon_translate),
+                            painter = painterResource(R.drawable.ic_translate),
                             contentDescription = null,
                             tint = QelloTheme.colors.label.assistive,
                             modifier = Modifier.size(QelloTheme.iconSize.size16),

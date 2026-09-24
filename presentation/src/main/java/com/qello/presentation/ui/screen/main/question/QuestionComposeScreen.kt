@@ -310,7 +310,7 @@ fun QuestionComposeScreen(
                                         contentAlignment = Alignment.Center,
                                     ) {
                                         Icon(
-                                            painter = painterResource(R.drawable.icon_picture),
+                                            painter = painterResource(R.drawable.ic_picture),
                                             contentDescription = null,
                                             modifier = Modifier.size(QelloTheme.iconSize.size48),
                                             tint = QelloColorPalette.Navy30,

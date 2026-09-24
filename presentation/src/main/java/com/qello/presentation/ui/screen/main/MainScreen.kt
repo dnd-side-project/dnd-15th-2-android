@@ -66,13 +66,13 @@ fun MainScreen(
             horizontalArrangement = Arrangement.spacedBy(11.5.dp, Alignment.End)
         ) {
             QelloIconButton(
-                painter = painterResource(R.drawable.icon_bell),
+                painter = painterResource(R.drawable.ic_bell),
             ) {
                 onNavigateToNotification()
             }
 
             QelloIconButton(
-                painter = painterResource(R.drawable.icon_hamburgerbar),
+                painter = painterResource(R.drawable.ic_hamburgerbar),
             ) {
                 onNavigateToQuestionSuggestList()
             }

@@ -124,8 +124,8 @@ fun QelloHomeBottomBar(
                     .size(barWidth, barVisibleHeight),
             ) {
                 QelloBottomBarItem(
-                    defaultIcon = painterResource(R.drawable.icon_myfeed_default),
-                    pressedIcon = painterResource(R.drawable.icon_myfeed_hover),
+                    defaultIcon = painterResource(R.drawable.ic_myfeed_default),
+                    pressedIcon = painterResource(R.drawable.ic_myfeed_hover),
                     label = stringResource(R.string.bottom_bar_received_label),
                     selected = selectedTab == HomeBottomBarTab.RECEIVED,
                     onClick = { onTabClick(HomeBottomBarTab.RECEIVED) },
@@ -135,8 +135,8 @@ fun QelloHomeBottomBar(
                 )
 
                 QelloBottomBarItem(
-                    defaultIcon = painterResource(R.drawable.icon_sendfeed_default),
-                    pressedIcon = painterResource(R.drawable.icon_sendfeed_hover),
+                    defaultIcon = painterResource(R.drawable.ic_sendfeed_default),
+                    pressedIcon = painterResource(R.drawable.ic_sendfeed_hover),
                     label = stringResource(R.string.bottom_bar_sent_label),
                     selected = selectedTab == HomeBottomBarTab.SENT,
                     onClick = { onTabClick(HomeBottomBarTab.SENT) },

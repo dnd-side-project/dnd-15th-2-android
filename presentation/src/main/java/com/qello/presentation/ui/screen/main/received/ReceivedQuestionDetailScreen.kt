@@ -153,11 +153,11 @@ fun ReceivedQuestionDetailScreen(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Row(horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing16)) {
-                        DetailStat(iconRes = R.drawable.icon_comment, value = "${mockComments.size}")
-                        DetailStat(iconRes = R.drawable.icon_heart, value = "7")
+                        DetailStat(iconRes = R.drawable.ic_comment, value = "${mockComments.size}")
+                        DetailStat(iconRes = R.drawable.ic_heart, value = "7")
                     }
 
-                    DetailStat(iconRes = R.drawable.icon_location, value = "00km")
+                    DetailStat(iconRes = R.drawable.ic_location, value = "00km")
                 }
 
                 Box(
@@ -204,7 +204,7 @@ fun ReceivedQuestionDetailScreen(
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.icon_plus),
+                    painter = painterResource(R.drawable.ic_plus),
                     contentDescription = null,
                     tint = QelloTheme.colors.label.assistive,
                     modifier = Modifier.size(20.dp),
@@ -253,7 +253,7 @@ fun ReceivedQuestionDetailScreen(
                         contentAlignment = Alignment.Center,
                     ) {
                         Icon(
-                            painter = painterResource(R.drawable.icon_arrow),
+                            painter = painterResource(R.drawable.ic_arrow),
                             contentDescription = null,
                             tint = QelloColorPalette.Neutral100,
                             modifier = Modifier.size(width = 10.dp, height = 15.dp),

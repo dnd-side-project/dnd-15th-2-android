@@ -47,7 +47,7 @@ fun AppNavHost(
 
         loginEntries(navigator = navigator, showSnackbar = showSnackbar)
 
-        mainEntries(navigator = navigator)
+        mainEntries(navigator = navigator, showSnackbar = showSnackbar)
     }
 
     NavDisplay(

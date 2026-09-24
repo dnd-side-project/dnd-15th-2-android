@@ -52,7 +52,7 @@ fun PermissionSheetContent(
     PermissionInfoItem(
         title = stringResource(R.string.login_permission_location_title),
         description = stringResource(R.string.login_permission_location_description),
-        iconPainter = painterResource(R.drawable.icon_my_location),
+        iconPainter = painterResource(R.drawable.ic_my_location),
         isGranted = isLocationGranted,
         onClick = { onPermissionItemClick(LoginPermission.LOCATION) },
     )
@@ -62,7 +62,7 @@ fun PermissionSheetContent(
     PermissionInfoItem(
         title = stringResource(R.string.login_permission_notification_title),
         description = stringResource(R.string.login_permission_notification_description),
-        iconPainter = painterResource(R.drawable.icon_bell),
+        iconPainter = painterResource(R.drawable.ic_bell),
         isGranted = isNotificationGranted,
         onClick = { onPermissionItemClick(LoginPermission.NOTIFICATION) },
     )
