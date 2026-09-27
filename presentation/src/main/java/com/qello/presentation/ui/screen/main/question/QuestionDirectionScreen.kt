@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,7 +28,6 @@ import com.qello.presentation.component.button.QelloBackButton
 import com.qello.presentation.component.button.QelloLargeButton
 import com.qello.presentation.component.map.QelloMap
 import com.qello.presentation.component.text.QelloText
-import com.qello.presentation.sensor.rememberCompassBearing
 import com.qello.presentation.ui.designsystem.theme.QelloTheme
 import kotlinx.coroutines.delay
 
@@ -90,16 +88,19 @@ fun QuestionDirectionScreen(
             Spacer(Modifier.height(56.dp + QelloTheme.spacing.spacing24))
         }
     } else {
-        // 방향 설정(지도) 화면이 보이는 동안에만 센서를 확인한다. 전송 중 화면으로 넘어가면 자동으로 꺼진다.
-        val bearing = rememberCompassBearing()
-        val direction by remember { derivedStateOf { bearing.value?.let(CompassDirection::fromBearing) } }
+        // 방향 설정(지도) 화면이 보이는 동안에만 지도(+위치 표시)를 켠다. 전송 중 화면으로 넘어가면 자동으로 꺼진다.
+        var bearingDegrees by remember { mutableStateOf<Float?>(null) }
+        val direction = bearingDegrees?.let(CompassDirection::fromBearing)
 
         Box(modifier = Modifier.fillMaxSize()) {
-            // TODO: 실제 위치 연동되면 고정 좌표 대신 현재 위치로 교체, 방향 센서로 움직이는 콘(cone) 표시 추가
+            // 실제 위치를 알기 전까지만 보여줄 기본 좌표. 위치를 알게 되면 QelloMap이 그리로 한 번 옮겨준다.
             QelloMap(
                 initialCenter = Point.fromLngLat(126.9780, 37.5665),
                 initialZoom = 10.0,
                 modifier = Modifier.fillMaxSize(),
+                showsUserLocation = true,
+                showsDirectionCone = true,
+                onBearingChanged = { degrees -> bearingDegrees = degrees },
             )
 
             Box(

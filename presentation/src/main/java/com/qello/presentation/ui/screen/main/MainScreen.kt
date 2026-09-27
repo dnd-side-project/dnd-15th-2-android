@@ -56,7 +56,9 @@ fun MainScreen(
         QelloMap(
             initialCenter = Point.fromLngLat(126.9780, 37.5665),
             initialZoom = 10.0,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            showsUserLocation = true,
+            showsDirectionCone = true,
         )
 
         Row(
