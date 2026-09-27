@@ -1,9 +1,11 @@
 package com.qello.data.di
 
 import com.qello.data.remote.datasource.AuthDataSource
+import com.qello.data.remote.datasource.DirectionDataSource
 import com.qello.data.remote.datasource.MediaDataSource
 import com.qello.data.remote.datasource.QuestionDataSource
 import com.qello.data.remote.datasource.impl.AuthDataSourceImpl
+import com.qello.data.remote.datasource.impl.DirectionDataSourceImpl
 import com.qello.data.remote.datasource.impl.MediaDataSourceImpl
 import com.qello.data.remote.datasource.impl.QuestionDataSourceImpl
 import dagger.Binds
@@ -29,4 +31,9 @@ interface DataSourceModule {
     fun bindsMediaDataSource(
         impl: MediaDataSourceImpl,
     ): MediaDataSource
+
+    @Binds
+    fun bindsDirectionDataSource(
+        impl: DirectionDataSourceImpl,
+    ): DirectionDataSource
 }

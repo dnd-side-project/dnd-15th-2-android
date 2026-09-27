@@ -22,6 +22,7 @@ import com.mapbox.maps.extension.compose.style.MapStyle
 import com.mapbox.maps.plugin.annotation.generated.PolygonAnnotationOptions
 import com.mapbox.maps.coroutine.cameraChangedEvents
 import com.mapbox.maps.plugin.PuckBearing
+import com.mapbox.maps.plugin.locationcomponent.OnIndicatorAccuracyRadiusChangedListener
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorBearingChangedListener
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener
 import com.mapbox.maps.plugin.locationcomponent.createDefault2DPuck
@@ -38,6 +39,9 @@ object QelloMapDefaults {
     const val STYLE_URL = "mapbox://styles/qello-edp/cmt5o78uc006b01rk6wu90yln"
 }
 
+// Mapbox가 정확도를 아직 안 줬을 때 쓸 값(전형적인 GPS 정확도 수준)
+private const val DEFAULT_ACCURACY_METERS = 20.0
+
 @Suppress("COMPOSE_APPLIER_CALL_MISMATCH")
 @Composable
 fun QelloMap(
@@ -48,8 +52,10 @@ fun QelloMap(
     // 현재 위치에서 방위각 방향으로 뻗어나가는 부채꼴을 지도 위에 실제 지리 도형으로 그린다 (showsUserLocation이 true일 때만 의미 있음)
     showsDirectionCone: Boolean = false,
     onBearingChanged: ((bearingDegrees: Float) -> Unit)? = null,
+    onLocationSnapshot: ((latitude: Double, longitude: Double, accuracyMeters: Double) -> Unit)? = null,
 ) {
     val currentOnBearingChanged = rememberUpdatedState(onBearingChanged)
+    val currentOnLocationSnapshot = rememberUpdatedState(onLocationSnapshot)
 
     // 부채꼴은 화면 픽셀이 아니라 실제 위/경도로 그리므로, 지도가 움직이거나 회전해도 같이 따라온다.
     var currentLocation by remember { mutableStateOf<Point?>(null) }
@@ -96,6 +102,10 @@ fun QelloMap(
                     metersPerPixel = mapView.mapboxMap.getMetersPerPixelAtLatitude(point.latitude())
                 }
 
+                // 정확도는 위치와 별도로 들어와서, 위치가 먼저 오면 정확도를 아직 모를 수 있다.
+                // 위치를 알게 된 시점 자체는 확실하니, 정확도를 모르면 기본값으로 두고 바로 흘려보낸다.
+                var latestAccuracyMeters: Double = DEFAULT_ACCURACY_METERS
+
                 // 실제 위치를 처음 알게 된 시점에 한 번만 그리로 카메라를 옮긴다(그 뒤로는 자유롭게 이동/확대 가능)
                 var hasCenteredOnFirstFix = false
                 val positionListener = OnIndicatorPositionChangedListener { point ->
@@ -105,8 +115,14 @@ fun QelloMap(
                         mapView.mapboxMap.setCamera(CameraOptions.Builder().center(point).build())
                     }
                     publishMetersPerPixel()
+                    currentOnLocationSnapshot.value?.invoke(point.latitude(), point.longitude(), latestAccuracyMeters)
                 }
                 mapView.location.addOnIndicatorPositionChangedListener(positionListener)
+
+                val accuracyListener = OnIndicatorAccuracyRadiusChangedListener { accuracyMeters ->
+                    latestAccuracyMeters = accuracyMeters
+                }
+                mapView.location.addOnIndicatorAccuracyRadiusChangedListener(accuracyListener)
 
                 // 줌(확대/축소)이 바뀌면 같은 실제 거리의 화면 크기가 달라지므로 다시 계산한다.
                 // 제스처 중에는 이 이벤트가 프레임마다 발생해서, 매번 부채꼴 전체를 다시 그리면 깜빡여 보이므로 빈도를 제한한다.
@@ -120,6 +136,7 @@ fun QelloMap(
                     cameraChangeJob.cancel()
                     mapView.location.removeOnIndicatorBearingChangedListener(bearingListener)
                     mapView.location.removeOnIndicatorPositionChangedListener(positionListener)
+                    mapView.location.removeOnIndicatorAccuracyRadiusChangedListener(accuracyListener)
                 }
             }
         }
