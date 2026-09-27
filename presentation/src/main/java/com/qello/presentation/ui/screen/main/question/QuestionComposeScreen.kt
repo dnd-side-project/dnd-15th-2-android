@@ -50,13 +50,17 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.qello.presentation.R
 import com.qello.presentation.component.button.QelloBackButton
 import com.qello.presentation.component.button.QelloLargeButton
 import com.qello.presentation.component.button.QelloSmallButton
+import com.qello.presentation.component.loading.QelloLoadingOverlay
 import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.component.text.QelloTextArea
 import com.qello.presentation.media.rememberSinglePhotoPicker
@@ -88,14 +92,27 @@ fun QuestionComposeScreen(
     onBack: () -> Unit,
     onNext: () -> Unit,
     onNavigateToSuggest: () -> Unit,
+    showSnackbar: suspend (message: String) -> Unit,
+    viewModel: QuestionComposeViewModel = hiltViewModel(),
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val resources = LocalResources.current
+
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.collect { effect ->
+            when (effect) {
+                is QuestionComposeSideEffect.ShowSnackbar -> showSnackbar(resources.getString(effect.message))
+            }
+        }
+    }
+
     var isSelected by remember { mutableStateOf(false) }
-    var photoUri by remember { mutableStateOf<String?>(null) }
-    var content by remember { mutableStateOf("") }
+    val photoUri = uiState.photoUri
+    val content = uiState.content
     val hasContent = photoUri != null || content.isNotBlank()
 
     val photoPicker = rememberSinglePhotoPicker(
-        onPhotoPicked = { uri -> photoUri = uri },
+        onPhotoPicked = viewModel::onPhotoPicked,
     )
 
     val progressFraction by animateFloatAsState(
@@ -288,33 +305,40 @@ fun QuestionComposeScreen(
                             Column(modifier = Modifier.padding(horizontal = screenHorizontalPadding)) {
                                 Spacer(Modifier.height(QelloTheme.spacing.spacing20))
 
-                                if (photoUri != null) {
-                                    AsyncImage(
-                                        model = photoUri,
-                                        contentDescription = null,
-                                        contentScale = ContentScale.Crop,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(160.dp)
-                                            .clip(RoundedCornerShape(QelloTheme.radius.radius20))
-                                            .clickable { photoPicker.launch() },
-                                    )
-                                } else {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(160.dp)
-                                            .clip(RoundedCornerShape(QelloTheme.radius.radius20))
-                                            .background(QelloTheme.colors.imagefield.default)
-                                            .clickable { photoPicker.launch() },
-                                        contentAlignment = Alignment.Center,
-                                    ) {
-                                        Icon(
-                                            painter = painterResource(R.drawable.ic_picture),
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(160.dp)
+                                        .clip(RoundedCornerShape(QelloTheme.radius.radius20)),
+                                ) {
+                                    if (photoUri != null) {
+                                        AsyncImage(
+                                            model = photoUri,
                                             contentDescription = null,
-                                            modifier = Modifier.size(QelloTheme.iconSize.size48),
-                                            tint = QelloColorPalette.Navy30,
+                                            contentScale = ContentScale.Crop,
+                                            modifier = Modifier
+                                                .fillMaxSize()
+                                                .clickable(enabled = !uiState.isUploadingPhoto) { photoPicker.launch() },
                                         )
+                                    } else {
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxSize()
+                                                .background(QelloTheme.colors.imagefield.default)
+                                                .clickable { photoPicker.launch() },
+                                            contentAlignment = Alignment.Center,
+                                        ) {
+                                            Icon(
+                                                painter = painterResource(R.drawable.ic_picture),
+                                                contentDescription = null,
+                                                modifier = Modifier.size(QelloTheme.iconSize.size48),
+                                                tint = QelloColorPalette.Navy30,
+                                            )
+                                        }
+                                    }
+
+                                    if (uiState.isUploadingPhoto) {
+                                        QelloLoadingOverlay()
                                     }
                                 }
 
@@ -322,7 +346,7 @@ fun QuestionComposeScreen(
 
                                 QelloTextArea(
                                     value = content,
-                                    onValueChange = { content = it },
+                                    onValueChange = viewModel::onContentChanged,
                                 )
                             }
                         }

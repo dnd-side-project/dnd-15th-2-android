@@ -1,7 +1,9 @@
 package com.qello.data.di
 
+import com.qello.data.repository.MediaRepositoryImpl
 import com.qello.data.repository.QuestionRepositoryImpl
 import com.qello.data.repository.UserAccountRepositoryImpl
+import com.qello.domain.repository.MediaRepository
 import com.qello.domain.repository.QuestionRepository
 import com.qello.domain.repository.UserAccountRepository
 import dagger.Binds
@@ -25,4 +27,10 @@ interface RepositoryModule {
     fun bindsQuestionRepository(
         impl: QuestionRepositoryImpl,
     ): QuestionRepository
+
+    @Binds
+    @Singleton
+    fun bindsMediaRepository(
+        impl: MediaRepositoryImpl,
+    ): MediaRepository
 }

@@ -36,6 +36,7 @@ fun EntryProviderScope<NavKey>.mainEntries(
             onBack = { navigator.goBack() },
             onNext = { navigator.navigate(MainNavKey.QuestionDirection) },
             onNavigateToSuggest = { navigator.navigate(MainNavKey.QuestionSuggestCompose) },
+            showSnackbar = showSnackbar,
         )
     }
 

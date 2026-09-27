@@ -78,4 +78,7 @@
     <!-- Question suggest -->
     <string name="question_suggest_error_blank">제안할 질문을 입력해주세요.</string>
     <string name="question_suggest_error_out_of_length">%1$d자 이하로 입력해주세요.</string>
+
+    <!-- Question compose -->
+    <string name="question_compose_photo_upload_success">사진을 업로드했어요.</string>
 </resources>
