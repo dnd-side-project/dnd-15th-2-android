@@ -1,6 +1,7 @@
 package com.qello.data.repository
 
 import com.qello.data.remote.datasource.DirectionDataSource
+import com.qello.data.remote.request.SubmitDirectionPostRequest
 import com.qello.data.remote.request.UpdatePresenceRequest
 import com.qello.domain.repository.DirectionRepository
 import kotlinx.coroutines.CancellationException
@@ -33,5 +34,25 @@ class DirectionRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             Timber.d(e, "방향 위치 갱신에 실패했습니다")
         }
+    }
+
+    override suspend fun submitDirectionPost(
+        approvedQuestionId: Long,
+        schemeId: Long,
+        segmentKey: String,
+        bodyText: String?,
+        mediaIds: List<Long>,
+        idempotencyKey: String,
+    ) {
+        directionDataSource.submitPost(
+            idempotencyKey = idempotencyKey,
+            request = SubmitDirectionPostRequest(
+                approvedQuestionId = approvedQuestionId,
+                schemeId = schemeId,
+                segmentKey = segmentKey,
+                bodyText = bodyText,
+                mediaIds = mediaIds,
+            ),
+        )
     }
 }

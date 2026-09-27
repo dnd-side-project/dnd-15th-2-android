@@ -12,7 +12,10 @@ sealed interface MainNavKey : NavKey {
     data object QuestionCompose : MainNavKey
 
     @Serializable
-    data object QuestionDirection : MainNavKey
+    data class QuestionDirection(
+        val bodyText: String,
+        val mediaId: Long?,
+    ) : MainNavKey
 
     @Serializable
     data object QuestionSuggestCompose : MainNavKey

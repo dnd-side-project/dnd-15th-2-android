@@ -19,9 +19,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mapbox.geojson.Point
 import com.qello.presentation.R
 import com.qello.presentation.component.button.QelloBackButton
@@ -29,21 +32,29 @@ import com.qello.presentation.component.button.QelloLargeButton
 import com.qello.presentation.component.map.QelloMap
 import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.ui.designsystem.theme.QelloTheme
-import kotlinx.coroutines.delay
 
 @Composable
 fun QuestionDirectionScreen(
+    bodyText: String,
+    mediaId: Long?,
     onBack: () -> Unit,
     onSendComplete: () -> Unit,
+    showSnackbar: suspend (message: String) -> Unit,
+    viewModel: QuestionDirectionViewModel = hiltViewModel(),
 ) {
-    var isSending by remember { mutableStateOf(false) }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val resources = LocalResources.current
 
-    if (isSending) {
-        LaunchedEffect(Unit) {
-            delay(1500)
-            onSendComplete()
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.collect { effect ->
+            when (effect) {
+                QuestionDirectionSideEffect.NavigateToComplete -> onSendComplete()
+                is QuestionDirectionSideEffect.ShowSnackbar -> showSnackbar(resources.getString(effect.message))
+            }
         }
+    }
 
+    if (uiState.isSending) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -103,10 +114,7 @@ fun QuestionDirectionScreen(
                 onBearingChanged = { degrees -> bearingDegrees = degrees },
             )
 
-            Box(
-                modifier = Modifier
-                    .padding(start = 18.dp, top = 24.dp),
-            ) {
+            Box(modifier = Modifier.padding(start = 18.dp, top = 24.dp)) {
                 QelloBackButton(onClick = onBack)
             }
 
@@ -124,14 +132,19 @@ fun QuestionDirectionScreen(
                     color = QelloTheme.colors.label.strong,
                     modifier = Modifier.fillMaxWidth(),
                 )
-
                 Spacer(Modifier.height(QelloTheme.spacing.spacing20))
-
                 QelloLargeButton(
                     text = direction?.let { stringResource(R.string.direction_send_button, stringResource(it.labelRes)) }
                         ?: stringResource(R.string.direction_finding_button),
-                    // TODO: 질문 보내기 API 연동되면 실제 전송으로 교체
-                    onClick = { if (direction != null) isSending = true },
+                    onClick = {
+                        if (direction != null) {
+                            viewModel.onSendClick(
+                                bodyText = bodyText,
+                                mediaId = mediaId,
+                                segmentKey = direction.segmentKey,
+                            )
+                        }
+                    },
                 )
             }
         }

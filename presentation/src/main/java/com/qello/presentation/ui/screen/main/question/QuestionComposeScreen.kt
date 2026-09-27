@@ -90,7 +90,7 @@ private val avatarSizeSelected = 80.dp
 @Composable
 fun QuestionComposeScreen(
     onBack: () -> Unit,
-    onNext: () -> Unit,
+    onNext: (bodyText: String, mediaId: Long?) -> Unit,
     onNavigateToSuggest: () -> Unit,
     showSnackbar: suspend (message: String) -> Unit,
     viewModel: QuestionComposeViewModel = hiltViewModel(),
@@ -372,7 +372,7 @@ fun QuestionComposeScreen(
                             QelloSmallButton(
                                 text = "방향 설정하러 가기",
                                 modifier = Modifier.weight(1f),
-                                onClick = onNext,
+                                onClick = { onNext(content, uiState.uploadedMediaId) },
                             )
                         }
                     } else {
