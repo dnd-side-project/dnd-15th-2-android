@@ -23,9 +23,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.mapbox.geojson.Point
 import com.qello.presentation.R
 import com.qello.presentation.component.button.QelloBackButton
 import com.qello.presentation.component.button.QelloLargeButton
+import com.qello.presentation.component.map.QelloMap
 import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.sensor.rememberCompassBearing
 import com.qello.presentation.ui.designsystem.theme.QelloTheme
@@ -93,19 +95,12 @@ fun QuestionDirectionScreen(
         val direction by remember { derivedStateOf { bearing.value?.let(CompassDirection::fromBearing) } }
 
         Box(modifier = Modifier.fillMaxSize()) {
-            // TODO: 실제 지도 API 연동되면 이 자리에 지도 + 방향 센서로 움직이는 콘(cone) 표시로 교체
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(QelloTheme.gradient.backgroundStrong),
-            ) {
-                QelloText(
-                    text = "지도 영역 (API 연동 예정)",
-                    style = QelloTheme.typography.caption1,
-                    color = QelloTheme.colors.label.assistive,
-                    modifier = Modifier.align(Alignment.Center),
-                )
-            }
+            // TODO: 실제 위치 연동되면 고정 좌표 대신 현재 위치로 교체, 방향 센서로 움직이는 콘(cone) 표시 추가
+            QelloMap(
+                initialCenter = Point.fromLngLat(126.9780, 37.5665),
+                initialZoom = 10.0,
+                modifier = Modifier.fillMaxSize(),
+            )
 
             Box(
                 modifier = Modifier
