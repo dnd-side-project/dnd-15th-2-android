@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,18 +20,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.qello.presentation.R
 import com.qello.presentation.component.button.QelloBackButton
 import com.qello.presentation.component.button.QelloLargeButton
 import com.qello.presentation.component.text.QelloText
+import com.qello.presentation.sensor.rememberCompassBearing
 import com.qello.presentation.ui.designsystem.theme.QelloTheme
 import kotlinx.coroutines.delay
 
 @Composable
 fun QuestionDirectionScreen(
     onBack: () -> Unit,
-    direction: String = "동쪽", // TODO: 지도/방향 센서 API 연동되면 실제 값으로 교체
     onSendComplete: () -> Unit,
 ) {
     var isSending by remember { mutableStateOf(false) }
@@ -85,6 +88,10 @@ fun QuestionDirectionScreen(
             Spacer(Modifier.height(56.dp + QelloTheme.spacing.spacing24))
         }
     } else {
+        // 방향 설정(지도) 화면이 보이는 동안에만 센서를 확인한다. 전송 중 화면으로 넘어가면 자동으로 꺼진다.
+        val bearing = rememberCompassBearing()
+        val direction by remember { derivedStateOf { bearing.value?.let(CompassDirection::fromBearing) } }
+
         Box(modifier = Modifier.fillMaxSize()) {
             // TODO: 실제 지도 API 연동되면 이 자리에 지도 + 방향 센서로 움직이는 콘(cone) 표시로 교체
             Box(
@@ -125,8 +132,10 @@ fun QuestionDirectionScreen(
                 Spacer(Modifier.height(QelloTheme.spacing.spacing20))
 
                 QelloLargeButton(
-                    text = "${direction}으로 질문 보내기",
-                    onClick = { isSending = true },
+                    text = direction?.let { stringResource(R.string.direction_send_button, stringResource(it.labelRes)) }
+                        ?: stringResource(R.string.direction_finding_button),
+                    // TODO: 질문 보내기 API 연동되면 실제 전송으로 교체
+                    onClick = { if (direction != null) isSending = true },
                 )
             }
         }
