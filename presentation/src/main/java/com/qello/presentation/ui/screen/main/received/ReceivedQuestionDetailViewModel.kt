@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.qello.domain.model.Answer
 import com.qello.domain.model.InboxCard
+import com.qello.domain.model.ReportReason
 import com.qello.domain.repository.DirectionRepository
 import com.qello.domain.repository.InboxRepository
 import com.qello.domain.result.AppResult
@@ -101,6 +102,47 @@ class ReceivedQuestionDetailViewModel @Inject constructor(
                     AppResult.Loading -> Unit
 
                     is AppResult.Success -> _sideEffect.send(ReceivedQuestionDetailSideEffect.AnswerSubmitted)
+
+                    is AppResult.Error -> {
+                        _sideEffect.send(ReceivedQuestionDetailSideEffect.ShowSnackbar(result.error.toMessageRes()))
+                    }
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    fun onPostReportSubmit(reasonCode: ReportReason) {
+        val postId = uiStateFlow.value.detail?.card?.postId ?: return
+        val detail = if (reasonCode == ReportReason.OTHER) "기타" else null
+
+        suspend { directionRepository.reportPost(postId, reasonCode, detail) }
+            .asFlow()
+            .asResult()
+            .onEach { result ->
+                when (result) {
+                    AppResult.Loading -> Unit
+
+                    is AppResult.Success -> _sideEffect.send(ReceivedQuestionDetailSideEffect.ReportSubmitted)
+
+                    is AppResult.Error -> {
+                        _sideEffect.send(ReceivedQuestionDetailSideEffect.ShowSnackbar(result.error.toMessageRes()))
+                    }
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    fun onAnswerReportSubmit(answerId: Long, reasonCode: ReportReason) {
+        val detail = if (reasonCode == ReportReason.OTHER) "기타" else null
+
+        suspend { directionRepository.reportAnswer(answerId, reasonCode, detail) }
+            .asFlow()
+            .asResult()
+            .onEach { result ->
+                when (result) {
+                    AppResult.Loading -> Unit
+
+                    is AppResult.Success -> _sideEffect.send(ReceivedQuestionDetailSideEffect.ReportSubmitted)
 
                     is AppResult.Error -> {
                         _sideEffect.send(ReceivedQuestionDetailSideEffect.ShowSnackbar(result.error.toMessageRes()))

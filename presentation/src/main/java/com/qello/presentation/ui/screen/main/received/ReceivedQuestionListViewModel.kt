@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.qello.domain.model.InboxCategory
 import com.qello.domain.model.InboxListing
+import com.qello.domain.model.ReportReason
+import com.qello.domain.repository.DirectionRepository
 import com.qello.domain.repository.InboxRepository
 import com.qello.domain.result.AppResult
 import com.qello.domain.result.asResult
@@ -25,6 +27,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ReceivedQuestionListViewModel @Inject constructor(
     private val inboxRepository: InboxRepository,
+    private val directionRepository: DirectionRepository,
 ) : ViewModel() {
     private val listing = MutableStateFlow(InboxListing(cards = emptyList(), chips = emptyList()))
     private val selectedSegmentKey = MutableStateFlow<String?>(null)
@@ -66,6 +69,26 @@ class ReceivedQuestionListViewModel @Inject constructor(
     fun onAnsweredOnlyToggled() {
         answeredOnly.value = !answeredOnly.value
         load()
+    }
+
+    fun onReportSubmit(postId: Long, reasonCode: ReportReason) {
+        val detail = if (reasonCode == ReportReason.OTHER) "기타" else null
+
+        suspend { directionRepository.reportPost(postId, reasonCode, detail) }
+            .asFlow()
+            .asResult()
+            .onEach { result ->
+                when (result) {
+                    AppResult.Loading -> Unit
+
+                    is AppResult.Success -> _sideEffect.send(ReceivedQuestionListSideEffect.ReportSubmitted)
+
+                    is AppResult.Error -> {
+                        _sideEffect.send(ReceivedQuestionListSideEffect.ShowSnackbar(result.error.toMessageRes()))
+                    }
+                }
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun load() {

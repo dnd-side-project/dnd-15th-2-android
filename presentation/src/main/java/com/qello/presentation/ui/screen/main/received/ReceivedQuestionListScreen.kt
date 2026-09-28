@@ -64,7 +64,6 @@ fun ReceivedQuestionListScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val resources = LocalResources.current
 
-    // TODO: 신고 사유 제출 API 연동되면 여기서 실제 전송으로 교체
     var moreTargetId by remember { mutableStateOf<Long?>(null) }
     var reportTargetId by remember { mutableStateOf<Long?>(null) }
     var showReportComplete by remember { mutableStateOf(false) }
@@ -73,6 +72,7 @@ fun ReceivedQuestionListScreen(
         viewModel.sideEffect.collect { effect ->
             when (effect) {
                 is ReceivedQuestionListSideEffect.ShowSnackbar -> showSnackbar(resources.getString(effect.message))
+                ReceivedQuestionListSideEffect.ReportSubmitted -> showReportComplete = true
             }
         }
     }
@@ -232,7 +232,7 @@ fun ReceivedQuestionListScreen(
                                 postedAt = card.matchedAt.toPostedAtLabel(),
                                 distance = card.toDistanceLabel(),
                                 onClick = { onItemClick(card.postRecipientId.toInt()) },
-                                onMoreClick = { moreTargetId = card.postRecipientId },
+                                onMoreClick = { moreTargetId = card.postId },
                             )
                         }
                     }
@@ -263,9 +263,9 @@ fun ReceivedQuestionListScreen(
     if (reportTargetId != null) {
         QelloReportBottomSheet(
             onDismissRequest = { reportTargetId = null },
-            onReasonSelected = {
+            onReasonSelected = { reasonCode ->
+                viewModel.onReportSubmit(reportTargetId!!, reasonCode)
                 reportTargetId = null
-                showReportComplete = true
             },
         )
     }

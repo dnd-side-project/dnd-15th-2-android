@@ -2,10 +2,14 @@ package com.qello.data.repository
 
 import com.qello.data.remote.datasource.DirectionDataSource
 import com.qello.data.remote.request.SubmitDirectionPostRequest
+import com.qello.data.remote.request.SubmitReportRequest
 import com.qello.data.remote.request.UpdatePresenceRequest
 import com.qello.data.remote.response.AnswerResponse
+import com.qello.data.remote.response.ReportReceiptResponse
 import com.qello.domain.model.Answer
 import com.qello.domain.model.PostReaction
+import com.qello.domain.model.ReportReason
+import com.qello.domain.model.ReportReceipt
 import com.qello.domain.repository.DirectionRepository
 import kotlinx.coroutines.CancellationException
 import timber.log.Timber
@@ -81,6 +85,36 @@ class DirectionRepositoryImpl @Inject constructor(
         val response = directionDataSource.cancelAnswerReaction(answerId)
         return PostReaction(reacted = response.reacted, reactionCount = response.reactionCount)
     }
+
+    override suspend fun reportPost(
+        postId: Long,
+        reasonCode: ReportReason,
+        detail: String?,
+        blockAuthor: Boolean,
+    ): ReportReceipt =
+        directionDataSource.reportPost(
+            postId = postId,
+            request = SubmitReportRequest(reasonCode = reasonCode.name, detail = detail, blockAuthor = blockAuthor),
+        ).toDomain()
+
+    override suspend fun reportAnswer(
+        answerId: Long,
+        reasonCode: ReportReason,
+        detail: String?,
+        blockAuthor: Boolean,
+    ): ReportReceipt =
+        directionDataSource.reportAnswer(
+            answerId = answerId,
+            request = SubmitReportRequest(reasonCode = reasonCode.name, detail = detail, blockAuthor = blockAuthor),
+        ).toDomain()
+
+    private fun ReportReceiptResponse.toDomain() = ReportReceipt(
+        reportId = reportId,
+        status = status,
+        receivedAt = receivedAt,
+        alreadyReceived = alreadyReceived,
+        guidance = guidance,
+    )
 
     private fun AnswerResponse.toDomain() = Answer(
         answerId = answerId,

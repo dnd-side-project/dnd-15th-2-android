@@ -2,6 +2,8 @@ package com.qello.domain.repository
 
 import com.qello.domain.model.Answer
 import com.qello.domain.model.PostReaction
+import com.qello.domain.model.ReportReason
+import com.qello.domain.model.ReportReceipt
 
 interface DirectionRepository {
     suspend fun updatePresence(
@@ -38,4 +40,20 @@ interface DirectionRepository {
 
     /** 답변 공감을 취소한다. 공감이 없는 상태에서 불러도 실패하지 않는다. */
     suspend fun cancelAnswerReaction(answerId: Long): PostReaction
+
+    /** 질문글을 신고한다. 자기 자신이 작성한 질문글은 신고할 수 없다. */
+    suspend fun reportPost(
+        postId: Long,
+        reasonCode: ReportReason,
+        detail: String? = null,
+        blockAuthor: Boolean = false,
+    ): ReportReceipt
+
+    /** 답변을 신고한다. 자기 자신이 작성한 답변은 신고할 수 없다. */
+    suspend fun reportAnswer(
+        answerId: Long,
+        reasonCode: ReportReason,
+        detail: String? = null,
+        blockAuthor: Boolean = false,
+    ): ReportReceipt
 }

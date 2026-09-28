@@ -14,19 +14,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.qello.domain.model.ReportReason
 import com.qello.presentation.component.button.QelloLargeButton
 import com.qello.presentation.component.item.QelloActionSheetItem
 import com.qello.presentation.ui.designsystem.theme.QelloTheme
 
 private val reportReasons = listOf(
-    "성적 또는 노골적인 콘텐츠",
-    "폭력 및 위험",
-    "혐오 및 괴롭힘",
-    "개인정보 노출",
-    "스팸 및 광고",
-    "사칭",
-    "불법 거래 및 위험 행동",
-    "기타",
+    "성적 또는 노골적인 콘텐츠" to ReportReason.SEXUAL_CONTENT,
+    "폭력 및 위험" to ReportReason.VIOLENCE_OR_THREAT,
+    "혐오 및 괴롭힘" to ReportReason.HATE_OR_HARASSMENT,
+    "개인정보 노출" to ReportReason.PRIVACY_VIOLATION,
+    "스팸 및 광고" to ReportReason.SPAM_OR_ADVERTISING,
+    "사칭" to ReportReason.IMPERSONATION,
+    "불법 거래 및 위험 행동" to ReportReason.ILLEGAL_OR_DANGEROUS,
+    "기타" to ReportReason.OTHER,
 )
 
 /** 질문글/답변 카드의 "..."를 눌렀을 때 뜨는 신고 사유 선택 시트. */
@@ -34,7 +35,7 @@ private val reportReasons = listOf(
 @Composable
 fun QelloReportBottomSheet(
     onDismissRequest: () -> Unit,
-    onReasonSelected: (reason: String) -> Unit,
+    onReasonSelected: (reasonCode: ReportReason) -> Unit,
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
@@ -51,14 +52,14 @@ fun QelloReportBottomSheet(
                 )
                 .padding(top = 40.dp, bottom = QelloTheme.spacing.spacing20),
         ) {
-            reportReasons.forEachIndexed { index, reason ->
+            reportReasons.forEachIndexed { index, (text, reasonCode) ->
                 if (index != 0) {
                     Spacer(Modifier.height(QelloTheme.spacing.spacing12))
                 }
 
                 QelloActionSheetItem(
-                    text = reason,
-                    onClick = { onReasonSelected(reason) },
+                    text = text,
+                    onClick = { onReasonSelected(reasonCode) },
                     modifier = Modifier.padding(horizontal = 30.dp),
                     showLeadingDot = false,
                 )

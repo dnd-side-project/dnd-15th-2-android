@@ -70,7 +70,6 @@ fun ReceivedQuestionDetailScreen(
 
     var commentInput by remember { mutableStateOf("") }
 
-    // TODO: 신고 사유 제출 API 연동되면 여기서 실제 전송으로 교체
     var showPostMoreSheet by remember { mutableStateOf(false) }
     var showPostReportSheet by remember { mutableStateOf(false) }
     var moreAnswerId by remember { mutableStateOf<Long?>(null) }
@@ -86,6 +85,7 @@ fun ReceivedQuestionDetailScreen(
             when (effect) {
                 is ReceivedQuestionDetailSideEffect.ShowSnackbar -> showSnackbar(resources.getString(effect.message))
                 ReceivedQuestionDetailSideEffect.AnswerSubmitted -> commentInput = ""
+                ReceivedQuestionDetailSideEffect.ReportSubmitted -> showReportComplete = true
             }
         }
     }
@@ -298,9 +298,9 @@ fun ReceivedQuestionDetailScreen(
     if (showPostReportSheet) {
         QelloReportBottomSheet(
             onDismissRequest = { showPostReportSheet = false },
-            onReasonSelected = {
+            onReasonSelected = { reasonCode ->
+                viewModel.onPostReportSubmit(reasonCode)
                 showPostReportSheet = false
-                showReportComplete = true
             },
         )
     }
@@ -319,9 +319,9 @@ fun ReceivedQuestionDetailScreen(
     if (reportAnswerId != null) {
         QelloReportBottomSheet(
             onDismissRequest = { reportAnswerId = null },
-            onReasonSelected = {
+            onReasonSelected = { reasonCode ->
+                viewModel.onAnswerReportSubmit(reportAnswerId!!, reasonCode)
                 reportAnswerId = null
-                showReportComplete = true
             },
         )
     }
