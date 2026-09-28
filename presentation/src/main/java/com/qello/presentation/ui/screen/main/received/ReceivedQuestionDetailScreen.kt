@@ -34,12 +34,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.qello.domain.model.Answer
 import com.qello.domain.model.InboxCard
 import com.qello.presentation.R
 import com.qello.presentation.component.button.QelloBackButton
@@ -49,42 +51,8 @@ import com.qello.presentation.component.item.QelloCommentItem
 import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.ui.designsystem.QelloColorPalette
 import com.qello.presentation.ui.designsystem.theme.QelloTheme
-
-private data class CommentUiModel(
-    val username: String,
-    val meta: String,
-    val text: String,
-    val hasPhoto: Boolean,
-    val likeCount: Int,
-    val showTranslate: Boolean,
-)
-
-private val mockComments = listOf(
-    CommentUiModel(
-        username = "댕댕러버",
-        meta = "2시간 전 · 미국 뉴욕 · 34356km",
-        text = "너무 귀엽네요! 저희 집 강아지랑도 잘 지낼 것 같아요",
-        hasPhoto = true,
-        likeCount = 27,
-        showTranslate = false,
-    ),
-    CommentUiModel(
-        username = "Traveler",
-        meta = "2시간 전 · 미국 뉴욕 · 34356km",
-        text = "우와 너무 귀여워요…!",
-        hasPhoto = false,
-        likeCount = 27,
-        showTranslate = true,
-    ),
-    CommentUiModel(
-        username = "Traveler",
-        meta = "2시간 전 · 미국 뉴욕 · 34356km",
-        text = "우와 너무 귀여워요…!",
-        hasPhoto = false,
-        likeCount = 27,
-        showTranslate = true,
-    ),
-)
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 
 @Composable
 fun ReceivedQuestionDetailScreen(
@@ -97,6 +65,8 @@ fun ReceivedQuestionDetailScreen(
     val resources = LocalResources.current
     val card = uiState.detail?.card
 
+    var commentInput by remember { mutableStateOf("") }
+
     LaunchedEffect(questionId) {
         viewModel.load(questionId.toLong())
     }
@@ -105,11 +75,10 @@ fun ReceivedQuestionDetailScreen(
         viewModel.sideEffect.collect { effect ->
             when (effect) {
                 is ReceivedQuestionDetailSideEffect.ShowSnackbar -> showSnackbar(resources.getString(effect.message))
+                ReceivedQuestionDetailSideEffect.AnswerSubmitted -> commentInput = ""
             }
         }
     }
-
-    var commentInput by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -181,7 +150,12 @@ fun ReceivedQuestionDetailScreen(
                 ) {
                     Row(horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing16)) {
                         DetailStat(iconRes = R.drawable.ic_comment, value = "${card?.answerCount ?: 0}")
-                        DetailStat(iconRes = R.drawable.ic_heart, value = "${card?.reactionCount ?: 0}")
+                        DetailStat(
+                            iconRes = R.drawable.ic_heart,
+                            value = "${card?.reactionCount ?: 0}",
+                            tint = if (card?.reactedByMe == true) QelloColorPalette.Bule50 else QelloTheme.colors.label.alternative,
+                            onClick = viewModel::onReactionToggle,
+                        )
                     }
 
                     DetailStat(iconRes = R.drawable.ic_location, value = card.toDistanceLabel())
@@ -195,14 +169,16 @@ fun ReceivedQuestionDetailScreen(
                 )
             }
 
-            itemsIndexed(mockComments) { index, comment ->
+            itemsIndexed(uiState.answers, key = { _, answer -> answer.answerId }) { index, answer ->
                 QelloCommentItem(
-                    username = comment.username,
-                    meta = comment.meta,
-                    text = comment.text,
-                    hasPhoto = comment.hasPhoto,
-                    likeCount = comment.likeCount,
-                    showTranslate = comment.showTranslate,
+                    username = answer.authorNickname,
+                    meta = "${answer.publishedAt.toRelativeTimeLabel()} · ${answer.authorCoarseRegionCode.orEmpty()} · ${answer.toDistanceLabel()}",
+                    text = answer.bodyText,
+                    hasPhoto = answer.mediaIds.isNotEmpty(),
+                    likeCount = answer.reactionCount.toInt(),
+                    showTranslate = false,
+                    liked = answer.reactedByMe,
+                    onLikeClick = { viewModel.onAnswerReactionToggle(answer.answerId) },
                     onMoreClick = {},
                     onTranslateClick = {},
                     modifier = Modifier
@@ -276,7 +252,7 @@ fun ReceivedQuestionDetailScreen(
                             .clickable(
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = null,
-                            ) { commentInput = "" },
+                            ) { viewModel.onAnswerSubmit(commentInput) },
                         contentAlignment = Alignment.Center,
                     ) {
                         Icon(
@@ -293,15 +269,29 @@ fun ReceivedQuestionDetailScreen(
 }
 
 @Composable
-private fun DetailStat(iconRes: Int, value: String) {
+private fun DetailStat(
+    iconRes: Int,
+    value: String,
+    tint: Color = QelloTheme.colors.label.alternative,
+    onClick: (() -> Unit)? = null,
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing4),
+        modifier = if (onClick != null) {
+            Modifier.clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = onClick,
+            )
+        } else {
+            Modifier
+        },
     ) {
         Icon(
             painter = painterResource(iconRes),
             contentDescription = null,
-            tint = QelloTheme.colors.label.alternative,
+            tint = tint,
             modifier = Modifier.size(QelloTheme.iconSize.size16),
         )
 
@@ -313,11 +303,26 @@ private fun DetailStat(iconRes: Int, value: String) {
     }
 }
 
-// distanceBand(근거리 구간 표시 문구)가 있으면 그걸 쓰고, 없으면 distanceM(미터)을 km/m로 바꿔서 보여준다
 private fun InboxCard?.toDistanceLabel(): String {
     if (this == null) return ""
     distanceBand?.let { return it }
     val meters = distanceM ?: return ""
     return if (meters >= 1000) "${meters / 1000}km" else "${meters}m"
+}
+
+private fun Answer.toDistanceLabel(): String {
+    distanceBand?.let { return it }
+    val meters = distanceM ?: return ""
+    return if (meters >= 1000) "${meters / 1000}km" else "${meters}m"
+}
+
+private fun String.toRelativeTimeLabel(): String {
+    val minutes = ChronoUnit.MINUTES.between(Instant.parse(this), Instant.now()).coerceAtLeast(0)
+    return when {
+        minutes < 1 -> "방금 전"
+        minutes < 60 -> "${minutes}분 전"
+        minutes < 60 * 24 -> "${minutes / 60}시간 전"
+        else -> "${minutes / (60 * 24)}일 전"
+    }
 }
 

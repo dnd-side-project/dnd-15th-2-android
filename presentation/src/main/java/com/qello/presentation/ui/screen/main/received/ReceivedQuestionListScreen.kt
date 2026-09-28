@@ -2,6 +2,7 @@ package com.qello.presentation.ui.screen.main.received
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -118,6 +120,7 @@ fun ReceivedQuestionListScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .horizontalScroll(rememberScrollState())
                             .padding(horizontal = QelloTheme.spacing.spacing20)
                             .padding(top = QelloTheme.spacing.spacing12),
                         horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing8),
@@ -269,7 +272,6 @@ private fun String.toLocalTimeLabel(): String =
 private fun String.toPostedAtLabel(): String =
     Instant.parse(this).atZone(ZoneId.systemDefault()).toLocalTime().format(timeWithSecondsFormatter)
 
-// distanceBand(근거리 구간 표시 문구)가 있으면 그걸 쓰고, 없으면 distanceM(미터)을 km/m로 바꿔서 보여준다
 private fun InboxCard.toDistanceLabel(): String {
     distanceBand?.let { return it }
     val meters = distanceM ?: return ""

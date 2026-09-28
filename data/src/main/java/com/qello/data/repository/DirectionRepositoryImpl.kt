@@ -3,6 +3,9 @@ package com.qello.data.repository
 import com.qello.data.remote.datasource.DirectionDataSource
 import com.qello.data.remote.request.SubmitDirectionPostRequest
 import com.qello.data.remote.request.UpdatePresenceRequest
+import com.qello.data.remote.response.AnswerResponse
+import com.qello.domain.model.Answer
+import com.qello.domain.model.PostReaction
 import com.qello.domain.repository.DirectionRepository
 import kotlinx.coroutines.CancellationException
 import timber.log.Timber
@@ -55,4 +58,42 @@ class DirectionRepositoryImpl @Inject constructor(
             ),
         )
     }
+
+    override suspend fun reactToPost(postId: Long): PostReaction {
+        val response = directionDataSource.reactToPost(postId)
+        return PostReaction(reacted = response.reacted, reactionCount = response.reactionCount)
+    }
+
+    override suspend fun cancelPostReaction(postId: Long): PostReaction {
+        val response = directionDataSource.cancelPostReaction(postId)
+        return PostReaction(reacted = response.reacted, reactionCount = response.reactionCount)
+    }
+
+    override suspend fun getAnswers(postId: Long, limit: Int): List<Answer> =
+        directionDataSource.getAnswers(postId, limit).answers.map { it.toDomain() }
+
+    override suspend fun reactToAnswer(answerId: Long): PostReaction {
+        val response = directionDataSource.reactToAnswer(answerId)
+        return PostReaction(reacted = response.reacted, reactionCount = response.reactionCount)
+    }
+
+    override suspend fun cancelAnswerReaction(answerId: Long): PostReaction {
+        val response = directionDataSource.cancelAnswerReaction(answerId)
+        return PostReaction(reacted = response.reacted, reactionCount = response.reactionCount)
+    }
+
+    private fun AnswerResponse.toDomain() = Answer(
+        answerId = answerId,
+        authorNickname = authorNickname,
+        authorCoarseRegionCode = authorCoarseRegionCode,
+        bodyText = bodyText,
+        mediaIds = mediaIds,
+        bearingFromSenderDegrees = bearingFromSenderDegrees,
+        distanceM = distanceM,
+        distanceBand = distanceBand,
+        publishedAt = publishedAt,
+        editedAt = editedAt,
+        reactedByMe = reactedByMe,
+        reactionCount = reactionCount,
+    )
 }

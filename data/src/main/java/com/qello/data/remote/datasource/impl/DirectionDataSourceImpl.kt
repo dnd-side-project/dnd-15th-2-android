@@ -3,12 +3,17 @@ package com.qello.data.remote.datasource.impl
 import com.qello.data.remote.datasource.DirectionDataSource
 import com.qello.data.remote.request.SubmitDirectionPostRequest
 import com.qello.data.remote.request.UpdatePresenceRequest
+import com.qello.data.remote.response.AnswerListingResponse
 import com.qello.data.remote.response.ApiResponse
 import com.qello.data.remote.response.DirectionPostSubmissionResponse
+import com.qello.data.remote.response.ReactionResponse
 import com.qello.data.remote.response.UpdatePresenceResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.request.delete
+import io.ktor.client.request.get
 import io.ktor.client.request.header
+import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.request.setBody
@@ -33,4 +38,21 @@ class DirectionDataSourceImpl @Inject constructor(
         header("Idempotency-Key", idempotencyKey)
         setBody(request)
     }.body<ApiResponse<DirectionPostSubmissionResponse>>().data
+
+    override suspend fun reactToPost(postId: Long): ReactionResponse =
+        client.put("direction/posts/$postId/reaction").body<ApiResponse<ReactionResponse>>().data
+
+    override suspend fun cancelPostReaction(postId: Long): ReactionResponse =
+        client.delete("direction/posts/$postId/reaction").body<ApiResponse<ReactionResponse>>().data
+
+    override suspend fun getAnswers(postId: Long, limit: Int): AnswerListingResponse =
+        client.get("direction/posts/$postId/answers") {
+            parameter("limit", limit)
+        }.body<ApiResponse<AnswerListingResponse>>().data
+
+    override suspend fun reactToAnswer(answerId: Long): ReactionResponse =
+        client.put("direction/answers/$answerId/reaction").body<ApiResponse<ReactionResponse>>().data
+
+    override suspend fun cancelAnswerReaction(answerId: Long): ReactionResponse =
+        client.delete("direction/answers/$answerId/reaction").body<ApiResponse<ReactionResponse>>().data
 }
