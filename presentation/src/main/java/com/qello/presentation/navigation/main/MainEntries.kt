@@ -90,6 +90,7 @@ fun EntryProviderScope<NavKey>.mainEntries(
             onNavigateToSentQuestion = { navigator.navigate(MainNavKey.SentQuestionList) },
             onNavigateToNotification = { navigator.navigate(MainNavKey.Notification) },
             onNavigateHome = { navigator.navigate(MainNavKey.Main) },
+            showSnackbar = showSnackbar,
         )
     }
 
@@ -97,6 +98,7 @@ fun EntryProviderScope<NavKey>.mainEntries(
         ReceivedQuestionDetailScreen(
             questionId = key.questionId,
             onBack = { navigator.goBack() },
+            showSnackbar = showSnackbar,
         )
     }
 

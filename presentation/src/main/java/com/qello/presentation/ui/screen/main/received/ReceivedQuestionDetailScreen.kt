@@ -26,6 +26,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,8 +35,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.qello.domain.model.InboxCard
 import com.qello.presentation.R
 import com.qello.presentation.component.button.QelloBackButton
 import com.qello.presentation.component.button.QelloMoreButton
@@ -85,7 +90,25 @@ private val mockComments = listOf(
 fun ReceivedQuestionDetailScreen(
     questionId: Int,
     onBack: () -> Unit,
+    showSnackbar: suspend (message: String) -> Unit,
+    viewModel: ReceivedQuestionDetailViewModel = hiltViewModel(),
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val resources = LocalResources.current
+    val card = uiState.detail?.card
+
+    LaunchedEffect(questionId) {
+        viewModel.load(questionId.toLong())
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.collect { effect ->
+            when (effect) {
+                is ReceivedQuestionDetailSideEffect.ShowSnackbar -> showSnackbar(resources.getString(effect.message))
+            }
+        }
+    }
+
     var commentInput by remember { mutableStateOf("") }
 
     Column(
@@ -120,29 +143,33 @@ fun ReceivedQuestionDetailScreen(
             item {
                 Column(modifier = Modifier.padding(horizontal = QelloTheme.spacing.spacing20 + QelloTheme.spacing.spacing6)) {
                     QelloText(
-                        text = "강아지를 데려왔는데... 같이 자도 되나요?",
+                        text = card?.questionText.orEmpty(),
                         style = QelloTheme.typography.body1,
                         color = QelloTheme.colors.label.strong,
                     )
 
-                    QelloText(
-                        text = "이번에 강아지를 데려왔는데 아직 낯을 많이 가려요. 밤에 같이 자도 괜찮을까요?",
-                        style = QelloTheme.typography.caption1,
-                        color = QelloTheme.colors.label.normal1,
-                        modifier = Modifier.padding(top = QelloTheme.spacing.spacing4),
-                    )
+                    if (!card?.bodyText.isNullOrBlank()) {
+                        QelloText(
+                            text = card?.bodyText.orEmpty(),
+                            style = QelloTheme.typography.caption1,
+                            color = QelloTheme.colors.label.normal1,
+                            modifier = Modifier.padding(top = QelloTheme.spacing.spacing4),
+                        )
+                    }
                 }
 
                 // TODO: 실제 이미지(Coil AsyncImage) 연동 시 aspectRatio 강제하지 말고 원본 비율 그대로 표시
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = QelloTheme.spacing.spacing20)
-                        .padding(top = QelloTheme.spacing.spacing16)
-                        .height(240.dp)
-                        .clip(RoundedCornerShape(QelloTheme.radius.radius20))
-                        .background(QelloTheme.colors.imagefield.default),
-                )
+                if (card?.mediaIds?.isNotEmpty() == true) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = QelloTheme.spacing.spacing20)
+                            .padding(top = QelloTheme.spacing.spacing16)
+                            .height(240.dp)
+                            .clip(RoundedCornerShape(QelloTheme.radius.radius20))
+                            .background(QelloTheme.colors.imagefield.default),
+                    )
+                }
 
                 Row(
                     modifier = Modifier
@@ -153,11 +180,11 @@ fun ReceivedQuestionDetailScreen(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Row(horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing16)) {
-                        DetailStat(iconRes = R.drawable.ic_comment, value = "${mockComments.size}")
-                        DetailStat(iconRes = R.drawable.ic_heart, value = "7")
+                        DetailStat(iconRes = R.drawable.ic_comment, value = "${card?.answerCount ?: 0}")
+                        DetailStat(iconRes = R.drawable.ic_heart, value = "${card?.reactionCount ?: 0}")
                     }
 
-                    DetailStat(iconRes = R.drawable.ic_location, value = "00km")
+                    DetailStat(iconRes = R.drawable.ic_location, value = card.toDistanceLabel())
                 }
 
                 Box(
@@ -284,5 +311,13 @@ private fun DetailStat(iconRes: Int, value: String) {
             color = QelloTheme.colors.label.assistive,
         )
     }
+}
+
+// distanceBand(근거리 구간 표시 문구)가 있으면 그걸 쓰고, 없으면 distanceM(미터)을 km/m로 바꿔서 보여준다
+private fun InboxCard?.toDistanceLabel(): String {
+    if (this == null) return ""
+    distanceBand?.let { return it }
+    val meters = distanceM ?: return ""
+    return if (meters >= 1000) "${meters / 1000}km" else "${meters}m"
 }
 
