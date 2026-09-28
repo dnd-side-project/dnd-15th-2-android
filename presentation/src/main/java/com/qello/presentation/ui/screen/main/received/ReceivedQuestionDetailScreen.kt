@@ -44,6 +44,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.qello.domain.model.Answer
 import com.qello.domain.model.InboxCard
 import com.qello.presentation.R
+import com.qello.presentation.component.bottomsheet.QelloMoreBottomSheet
 import com.qello.presentation.component.bottomsheet.QelloReportBottomSheet
 import com.qello.presentation.component.bottomsheet.QelloReportCompleteOverlay
 import com.qello.presentation.component.button.QelloBackButton
@@ -70,7 +71,9 @@ fun ReceivedQuestionDetailScreen(
     var commentInput by remember { mutableStateOf("") }
 
     // TODO: 신고 사유 제출 API 연동되면 여기서 실제 전송으로 교체
+    var showPostMoreSheet by remember { mutableStateOf(false) }
     var showPostReportSheet by remember { mutableStateOf(false) }
+    var moreAnswerId by remember { mutableStateOf<Long?>(null) }
     var reportAnswerId by remember { mutableStateOf<Long?>(null) }
     var showReportComplete by remember { mutableStateOf(false) }
 
@@ -107,7 +110,7 @@ fun ReceivedQuestionDetailScreen(
 
                 Row(horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing16)) {
                     QelloShareButton(onClick = {})
-                    QelloMoreButton(onClick = { showPostReportSheet = true })
+                    QelloMoreButton(onClick = { showPostMoreSheet = true })
                 }
             }
 
@@ -188,7 +191,7 @@ fun ReceivedQuestionDetailScreen(
                         showTranslate = false,
                         liked = answer.reactedByMe,
                         onLikeClick = { viewModel.onAnswerReactionToggle(answer.answerId) },
-                        onMoreClick = { reportAnswerId = answer.answerId },
+                        onMoreClick = { moreAnswerId = answer.answerId },
                         onTranslateClick = {},
                         modifier = Modifier
                             .padding(horizontal = QelloTheme.spacing.spacing20)
@@ -281,12 +284,34 @@ fun ReceivedQuestionDetailScreen(
         }
     }
 
+    if (showPostMoreSheet) {
+        QelloMoreBottomSheet(
+            onDismissRequest = { showPostMoreSheet = false },
+            onHideClick = { showPostMoreSheet = false },
+            onReportClick = {
+                showPostMoreSheet = false
+                showPostReportSheet = true
+            },
+        )
+    }
+
     if (showPostReportSheet) {
         QelloReportBottomSheet(
             onDismissRequest = { showPostReportSheet = false },
             onReasonSelected = {
                 showPostReportSheet = false
                 showReportComplete = true
+            },
+        )
+    }
+
+    if (moreAnswerId != null) {
+        QelloMoreBottomSheet(
+            onDismissRequest = { moreAnswerId = null },
+            onHideClick = { moreAnswerId = null },
+            onReportClick = {
+                reportAnswerId = moreAnswerId
+                moreAnswerId = null
             },
         )
     }

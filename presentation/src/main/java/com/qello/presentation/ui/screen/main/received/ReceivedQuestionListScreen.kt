@@ -39,6 +39,7 @@ import com.qello.domain.model.InboxCard
 import com.qello.presentation.R
 import com.qello.presentation.component.bottombar.HomeBottomBarTab
 import com.qello.presentation.component.bottombar.QelloBottomBarScaffold
+import com.qello.presentation.component.bottomsheet.QelloMoreBottomSheet
 import com.qello.presentation.component.bottomsheet.QelloReportBottomSheet
 import com.qello.presentation.component.bottomsheet.QelloReportCompleteOverlay
 import com.qello.presentation.component.button.QelloIconButton
@@ -64,6 +65,7 @@ fun ReceivedQuestionListScreen(
     val resources = LocalResources.current
 
     // TODO: 신고 사유 제출 API 연동되면 여기서 실제 전송으로 교체
+    var moreTargetId by remember { mutableStateOf<Long?>(null) }
     var reportTargetId by remember { mutableStateOf<Long?>(null) }
     var showReportComplete by remember { mutableStateOf(false) }
 
@@ -230,7 +232,7 @@ fun ReceivedQuestionListScreen(
                                 postedAt = card.matchedAt.toPostedAtLabel(),
                                 distance = card.toDistanceLabel(),
                                 onClick = { onItemClick(card.postRecipientId.toInt()) },
-                                onMoreClick = { reportTargetId = card.postRecipientId },
+                                onMoreClick = { moreTargetId = card.postRecipientId },
                             )
                         }
                     }
@@ -245,6 +247,17 @@ fun ReceivedQuestionListScreen(
                 QelloReportCompleteOverlay(onCloseClick = { showReportComplete = false })
             }
         }
+    }
+
+    if (moreTargetId != null) {
+        QelloMoreBottomSheet(
+            onDismissRequest = { moreTargetId = null },
+            onHideClick = { moreTargetId = null },
+            onReportClick = {
+                reportTargetId = moreTargetId
+                moreTargetId = null
+            },
+        )
     }
 
     if (reportTargetId != null) {
