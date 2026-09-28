@@ -20,4 +20,10 @@ interface InboxRepository {
         mediaIds: List<Long> = emptyList(),
         idempotencyKey: String,
     )
+
+    /** 수신함에서 "글 숨기기": 해당 항목을 넘김 처리해 목록에서 사라지게 한다. */
+    suspend fun skipInboxItem(postRecipientId: Long)
+
+    /** "글 숨기기"를 실행취소한다. 서버가 정한 유예 마감이 지나면 실패한다. */
+    suspend fun undoSkipInboxItem(postRecipientId: Long)
 }

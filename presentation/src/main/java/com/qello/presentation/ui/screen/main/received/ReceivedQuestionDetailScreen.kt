@@ -25,11 +25,16 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,6 +59,7 @@ import com.qello.presentation.component.item.QelloCommentItem
 import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.ui.designsystem.QelloColorPalette
 import com.qello.presentation.ui.designsystem.theme.QelloTheme
+import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
@@ -67,12 +73,13 @@ fun ReceivedQuestionDetailScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val resources = LocalResources.current
     val card = uiState.detail?.card
+    val coroutineScope = rememberCoroutineScope()
+    val hideSnackbarHostState = remember { SnackbarHostState() }
 
     var commentInput by remember { mutableStateOf("") }
 
     var showPostMoreSheet by remember { mutableStateOf(false) }
     var showPostReportSheet by remember { mutableStateOf(false) }
-    var moreAnswerId by remember { mutableStateOf<Long?>(null) }
     var reportAnswerId by remember { mutableStateOf<Long?>(null) }
     var showReportComplete by remember { mutableStateOf(false) }
 
@@ -86,6 +93,25 @@ fun ReceivedQuestionDetailScreen(
                 is ReceivedQuestionDetailSideEffect.ShowSnackbar -> showSnackbar(resources.getString(effect.message))
                 ReceivedQuestionDetailSideEffect.AnswerSubmitted -> commentInput = ""
                 ReceivedQuestionDetailSideEffect.ReportSubmitted -> showReportComplete = true
+
+                ReceivedQuestionDetailSideEffect.PostHidden -> {
+                    coroutineScope.launch {
+                        val result = hideSnackbarHostState.showSnackbar(
+                            message = "글을 숨겼어요",
+                            actionLabel = "실행취소",
+                            duration = SnackbarDuration.Short,
+                        )
+                        if (result == SnackbarResult.ActionPerformed) {
+                            viewModel.onPostHideUndo()
+                        } else {
+                            onBack()
+                        }
+                    }
+                }
+
+                ReceivedQuestionDetailSideEffect.HideUndone -> {
+                    hideSnackbarHostState.showSnackbar(message = "실행취소했어요", duration = SnackbarDuration.Short)
+                }
             }
         }
     }
@@ -191,7 +217,7 @@ fun ReceivedQuestionDetailScreen(
                         showTranslate = false,
                         liked = answer.reactedByMe,
                         onLikeClick = { viewModel.onAnswerReactionToggle(answer.answerId) },
-                        onMoreClick = { moreAnswerId = answer.answerId },
+                        onMoreClick = { reportAnswerId = answer.answerId },
                         onTranslateClick = {},
                         modifier = Modifier
                             .padding(horizontal = QelloTheme.spacing.spacing20)
@@ -282,12 +308,22 @@ fun ReceivedQuestionDetailScreen(
         if (showReportComplete) {
             QelloReportCompleteOverlay(onCloseClick = { showReportComplete = false })
         }
+
+        SnackbarHost(
+            hostState = hideSnackbarHostState,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = QelloTheme.spacing.spacing20),
+        )
     }
 
     if (showPostMoreSheet) {
         QelloMoreBottomSheet(
             onDismissRequest = { showPostMoreSheet = false },
-            onHideClick = { showPostMoreSheet = false },
+            onHideClick = {
+                viewModel.onPostHideSubmit()
+                showPostMoreSheet = false
+            },
             onReportClick = {
                 showPostMoreSheet = false
                 showPostReportSheet = true
@@ -301,17 +337,6 @@ fun ReceivedQuestionDetailScreen(
             onReasonSelected = { reasonCode ->
                 viewModel.onPostReportSubmit(reasonCode)
                 showPostReportSheet = false
-            },
-        )
-    }
-
-    if (moreAnswerId != null) {
-        QelloMoreBottomSheet(
-            onDismissRequest = { moreAnswerId = null },
-            onHideClick = { moreAnswerId = null },
-            onReportClick = {
-                reportAnswerId = moreAnswerId
-                moreAnswerId = null
             },
         )
     }

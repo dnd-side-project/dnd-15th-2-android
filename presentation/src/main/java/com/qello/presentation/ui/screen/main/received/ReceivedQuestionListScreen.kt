@@ -20,11 +20,16 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,6 +53,7 @@ import com.qello.presentation.component.loading.QelloLoadingOverlay
 import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.ui.designsystem.QelloColorPalette
 import com.qello.presentation.ui.designsystem.theme.QelloTheme
+import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -63,8 +69,10 @@ fun ReceivedQuestionListScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val resources = LocalResources.current
+    val coroutineScope = rememberCoroutineScope()
+    val hideSnackbarHostState = remember { SnackbarHostState() }
 
-    var moreTargetId by remember { mutableStateOf<Long?>(null) }
+    var moreCard by remember { mutableStateOf<InboxCard?>(null) }
     var reportTargetId by remember { mutableStateOf<Long?>(null) }
     var showReportComplete by remember { mutableStateOf(false) }
 
@@ -73,6 +81,23 @@ fun ReceivedQuestionListScreen(
             when (effect) {
                 is ReceivedQuestionListSideEffect.ShowSnackbar -> showSnackbar(resources.getString(effect.message))
                 ReceivedQuestionListSideEffect.ReportSubmitted -> showReportComplete = true
+
+                is ReceivedQuestionListSideEffect.PostHidden -> {
+                    coroutineScope.launch {
+                        val result = hideSnackbarHostState.showSnackbar(
+                            message = "글을 숨겼어요",
+                            actionLabel = "실행취소",
+                            duration = SnackbarDuration.Short,
+                        )
+                        if (result == SnackbarResult.ActionPerformed) {
+                            viewModel.onHideUndo(effect.postRecipientId)
+                        }
+                    }
+                }
+
+                ReceivedQuestionListSideEffect.HideUndone -> {
+                    hideSnackbarHostState.showSnackbar(message = "실행취소했어요", duration = SnackbarDuration.Short)
+                }
             }
         }
     }
@@ -232,7 +257,7 @@ fun ReceivedQuestionListScreen(
                                 postedAt = card.matchedAt.toPostedAtLabel(),
                                 distance = card.toDistanceLabel(),
                                 onClick = { onItemClick(card.postRecipientId.toInt()) },
-                                onMoreClick = { moreTargetId = card.postId },
+                                onMoreClick = { moreCard = card },
                             )
                         }
                     }
@@ -246,16 +271,26 @@ fun ReceivedQuestionListScreen(
             if (showReportComplete) {
                 QelloReportCompleteOverlay(onCloseClick = { showReportComplete = false })
             }
+
+            SnackbarHost(
+                hostState = hideSnackbarHostState,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 102.dp + 37.dp),
+            )
         }
     }
 
-    if (moreTargetId != null) {
+    if (moreCard != null) {
         QelloMoreBottomSheet(
-            onDismissRequest = { moreTargetId = null },
-            onHideClick = { moreTargetId = null },
+            onDismissRequest = { moreCard = null },
+            onHideClick = {
+                viewModel.onHideSubmit(moreCard!!.postRecipientId)
+                moreCard = null
+            },
             onReportClick = {
-                reportTargetId = moreTargetId
-                moreTargetId = null
+                reportTargetId = moreCard!!.postId
+                moreCard = null
             },
         )
     }

@@ -71,6 +71,53 @@ class ReceivedQuestionListViewModel @Inject constructor(
         load()
     }
 
+    fun onHideSubmit(postRecipientId: Long) {
+        // 응답을 기다리지 않고 먼저 목록에서 지운다. 실패하면 목록을 다시 불러와 복원한다.
+        listing.value = listing.value.copy(
+            cards = listing.value.cards.filterNot { it.postRecipientId == postRecipientId },
+        )
+
+        suspend { inboxRepository.skipInboxItem(postRecipientId) }
+            .asFlow()
+            .asResult()
+            .onEach { result ->
+                when (result) {
+                    AppResult.Loading -> Unit
+
+                    is AppResult.Success -> {
+                        _sideEffect.send(ReceivedQuestionListSideEffect.PostHidden(postRecipientId))
+                    }
+
+                    is AppResult.Error -> {
+                        _sideEffect.send(ReceivedQuestionListSideEffect.ShowSnackbar(result.error.toMessageRes()))
+                        load()
+                    }
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    fun onHideUndo(postRecipientId: Long) {
+        suspend { inboxRepository.undoSkipInboxItem(postRecipientId) }
+            .asFlow()
+            .asResult()
+            .onEach { result ->
+                when (result) {
+                    AppResult.Loading -> Unit
+
+                    is AppResult.Success -> {
+                        load()
+                        _sideEffect.send(ReceivedQuestionListSideEffect.HideUndone)
+                    }
+
+                    is AppResult.Error -> {
+                        _sideEffect.send(ReceivedQuestionListSideEffect.ShowSnackbar(result.error.toMessageRes()))
+                    }
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
     fun onReportSubmit(postId: Long, reasonCode: ReportReason) {
         val detail = if (reasonCode == ReportReason.OTHER) "기타" else null
 

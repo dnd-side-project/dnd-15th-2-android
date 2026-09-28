@@ -46,6 +46,14 @@ class InboxRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun skipInboxItem(postRecipientId: Long) {
+        inboxDataSource.skip(postRecipientId)
+    }
+
+    override suspend fun undoSkipInboxItem(postRecipientId: Long) {
+        inboxDataSource.revertSkip(postRecipientId)
+    }
+
     private fun InboxCardResponse.toDomain() = InboxCard(
         postRecipientId = postRecipientId,
         postId = postId,

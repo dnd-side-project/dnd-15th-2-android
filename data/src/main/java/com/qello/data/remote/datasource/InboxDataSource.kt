@@ -15,4 +15,8 @@ interface InboxDataSource {
         idempotencyKey: String,
         request: SubmitAnswerRequest,
     ): AnswerSubmissionResponse
+
+    suspend fun skip(postRecipientId: Long)
+
+    suspend fun revertSkip(postRecipientId: Long)
 }

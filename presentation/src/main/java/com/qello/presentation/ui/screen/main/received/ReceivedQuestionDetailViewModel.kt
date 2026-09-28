@@ -111,6 +111,46 @@ class ReceivedQuestionDetailViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
+    fun onPostHideSubmit() {
+        val postRecipientId = loadedPostRecipientId ?: return
+
+        suspend { inboxRepository.skipInboxItem(postRecipientId) }
+            .asFlow()
+            .asResult()
+            .onEach { result ->
+                when (result) {
+                    AppResult.Loading -> Unit
+
+                    is AppResult.Success -> _sideEffect.send(ReceivedQuestionDetailSideEffect.PostHidden)
+
+                    is AppResult.Error -> {
+                        _sideEffect.send(ReceivedQuestionDetailSideEffect.ShowSnackbar(result.error.toMessageRes()))
+                    }
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    fun onPostHideUndo() {
+        val postRecipientId = loadedPostRecipientId ?: return
+
+        suspend { inboxRepository.undoSkipInboxItem(postRecipientId) }
+            .asFlow()
+            .asResult()
+            .onEach { result ->
+                when (result) {
+                    AppResult.Loading -> Unit
+
+                    is AppResult.Success -> _sideEffect.send(ReceivedQuestionDetailSideEffect.HideUndone)
+
+                    is AppResult.Error -> {
+                        _sideEffect.send(ReceivedQuestionDetailSideEffect.ShowSnackbar(result.error.toMessageRes()))
+                    }
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
     fun onPostReportSubmit(reasonCode: ReportReason) {
         val postId = uiStateFlow.value.detail?.card?.postId ?: return
         val detail = if (reasonCode == ReportReason.OTHER) "기타" else null

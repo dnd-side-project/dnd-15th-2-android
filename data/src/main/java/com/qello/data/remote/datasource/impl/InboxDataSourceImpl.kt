@@ -8,10 +8,12 @@ import com.qello.data.remote.response.InboxDetailResponse
 import com.qello.data.remote.response.InboxListingResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
+import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
@@ -38,4 +40,12 @@ class InboxDataSourceImpl @Inject constructor(
         header("Idempotency-Key", idempotencyKey)
         setBody(request)
     }.body<ApiResponse<AnswerSubmissionResponse>>().data
+
+    override suspend fun skip(postRecipientId: Long) {
+        client.put("direction/inbox/$postRecipientId/skip")
+    }
+
+    override suspend fun revertSkip(postRecipientId: Long) {
+        client.delete("direction/inbox/$postRecipientId/skip")
+    }
 }
