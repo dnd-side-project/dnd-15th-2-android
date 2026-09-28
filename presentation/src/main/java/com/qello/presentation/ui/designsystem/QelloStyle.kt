@@ -23,6 +23,7 @@ object QelloSpacing {
     val spacing44: Dp = 44.dp
     val spacing48: Dp = 48.dp
     val spacing56: Dp = 56.dp
+    val spacing62: Dp = 62.dp
     val spacing64: Dp = 64.dp
 }
 

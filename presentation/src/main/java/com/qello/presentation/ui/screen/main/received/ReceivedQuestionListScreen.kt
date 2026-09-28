@@ -23,7 +23,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,6 +39,8 @@ import com.qello.domain.model.InboxCard
 import com.qello.presentation.R
 import com.qello.presentation.component.bottombar.HomeBottomBarTab
 import com.qello.presentation.component.bottombar.QelloBottomBarScaffold
+import com.qello.presentation.component.bottomsheet.QelloReportBottomSheet
+import com.qello.presentation.component.bottomsheet.QelloReportCompleteOverlay
 import com.qello.presentation.component.button.QelloIconButton
 import com.qello.presentation.component.item.QelloQuestionCard
 import com.qello.presentation.component.loading.QelloLoadingOverlay
@@ -58,6 +62,10 @@ fun ReceivedQuestionListScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val resources = LocalResources.current
+
+    // TODO: 신고 사유 제출 API 연동되면 여기서 실제 전송으로 교체
+    var reportTargetId by remember { mutableStateOf<Long?>(null) }
+    var showReportComplete by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { effect ->
@@ -222,7 +230,7 @@ fun ReceivedQuestionListScreen(
                                 postedAt = card.matchedAt.toPostedAtLabel(),
                                 distance = card.toDistanceLabel(),
                                 onClick = { onItemClick(card.postRecipientId.toInt()) },
-                                onMoreClick = {},
+                                onMoreClick = { reportTargetId = card.postRecipientId },
                             )
                         }
                     }
@@ -232,7 +240,21 @@ fun ReceivedQuestionListScreen(
             if (uiState.isLoading) {
                 QelloLoadingOverlay()
             }
+
+            if (showReportComplete) {
+                QelloReportCompleteOverlay(onCloseClick = { showReportComplete = false })
+            }
         }
+    }
+
+    if (reportTargetId != null) {
+        QelloReportBottomSheet(
+            onDismissRequest = { reportTargetId = null },
+            onReasonSelected = {
+                reportTargetId = null
+                showReportComplete = true
+            },
+        )
     }
 }
 
