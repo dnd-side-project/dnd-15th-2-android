@@ -63,7 +63,22 @@
     <string name="nickname_error_duplicated">이미 사용 중인 닉네임이에요</string>
     <string name="nickname_error_inappropriate">사용할 수 없는 닉네임이에요</string>
 
+    <!-- Direction -->
+    <string name="direction_north">북쪽</string>
+    <string name="direction_north_east">북동쪽</string>
+    <string name="direction_east">동쪽</string>
+    <string name="direction_south_east">남동쪽</string>
+    <string name="direction_south">남쪽</string>
+    <string name="direction_south_west">남서쪽</string>
+    <string name="direction_west">서쪽</string>
+    <string name="direction_north_west">북서쪽</string>
+    <string name="direction_send_button">%1$s으로 질문 보내기</string>
+    <string name="direction_finding_button">방향을 확인하고 있어요</string>
+
     <!-- Question suggest -->
     <string name="question_suggest_error_blank">제안할 질문을 입력해주세요.</string>
     <string name="question_suggest_error_out_of_length">%1$d자 이하로 입력해주세요.</string>
+
+    <!-- Question compose -->
+    <string name="question_compose_photo_upload_success">사진을 업로드했어요.</string>
 </resources>

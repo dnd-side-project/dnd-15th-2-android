@@ -30,7 +30,13 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.json.Json
 import timber.log.Timber
 import java.io.IOException
+import javax.inject.Qualifier
 import javax.inject.Singleton
+
+/** 우리 API 서버가 아니라, 발급받은 업로드 주소(presigned URL) 등 외부 주소로 직접 요청할 때 쓰는 클라이언트 */
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class RawHttpClient
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -115,6 +121,46 @@ object NetworkModule {
                     reason = body?.errorDetail?.reason,
                     message = body?.message,
                 )
+            }
+
+            handleResponseExceptionWithRequest { cause, _ ->
+                if (cause is IOException) throw AppError.Network(cause)
+            }
+        }
+    }
+
+    @Provides
+    @Singleton
+    @RawHttpClient
+    internal fun providesRawHttpClient(): HttpClient = HttpClient(OkHttp) {
+        expectSuccess = false
+
+        install(HttpTimeout) {
+            connectTimeoutMillis = 10_000L
+            requestTimeoutMillis = 30_000L
+            socketTimeoutMillis = 30_000L
+        }
+
+        install(Logging) {
+            logger = object : Logger {
+                override fun log(message: String) {
+                    Timber.tag("Ktor-Raw").d(message)
+                }
+            }
+            level = if (BuildConfig.DEBUG) LogLevel.HEADERS else LogLevel.NONE
+        }
+
+        HttpResponseValidator {
+            validateResponse { response ->
+                if (!response.status.isSuccess()) {
+                    throw AppError.Server(
+                        status = response.status.value,
+                        code = null,
+                        field = null,
+                        reason = null,
+                        message = null,
+                    )
+                }
             }
 
             handleResponseExceptionWithRequest { cause, _ ->

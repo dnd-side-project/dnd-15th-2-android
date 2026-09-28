@@ -19,28 +19,42 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mapbox.geojson.Point
+import com.qello.presentation.R
 import com.qello.presentation.component.button.QelloBackButton
 import com.qello.presentation.component.button.QelloLargeButton
+import com.qello.presentation.component.map.QelloMap
 import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.ui.designsystem.theme.QelloTheme
-import kotlinx.coroutines.delay
 
 @Composable
 fun QuestionDirectionScreen(
+    bodyText: String,
+    mediaId: Long?,
     onBack: () -> Unit,
-    direction: String = "동쪽", // TODO: 지도/방향 센서 API 연동되면 실제 값으로 교체
     onSendComplete: () -> Unit,
+    showSnackbar: suspend (message: String) -> Unit,
+    viewModel: QuestionDirectionViewModel = hiltViewModel(),
 ) {
-    var isSending by remember { mutableStateOf(false) }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val resources = LocalResources.current
 
-    if (isSending) {
-        LaunchedEffect(Unit) {
-            delay(1500)
-            onSendComplete()
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.collect { effect ->
+            when (effect) {
+                QuestionDirectionSideEffect.NavigateToComplete -> onSendComplete()
+                is QuestionDirectionSideEffect.ShowSnackbar -> showSnackbar(resources.getString(effect.message))
+            }
         }
+    }
 
+    if (uiState.isSending) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -85,25 +99,22 @@ fun QuestionDirectionScreen(
             Spacer(Modifier.height(56.dp + QelloTheme.spacing.spacing24))
         }
     } else {
-        Box(modifier = Modifier.fillMaxSize()) {
-            // TODO: 실제 지도 API 연동되면 이 자리에 지도 + 방향 센서로 움직이는 콘(cone) 표시로 교체
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(QelloTheme.gradient.backgroundStrong),
-            ) {
-                QelloText(
-                    text = "지도 영역 (API 연동 예정)",
-                    style = QelloTheme.typography.caption1,
-                    color = QelloTheme.colors.label.assistive,
-                    modifier = Modifier.align(Alignment.Center),
-                )
-            }
+        // 방향 설정(지도) 화면이 보이는 동안에만 지도(+위치 표시)를 켠다. 전송 중 화면으로 넘어가면 자동으로 꺼진다.
+        var bearingDegrees by remember { mutableStateOf<Float?>(null) }
+        val direction = bearingDegrees?.let(CompassDirection::fromBearing)
 
-            Box(
-                modifier = Modifier
-                    .padding(start = 18.dp, top = 24.dp),
-            ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            // 실제 위치를 알기 전까지만 보여줄 기본 좌표. 위치를 알게 되면 QelloMap이 그리로 한 번 옮겨준다.
+            QelloMap(
+                initialCenter = Point.fromLngLat(126.9780, 37.5665),
+                initialZoom = 10.0,
+                modifier = Modifier.fillMaxSize(),
+                showsUserLocation = true,
+                showsDirectionCone = true,
+                onBearingChanged = { degrees -> bearingDegrees = degrees },
+            )
+
+            Box(modifier = Modifier.padding(start = 18.dp, top = 24.dp)) {
                 QelloBackButton(onClick = onBack)
             }
 
@@ -121,12 +132,19 @@ fun QuestionDirectionScreen(
                     color = QelloTheme.colors.label.strong,
                     modifier = Modifier.fillMaxWidth(),
                 )
-
                 Spacer(Modifier.height(QelloTheme.spacing.spacing20))
-
                 QelloLargeButton(
-                    text = "${direction}으로 질문 보내기",
-                    onClick = { isSending = true },
+                    text = direction?.let { stringResource(R.string.direction_send_button, stringResource(it.labelRes)) }
+                        ?: stringResource(R.string.direction_finding_button),
+                    onClick = {
+                        if (direction != null) {
+                            viewModel.onSendClick(
+                                bodyText = bodyText,
+                                mediaId = mediaId,
+                                segmentKey = direction.segmentKey,
+                            )
+                        }
+                    },
                 )
             }
         }

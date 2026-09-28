@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.mapbox.geojson.Point
 import com.qello.presentation.R
 import com.qello.presentation.component.bottombar.HomeBottomBarTab
@@ -37,6 +38,7 @@ fun MainScreen(
     onNavigateToSentQuestion: () -> Unit,
     onNavigateToQuestionSuggestList: () -> Unit,
     onNavigateToMy: () -> Unit,
+    viewModel: MainViewModel = hiltViewModel(),
 ) {
     var showQuestionSendSheet by remember { mutableStateOf(false) }
 
@@ -56,7 +58,10 @@ fun MainScreen(
         QelloMap(
             initialCenter = Point.fromLngLat(126.9780, 37.5665),
             initialZoom = 10.0,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            showsUserLocation = true,
+            showsDirectionCone = true,
+            onLocationSnapshot = viewModel::onLocationObtained,
         )
 
         Row(
