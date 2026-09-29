@@ -236,12 +236,12 @@ fun ReceivedQuestionListScreen(
                     }
                 } else {
                     LazyColumn(
-                        modifier = Modifier.padding(bottom = 63.dp),
+                        modifier = Modifier.padding(bottom = QelloTheme.spacing.spacing72),
                         contentPadding = PaddingValues(
                             start = QelloTheme.spacing.spacing20,
                             end = QelloTheme.spacing.spacing20,
                             top = QelloTheme.spacing.spacing16,
-                            bottom = QelloTheme.spacing.spacing16,
+                            bottom = QelloTheme.spacing.spacing64,
                         ),
                         verticalArrangement = Arrangement.spacedBy(10.dp),
                     ) {
