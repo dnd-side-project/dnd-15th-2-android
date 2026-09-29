@@ -67,6 +67,7 @@ import java.time.temporal.ChronoUnit
 fun ReceivedQuestionDetailScreen(
     questionId: Int,
     onBack: () -> Unit,
+    onNavigateToShare: (Int) -> Unit,
     showSnackbar: suspend (message: String) -> Unit,
     viewModel: ReceivedQuestionDetailViewModel = hiltViewModel(),
 ) {
@@ -135,7 +136,7 @@ fun ReceivedQuestionDetailScreen(
                 Spacer(Modifier.weight(1f))
 
                 Row(horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing16)) {
-                    QelloShareButton(onClick = {})
+                    QelloShareButton(onClick = { onNavigateToShare(questionId) })
                     QelloMoreButton(onClick = { showPostMoreSheet = true })
                 }
             }

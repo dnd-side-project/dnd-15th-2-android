@@ -25,6 +25,7 @@ object QelloSpacing {
     val spacing56: Dp = 56.dp
     val spacing62: Dp = 62.dp
     val spacing64: Dp = 64.dp
+    val spacing72: Dp = 72.dp
 }
 
 object QelloRadius {

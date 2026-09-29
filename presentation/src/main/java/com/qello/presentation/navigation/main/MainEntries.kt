@@ -13,8 +13,10 @@ import com.qello.presentation.ui.screen.main.question.QuestionSuggestComposeScre
 import com.qello.presentation.ui.screen.main.question.QuestionSuggestListScreen
 import com.qello.presentation.ui.screen.main.received.ReceivedQuestionDetailScreen
 import com.qello.presentation.ui.screen.main.received.ReceivedQuestionListScreen
+import com.qello.presentation.ui.screen.main.received.ReceivedQuestionShareScreen
 import com.qello.presentation.ui.screen.main.sent.SentQuestionDetailScreen
 import com.qello.presentation.ui.screen.main.sent.SentQuestionListScreen
+import com.qello.presentation.ui.screen.main.sent.SentQuestionShareScreen
 
 fun EntryProviderScope<NavKey>.mainEntries(
     navigator: Navigator,
@@ -99,6 +101,15 @@ fun EntryProviderScope<NavKey>.mainEntries(
         ReceivedQuestionDetailScreen(
             questionId = key.questionId,
             onBack = { navigator.goBack() },
+            onNavigateToShare = { id -> navigator.navigate(MainNavKey.ReceivedQuestionShare(questionId = id)) },
+            showSnackbar = showSnackbar,
+        )
+    }
+
+    entry<MainNavKey.ReceivedQuestionShare> { key ->
+        ReceivedQuestionShareScreen(
+            questionId = key.questionId,
+            onBack = { navigator.goBack() },
             showSnackbar = showSnackbar,
         )
     }
@@ -116,6 +127,15 @@ fun EntryProviderScope<NavKey>.mainEntries(
 
     entry<MainNavKey.SentQuestionDetail> { key ->
         SentQuestionDetailScreen(
+            questionId = key.questionId,
+            onBack = { navigator.goBack() },
+            onNavigateToShare = { id -> navigator.navigate(MainNavKey.SentQuestionShare(questionId = id)) },
+            showSnackbar = showSnackbar,
+        )
+    }
+
+    entry<MainNavKey.SentQuestionShare> { key ->
+        SentQuestionShareScreen(
             questionId = key.questionId,
             onBack = { navigator.goBack() },
             showSnackbar = showSnackbar,
