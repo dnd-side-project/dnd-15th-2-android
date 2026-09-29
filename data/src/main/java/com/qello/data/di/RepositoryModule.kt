@@ -4,11 +4,13 @@ import com.qello.data.repository.DirectionRepositoryImpl
 import com.qello.data.repository.InboxRepositoryImpl
 import com.qello.data.repository.MediaRepositoryImpl
 import com.qello.data.repository.QuestionRepositoryImpl
+import com.qello.data.repository.SentPostRepositoryImpl
 import com.qello.data.repository.UserAccountRepositoryImpl
 import com.qello.domain.repository.DirectionRepository
 import com.qello.domain.repository.InboxRepository
 import com.qello.domain.repository.MediaRepository
 import com.qello.domain.repository.QuestionRepository
+import com.qello.domain.repository.SentPostRepository
 import com.qello.domain.repository.UserAccountRepository
 import dagger.Binds
 import dagger.Module
@@ -49,4 +51,10 @@ interface RepositoryModule {
     fun bindsInboxRepository(
         impl: InboxRepositoryImpl,
     ): InboxRepository
+
+    @Binds
+    @Singleton
+    fun bindsSentPostRepository(
+        impl: SentPostRepositoryImpl,
+    ): SentPostRepository
 }

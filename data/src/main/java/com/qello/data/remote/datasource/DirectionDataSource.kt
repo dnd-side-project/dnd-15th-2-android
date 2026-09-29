@@ -27,4 +27,6 @@ interface DirectionDataSource {
     suspend fun reportPost(postId: Long, request: SubmitReportRequest): ReportReceiptResponse
 
     suspend fun reportAnswer(answerId: Long, request: SubmitReportRequest): ReportReceiptResponse
+
+    suspend fun markAnswersRead(postId: Long)
 }

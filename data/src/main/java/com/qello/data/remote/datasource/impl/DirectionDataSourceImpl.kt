@@ -69,4 +69,8 @@ class DirectionDataSourceImpl @Inject constructor(
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body<ApiResponse<ReportReceiptResponse>>().data
+
+    override suspend fun markAnswersRead(postId: Long) {
+        client.put("direction/posts/$postId/answers/read")
+    }
 }

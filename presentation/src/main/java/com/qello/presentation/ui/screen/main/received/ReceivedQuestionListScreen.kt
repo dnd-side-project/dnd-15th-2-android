@@ -63,6 +63,7 @@ fun ReceivedQuestionListScreen(
     onItemClick: (Int) -> Unit,
     onNavigateToSentQuestion: () -> Unit,
     onNavigateToNotification: () -> Unit,
+    onNavigateToQuestionSuggestList: () -> Unit,
     onNavigateHome: () -> Unit,
     showSnackbar: suspend (message: String) -> Unit,
     viewModel: ReceivedQuestionListViewModel = hiltViewModel(),
@@ -135,11 +136,9 @@ fun ReceivedQuestionListScreen(
                             onClick = onNavigateToNotification,
                         )
 
-                        Box(
-                            modifier = Modifier
-                                .size(QelloTheme.iconSize.size24)
-                                .clip(RoundedCornerShape(QelloTheme.radius.radius8))
-                                .background(QelloTheme.colors.primary.normal),
+                        QelloIconButton(
+                            painter = painterResource(R.drawable.ic_hamburgerbar),
+                            onClick = onNavigateToQuestionSuggestList,
                         )
                     }
                 }

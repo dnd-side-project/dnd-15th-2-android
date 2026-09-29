@@ -5,11 +5,13 @@ import com.qello.data.remote.datasource.DirectionDataSource
 import com.qello.data.remote.datasource.InboxDataSource
 import com.qello.data.remote.datasource.MediaDataSource
 import com.qello.data.remote.datasource.QuestionDataSource
+import com.qello.data.remote.datasource.SentPostDataSource
 import com.qello.data.remote.datasource.impl.AuthDataSourceImpl
 import com.qello.data.remote.datasource.impl.DirectionDataSourceImpl
 import com.qello.data.remote.datasource.impl.InboxDataSourceImpl
 import com.qello.data.remote.datasource.impl.MediaDataSourceImpl
 import com.qello.data.remote.datasource.impl.QuestionDataSourceImpl
+import com.qello.data.remote.datasource.impl.SentPostDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -43,4 +45,9 @@ interface DataSourceModule {
     fun bindsInboxDataSource(
         impl: InboxDataSourceImpl,
     ): InboxDataSource
+
+    @Binds
+    fun bindsSentPostDataSource(
+        impl: SentPostDataSourceImpl,
+    ): SentPostDataSource
 }

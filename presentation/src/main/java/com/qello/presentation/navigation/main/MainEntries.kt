@@ -89,6 +89,7 @@ fun EntryProviderScope<NavKey>.mainEntries(
             onItemClick = { id -> navigator.navigate(MainNavKey.ReceivedQuestionDetail(questionId = id)) },
             onNavigateToSentQuestion = { navigator.navigate(MainNavKey.SentQuestionList) },
             onNavigateToNotification = { navigator.navigate(MainNavKey.Notification) },
+            onNavigateToQuestionSuggestList = { navigator.navigate(MainNavKey.QuestionSuggestList) },
             onNavigateHome = { navigator.navigate(MainNavKey.Main) },
             showSnackbar = showSnackbar,
         )
@@ -107,7 +108,9 @@ fun EntryProviderScope<NavKey>.mainEntries(
             onItemClick = { id -> navigator.navigate(MainNavKey.SentQuestionDetail(questionId = id)) },
             onNavigateToReceivedQuestion = { navigator.navigate(MainNavKey.ReceivedQuestionList) },
             onNavigateToNotification = { navigator.navigate(MainNavKey.Notification) },
+            onNavigateToQuestionSuggestList = { navigator.navigate(MainNavKey.QuestionSuggestList) },
             onNavigateHome = { navigator.navigate(MainNavKey.Main) },
+            showSnackbar = showSnackbar,
         )
     }
 
@@ -115,6 +118,7 @@ fun EntryProviderScope<NavKey>.mainEntries(
         SentQuestionDetailScreen(
             questionId = key.questionId,
             onBack = { navigator.goBack() },
+            showSnackbar = showSnackbar,
         )
     }
 

@@ -35,11 +35,12 @@ fun QelloQuestionCard(
     commentCount: Int,
     likeCount: Int,
     postedAt: String,
-    distance: String,
+    distance: String?,
     onClick: () -> Unit,
     onMoreClick: () -> Unit,
     modifier: Modifier = Modifier,
     badgeText: String? = null,
+    showMoreButton: Boolean = true,
 ) {
     val cardShape = RoundedCornerShape(QelloTheme.radius.radius20)
 
@@ -88,18 +89,20 @@ fun QelloQuestionCard(
                     modifier = Modifier.weight(1f),
                 )
 
-                Icon(
-                    painter = painterResource(R.drawable.ic_more),
-                    contentDescription = null,
-                    tint = QelloTheme.colors.label.strong,
-                    modifier = Modifier
-                        .size(QelloTheme.iconSize.size24)
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                            onClick = onMoreClick,
-                        ),
-                )
+                if (showMoreButton) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_more),
+                        contentDescription = null,
+                        tint = QelloTheme.colors.label.strong,
+                        modifier = Modifier
+                            .size(QelloTheme.iconSize.size24)
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                                onClick = onMoreClick,
+                            ),
+                    )
+                }
             }
 
             QelloText(
@@ -123,7 +126,9 @@ fun QelloQuestionCard(
 
                 Row(horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing16)) {
                     QuestionCardStat(iconRes = R.drawable.ic_clock, value = postedAt)
-                    QuestionCardStat(iconRes = R.drawable.ic_location, value = distance)
+                    if (distance != null) {
+                        QuestionCardStat(iconRes = R.drawable.ic_location, value = distance)
+                    }
                 }
             }
         }
