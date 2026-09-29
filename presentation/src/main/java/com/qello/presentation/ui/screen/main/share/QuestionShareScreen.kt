@@ -14,17 +14,25 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.layer.drawLayer
+import androidx.compose.ui.graphics.rememberGraphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.qello.domain.model.Answer
+import com.qello.presentation.common.shareImage
 import com.qello.presentation.component.button.QelloBackButton
 import com.qello.presentation.component.button.QelloLargeButton
 import com.qello.presentation.component.loading.QelloLoadingOverlay
 import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.ui.designsystem.QelloColorPalette
 import com.qello.presentation.ui.designsystem.theme.QelloTheme
+import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
@@ -32,8 +40,11 @@ import java.time.temporal.ChronoUnit
 fun QuestionShareScreen(
     uiState: QuestionShareUiState,
     onBack: () -> Unit,
-    onShareClick: () -> Unit = {},
 ) {
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    val graphicsLayer = rememberGraphicsLayer()
+
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -67,6 +78,10 @@ fun QuestionShareScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .verticalScroll(rememberScrollState())
+                        .drawWithContent {
+                            graphicsLayer.record { this@drawWithContent.drawContent() }
+                            drawLayer(graphicsLayer)
+                        }
                         .background(QelloColorPalette.Neutral0)
                         .padding(QelloTheme.spacing.spacing20),
                 ) {
@@ -110,7 +125,12 @@ fun QuestionShareScreen(
 
             QelloLargeButton(
                 text = "공유하기",
-                onClick = onShareClick,
+                onClick = {
+                    coroutineScope.launch {
+                        val bitmap = graphicsLayer.toImageBitmap().asAndroidBitmap()
+                        shareImage(context, bitmap)
+                    }
+                },
                 modifier = Modifier.padding(QelloTheme.spacing.spacing20),
             )
         }
