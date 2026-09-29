@@ -27,6 +27,7 @@ fun QelloActionSheetItem(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    showLeadingDot: Boolean = true,
 ) {
     Row(
         modifier = modifier
@@ -43,16 +44,18 @@ fun QelloActionSheetItem(
                 indication = null,
                 onClick = onClick,
             )
-            .padding(horizontal = QelloTheme.spacing.spacing8, vertical = 14.dp),
+            .padding(horizontal = QelloTheme.spacing.spacing16, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing8),
     ) {
-        Box(
-            modifier = Modifier
-                .size(24.dp)
-                .clip(CircleShape)
-                .background(QelloTheme.colors.primary.normal),
-        )
+        if (showLeadingDot) {
+            Box(
+                modifier = Modifier
+                    .size(24.dp)
+                    .clip(CircleShape)
+                    .background(QelloTheme.colors.primary.normal),
+            )
+        }
 
         QelloText(
             text = text,

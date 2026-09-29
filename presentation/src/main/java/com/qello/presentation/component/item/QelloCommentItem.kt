@@ -23,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.qello.presentation.R
 import com.qello.presentation.component.text.QelloText
+import com.qello.presentation.ui.designsystem.QelloColorPalette
 import com.qello.presentation.ui.designsystem.theme.QelloTheme
 
 @Composable
@@ -36,6 +37,8 @@ fun QelloCommentItem(
     onMoreClick: () -> Unit,
     onTranslateClick: () -> Unit,
     modifier: Modifier = Modifier,
+    liked: Boolean = false,
+    onLikeClick: (() -> Unit)? = null,
 ) {
     Row(modifier = modifier.fillMaxWidth()) {
         Box(
@@ -107,11 +110,20 @@ fun QelloCommentItem(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing4),
+                    modifier = if (onLikeClick != null) {
+                        Modifier.clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = onLikeClick,
+                        )
+                    } else {
+                        Modifier
+                    },
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_heart),
                         contentDescription = null,
-                        tint = QelloTheme.colors.label.assistive,
+                        tint = if (liked) QelloColorPalette.Bule50 else QelloTheme.colors.label.assistive,
                         modifier = Modifier.size(QelloTheme.iconSize.size16),
                     )
 

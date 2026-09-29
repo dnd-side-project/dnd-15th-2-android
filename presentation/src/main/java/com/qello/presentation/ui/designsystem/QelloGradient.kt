@@ -25,4 +25,8 @@ object QelloGradient {
     val progressFill: Brush = Brush.horizontalGradient(
         colors = listOf(QelloColorPalette.Bule30, Color.Transparent),
     )
+
+    val completeCardHighlight: Brush = Brush.verticalGradient(
+        colorStops = arrayOf(0.06f to QelloColorPalette.Neutral0, 0.97f to QelloColorPalette.Navy20),
+    )
 }
