@@ -48,6 +48,7 @@ fun SentQuestionListScreen(
     onItemClick: (Int) -> Unit,
     onNavigateToReceivedQuestion: () -> Unit,
     onNavigateToNotification: () -> Unit,
+    onNavigateToQuestionSuggestList: () -> Unit,
     onNavigateHome: () -> Unit,
     showSnackbar: suspend (message: String) -> Unit,
     viewModel: SentQuestionListViewModel = hiltViewModel(),
@@ -98,11 +99,9 @@ fun SentQuestionListScreen(
                             onClick = onNavigateToNotification,
                         )
 
-                        // TODO: 메뉴(햄버거) 아이콘 에셋 추가되면 교체
-                        QelloText(
-                            text = "☰",
-                            style = QelloTheme.typography.body1,
-                            color = QelloTheme.colors.label.strong,
+                        QelloIconButton(
+                            painter = painterResource(R.drawable.ic_hamburgerbar),
+                            onClick = onNavigateToQuestionSuggestList,
                         )
                     }
                 }
@@ -203,10 +202,11 @@ fun SentQuestionListScreen(
                                 commentCount = card.answerCount.toInt(),
                                 likeCount = card.reactionCount.toInt(),
                                 postedAt = card.submittedAt.toPostedAtLabel(),
-                                distance = "",
+                                distance = null,
                                 badgeText = if (card.unreadAnswerCount > 0) "새로운 답변 ${card.unreadAnswerCount}개" else null,
                                 onClick = { onItemClick(card.postId.toInt()) },
                                 onMoreClick = {},
+                                showMoreButton = false,
                             )
                         }
 

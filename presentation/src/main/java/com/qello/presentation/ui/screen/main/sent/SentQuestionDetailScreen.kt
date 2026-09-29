@@ -19,6 +19,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,8 +32,9 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.qello.domain.model.Answer
 import com.qello.presentation.R
+import com.qello.presentation.component.bottomsheet.QelloReportBottomSheet
+import com.qello.presentation.component.bottomsheet.QelloReportCompleteOverlay
 import com.qello.presentation.component.button.QelloBackButton
-import com.qello.presentation.component.button.QelloMoreButton
 import com.qello.presentation.component.button.QelloShareButton
 import com.qello.presentation.component.item.QelloCommentItem
 import com.qello.presentation.component.loading.QelloLoadingOverlay
@@ -50,6 +54,9 @@ fun SentQuestionDetailScreen(
     val resources = LocalResources.current
     val card = uiState.detail?.card
 
+    var reportAnswerId by remember { mutableStateOf<Long?>(null) }
+    var showReportComplete by remember { mutableStateOf(false) }
+
     LaunchedEffect(questionId) {
         viewModel.load(questionId.toLong())
     }
@@ -58,6 +65,7 @@ fun SentQuestionDetailScreen(
         viewModel.sideEffect.collect { effect ->
             when (effect) {
                 is SentQuestionDetailSideEffect.ShowSnackbar -> showSnackbar(resources.getString(effect.message))
+                SentQuestionDetailSideEffect.ReportSubmitted -> showReportComplete = true
             }
         }
     }
@@ -79,10 +87,7 @@ fun SentQuestionDetailScreen(
 
                 Spacer(Modifier.weight(1f))
 
-                Row(horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing16)) {
-                    QelloShareButton(onClick = {})
-                    QelloMoreButton(onClick = {})
-                }
+                QelloShareButton(onClick = {})
             }
 
             LazyColumn(
@@ -155,7 +160,7 @@ fun SentQuestionDetailScreen(
                         showTranslate = false,
                         liked = answer.reactedByMe,
                         onLikeClick = { viewModel.onAnswerReactionToggle(answer.answerId) },
-                        onMoreClick = {},
+                        onMoreClick = { reportAnswerId = answer.answerId },
                         onTranslateClick = {},
                         modifier = Modifier
                             .padding(horizontal = QelloTheme.spacing.spacing20)
@@ -168,6 +173,20 @@ fun SentQuestionDetailScreen(
         if (uiState.isLoading) {
             QelloLoadingOverlay()
         }
+
+        if (showReportComplete) {
+            QelloReportCompleteOverlay(onCloseClick = { showReportComplete = false })
+        }
+    }
+
+    if (reportAnswerId != null) {
+        QelloReportBottomSheet(
+            onDismissRequest = { reportAnswerId = null },
+            onReasonSelected = { reasonCode ->
+                viewModel.onAnswerReportSubmit(reportAnswerId!!, reasonCode)
+                reportAnswerId = null
+            },
+        )
     }
 }
 

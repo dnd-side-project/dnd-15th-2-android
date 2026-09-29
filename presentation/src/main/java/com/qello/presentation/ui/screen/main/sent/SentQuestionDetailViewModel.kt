@@ -3,6 +3,7 @@ package com.qello.presentation.ui.screen.main.sent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.qello.domain.model.Answer
+import com.qello.domain.model.ReportReason
 import com.qello.domain.repository.DirectionRepository
 import com.qello.domain.repository.SentPostRepository
 import com.qello.domain.result.AppResult
@@ -19,11 +20,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
-import java.time.Instant
 import javax.inject.Inject
-
-// TODO: 질문 보내기로 실제 보낸 질문 데이터가 쌓이면 목데이터 대신 실제 API 응답을 쓰도록 지운다.
-private const val USE_MOCK_SENT_POST_ANSWERS = true
 
 @HiltViewModel
 class SentQuestionDetailViewModel @Inject constructor(
@@ -68,12 +65,6 @@ class SentQuestionDetailViewModel @Inject constructor(
     }
 
     private fun loadAnswers(postId: Long) {
-        if (USE_MOCK_SENT_POST_ANSWERS) {
-            val answerCount = uiStateFlow.value.detail?.card?.answerCount ?: 0
-            uiStateFlow.value = uiStateFlow.value.copy(answers = mockAnswers(postId, answerCount))
-            return
-        }
-
         suspend { directionRepository.getAnswers(postId) }
             .asFlow()
             .asResult()
@@ -98,8 +89,6 @@ class SentQuestionDetailViewModel @Inject constructor(
         // 응답을 기다리지 않고 먼저 바꿔서 보여주고, 실패하면 원래 상태로 되돌린다
         updateAnswer(answer.copy(reactedByMe = !wasReacted, reactionCount = answer.reactionCount + if (wasReacted) -1 else 1))
 
-        if (USE_MOCK_SENT_POST_ANSWERS) return
-
         suspend {
             if (wasReacted) directionRepository.cancelAnswerReaction(answerId) else directionRepository.reactToAnswer(answerId)
         }
@@ -122,26 +111,29 @@ class SentQuestionDetailViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
+    fun onAnswerReportSubmit(answerId: Long, reasonCode: ReportReason) {
+        val detail = if (reasonCode == ReportReason.OTHER) "기타" else null
+
+        suspend { directionRepository.reportAnswer(answerId, reasonCode, detail) }
+            .asFlow()
+            .asResult()
+            .onEach { result ->
+                when (result) {
+                    AppResult.Loading -> Unit
+
+                    is AppResult.Success -> _sideEffect.send(SentQuestionDetailSideEffect.ReportSubmitted)
+
+                    is AppResult.Error -> {
+                        _sideEffect.send(SentQuestionDetailSideEffect.ShowSnackbar(result.error.toMessageRes()))
+                    }
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
     private fun updateAnswer(answer: Answer) {
         uiStateFlow.value = uiStateFlow.value.copy(
             answers = uiStateFlow.value.answers.map { if (it.answerId == answer.answerId) answer else it },
-        )
-    }
-
-    private fun mockAnswers(postId: Long, count: Long): List<Answer> = (1..count).map { index ->
-        Answer(
-            answerId = postId * 100 + index,
-            authorNickname = "익명$index",
-            authorCoarseRegionCode = "미국 뉴욕",
-            bodyText = "목데이터 답변 $index 입니다.",
-            mediaIds = emptyList(),
-            bearingFromSenderDegrees = 0.0,
-            distanceM = index * 1000,
-            distanceBand = null,
-            publishedAt = Instant.now().minusSeconds(index * 1800L).toString(),
-            editedAt = null,
-            reactedByMe = index % 2 == 0L,
-            reactionCount = index * 3,
         )
     }
 
