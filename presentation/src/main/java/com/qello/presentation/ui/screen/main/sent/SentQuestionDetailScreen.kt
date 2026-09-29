@@ -47,6 +47,7 @@ import java.time.temporal.ChronoUnit
 fun SentQuestionDetailScreen(
     questionId: Int,
     onBack: () -> Unit,
+    onNavigateToShare: (Int) -> Unit,
     showSnackbar: suspend (message: String) -> Unit,
     viewModel: SentQuestionDetailViewModel = hiltViewModel(),
 ) {
@@ -87,7 +88,7 @@ fun SentQuestionDetailScreen(
 
                 Spacer(Modifier.weight(1f))
 
-                QelloShareButton(onClick = {})
+                QelloShareButton(onClick = { onNavigateToShare(questionId) })
             }
 
             LazyColumn(

@@ -38,10 +38,16 @@ sealed interface MainNavKey : NavKey {
     data class ReceivedQuestionDetail(val questionId: Int) : MainNavKey
 
     @Serializable
+    data class ReceivedQuestionShare(val questionId: Int) : MainNavKey
+
+    @Serializable
     data object SentQuestionList : MainNavKey
 
     @Serializable
     data class SentQuestionDetail(val questionId: Int) : MainNavKey
+
+    @Serializable
+    data class SentQuestionShare(val questionId: Int) : MainNavKey
 
     @Serializable
     data object My : MainNavKey
