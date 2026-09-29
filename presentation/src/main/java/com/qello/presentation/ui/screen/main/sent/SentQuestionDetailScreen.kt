@@ -153,6 +153,8 @@ fun SentQuestionDetailScreen(
                         hasPhoto = answer.mediaIds.isNotEmpty(),
                         likeCount = answer.reactionCount.toInt(),
                         showTranslate = false,
+                        liked = answer.reactedByMe,
+                        onLikeClick = { viewModel.onAnswerReactionToggle(answer.answerId) },
                         onMoreClick = {},
                         onTranslateClick = {},
                         modifier = Modifier

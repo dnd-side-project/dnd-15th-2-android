@@ -91,6 +91,43 @@ class SentQuestionDetailViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
+    fun onAnswerReactionToggle(answerId: Long) {
+        val answer = uiStateFlow.value.answers.firstOrNull { it.answerId == answerId } ?: return
+        val wasReacted = answer.reactedByMe
+
+        // 응답을 기다리지 않고 먼저 바꿔서 보여주고, 실패하면 원래 상태로 되돌린다
+        updateAnswer(answer.copy(reactedByMe = !wasReacted, reactionCount = answer.reactionCount + if (wasReacted) -1 else 1))
+
+        if (USE_MOCK_SENT_POST_ANSWERS) return
+
+        suspend {
+            if (wasReacted) directionRepository.cancelAnswerReaction(answerId) else directionRepository.reactToAnswer(answerId)
+        }
+            .asFlow()
+            .asResult()
+            .onEach { result ->
+                when (result) {
+                    AppResult.Loading -> Unit
+
+                    is AppResult.Success -> {
+                        updateAnswer(answer.copy(reactedByMe = result.data.reacted, reactionCount = result.data.reactionCount))
+                    }
+
+                    is AppResult.Error -> {
+                        updateAnswer(answer)
+                        _sideEffect.send(SentQuestionDetailSideEffect.ShowSnackbar(result.error.toMessageRes()))
+                    }
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun updateAnswer(answer: Answer) {
+        uiStateFlow.value = uiStateFlow.value.copy(
+            answers = uiStateFlow.value.answers.map { if (it.answerId == answer.answerId) answer else it },
+        )
+    }
+
     private fun mockAnswers(postId: Long, count: Long): List<Answer> = (1..count).map { index ->
         Answer(
             answerId = postId * 100 + index,
