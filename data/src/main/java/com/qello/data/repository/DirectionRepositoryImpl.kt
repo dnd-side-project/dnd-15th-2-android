@@ -108,6 +108,17 @@ class DirectionRepositoryImpl @Inject constructor(
             request = SubmitReportRequest(reasonCode = reasonCode.name, detail = detail, blockAuthor = blockAuthor),
         ).toDomain()
 
+    override suspend fun markAnswersRead(postId: Long) {
+        // 배지 해제용 기록일 뿐이므로, 실패해도 화면을 막지 않고 조용히 넘어간다
+        try {
+            directionDataSource.markAnswersRead(postId)
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Timber.d(e, "답변 읽음 처리에 실패했습니다")
+        }
+    }
+
     private fun ReportReceiptResponse.toDomain() = ReportReceipt(
         reportId = reportId,
         status = status,

@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -53,6 +54,7 @@ class SentQuestionDetailViewModel @Inject constructor(
                     is AppResult.Success -> {
                         uiStateFlow.value = SentQuestionDetailUiState(detail = result.data, isLoading = false)
                         loadAnswers(postId)
+                        viewModelScope.launch { directionRepository.markAnswersRead(postId) }
                     }
 
                     is AppResult.Error -> {

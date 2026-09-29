@@ -56,4 +56,7 @@ interface DirectionRepository {
         detail: String? = null,
         blockAuthor: Boolean = false,
     ): ReportReceipt
+
+    /** 질문자 입장에서 답변 열람 시각을 기록해 미읽음 배지를 해제한다. */
+    suspend fun markAnswersRead(postId: Long)
 }
