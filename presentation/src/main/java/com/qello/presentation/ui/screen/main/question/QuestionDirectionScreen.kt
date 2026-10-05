@@ -37,6 +37,7 @@ import com.qello.presentation.ui.designsystem.theme.QelloTheme
 fun QuestionDirectionScreen(
     bodyText: String,
     mediaId: Long?,
+    approvedQuestionId: Long,
     onBack: () -> Unit,
     onSendComplete: () -> Unit,
     showSnackbar: suspend (message: String) -> Unit,
@@ -141,6 +142,7 @@ fun QuestionDirectionScreen(
                             viewModel.onSendClick(
                                 bodyText = bodyText,
                                 mediaId = mediaId,
+                                approvedQuestionId = approvedQuestionId,
                                 segmentKey = direction.segmentKey,
                             )
                         }

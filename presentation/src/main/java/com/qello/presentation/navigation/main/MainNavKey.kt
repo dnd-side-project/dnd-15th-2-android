@@ -15,6 +15,7 @@ sealed interface MainNavKey : NavKey {
     data class QuestionDirection(
         val bodyText: String,
         val mediaId: Long?,
+        val approvedQuestionId: Long,
     ) : MainNavKey
 
     @Serializable

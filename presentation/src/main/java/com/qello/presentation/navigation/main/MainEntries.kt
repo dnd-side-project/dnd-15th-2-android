@@ -36,8 +36,14 @@ fun EntryProviderScope<NavKey>.mainEntries(
     entry<MainNavKey.QuestionCompose> {
         QuestionComposeScreen(
             onBack = { navigator.goBack() },
-            onNext = { bodyText, mediaId ->
-                navigator.navigate(MainNavKey.QuestionDirection(bodyText = bodyText, mediaId = mediaId))
+            onNext = { bodyText, mediaId, approvedQuestionId ->
+                navigator.navigate(
+                    MainNavKey.QuestionDirection(
+                        bodyText = bodyText,
+                        mediaId = mediaId,
+                        approvedQuestionId = approvedQuestionId,
+                    ),
+                )
             },
             onNavigateToSuggest = { navigator.navigate(MainNavKey.QuestionSuggestCompose) },
             showSnackbar = showSnackbar,
@@ -48,6 +54,7 @@ fun EntryProviderScope<NavKey>.mainEntries(
         QuestionDirectionScreen(
             bodyText = key.bodyText,
             mediaId = key.mediaId,
+            approvedQuestionId = key.approvedQuestionId,
             onBack = { navigator.goBack() },
             onSendComplete = {
                 navigator.navigate(MainNavKey.QuestionComplete(type = QuestionCompleteType.SEND_QUESTION))

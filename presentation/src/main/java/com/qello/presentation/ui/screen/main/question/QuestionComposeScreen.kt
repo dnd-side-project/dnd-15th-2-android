@@ -40,6 +40,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -69,17 +70,6 @@ import com.qello.presentation.ui.designsystem.theme.QelloTheme
 import kotlinx.coroutines.delay
 import kotlin.math.absoluteValue
 
-private data class QuestionSuggestion(
-    val id: Int,
-    val text: String,
-)
-
-private val mockQuestions = listOf(
-    QuestionSuggestion(1, "다들 어떤 스포츠\n좋아하시나요?"),
-    QuestionSuggestion(2, "요즘 제일 자주\n듣는 노래는요?"),
-    QuestionSuggestion(3, "주말엔 보통\n뭐 하시나요?"),
-)
-
 private val screenHorizontalPadding = 20.dp
 private val carouselHeightBrowsing = 320.dp
 private val carouselHeightSelected = 126.dp
@@ -90,7 +80,7 @@ private val avatarSizeSelected = 80.dp
 @Composable
 fun QuestionComposeScreen(
     onBack: () -> Unit,
-    onNext: (bodyText: String, mediaId: Long?) -> Unit,
+    onNext: (bodyText: String, mediaId: Long?, approvedQuestionId: Long) -> Unit,
     onNavigateToSuggest: () -> Unit,
     showSnackbar: suspend (message: String) -> Unit,
     viewModel: QuestionComposeViewModel = hiltViewModel(),
@@ -110,6 +100,15 @@ fun QuestionComposeScreen(
     val photoUri = uiState.photoUri
     val content = uiState.content
     val hasContent = photoUri != null || content.isNotBlank()
+
+    val questions = uiState.questions
+    val pagerState = key(questions.size) {
+        rememberPagerState(
+            initialPage = if (questions.isEmpty()) 0 else Int.MAX_VALUE / 2 - (Int.MAX_VALUE / 2) % questions.size,
+            pageCount = { if (questions.isEmpty()) 0 else Int.MAX_VALUE },
+        )
+    }
+    val selectedQuestion = if (questions.isEmpty()) null else questions[pagerState.currentPage % questions.size]
 
     val photoPicker = rememberSinglePhotoPicker(
         onPhotoPicked = viewModel::onPhotoPicked,
@@ -228,10 +227,6 @@ fun QuestionComposeScreen(
                 Column {
                     Spacer(Modifier.height(QelloTheme.spacing.spacing32))
 
-                    val pagerState = rememberPagerState(
-                        initialPage = Int.MAX_VALUE / 2 - (Int.MAX_VALUE / 2) % mockQuestions.size,
-                        pageCount = { Int.MAX_VALUE },
-                    )
                     val carouselHeight by animateDpAsState(
                         targetValue = if (isSelected) carouselHeightSelected else carouselHeightBrowsing,
                         label = "carouselHeight",
@@ -241,49 +236,61 @@ fun QuestionComposeScreen(
                         label = "avatarSize",
                     )
 
-                    HorizontalPager(
-                        state = pagerState,
-                        pageSize = PageSize.Fill,
-                        contentPadding = PaddingValues(horizontal = QelloTheme.spacing.spacing32),
-                        pageSpacing = QelloTheme.spacing.spacing20,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(carouselHeight),
-                    ) { page ->
-                        val question = mockQuestions[page % mockQuestions.size]
-
-                        val pageOffset =
-                            ((pagerState.currentPage - page) + pagerState.currentPageOffsetFraction).absoluteValue
-
+                    if (questions.isEmpty()) {
                         Box(
                             modifier = Modifier
-                                .fillMaxSize()
-                                .clip(RoundedCornerShape(QelloTheme.radius.radius20))
-                                .background(QelloTheme.colors.imagefield.default)
-                                .clickable { isSelected = true },
+                                .fillMaxWidth()
+                                .height(carouselHeight),
                         ) {
+                            if (uiState.isLoadingQuestions) {
+                                QelloLoadingOverlay()
+                            }
+                        }
+                    } else {
+                        HorizontalPager(
+                            state = pagerState,
+                            pageSize = PageSize.Fill,
+                            contentPadding = PaddingValues(horizontal = QelloTheme.spacing.spacing32),
+                            pageSpacing = QelloTheme.spacing.spacing20,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(carouselHeight),
+                        ) { page ->
+                            val question = questions[page % questions.size]
+
+                            val pageOffset =
+                                ((pagerState.currentPage - page) + pagerState.currentPageOffsetFraction).absoluteValue
+
                             Box(
                                 modifier = Modifier
                                     .fillMaxSize()
-                                    .graphicsLayer { alpha = 1f - pageOffset.coerceIn(0f, 1f) }
-                                    .background(QelloTheme.gradient.cardHighlight),
-                            )
-                            QelloText(
-                                text = question.text,
-                                style = QelloTheme.typography.heading2,
-                                color = QelloTheme.colors.label.strong,
-                                modifier = Modifier
-                                    .align(if (isSelected) Alignment.CenterStart else Alignment.TopStart)
-                                    .padding(QelloTheme.spacing.spacing32),
-                            )
-                            Box(
-                                modifier = Modifier
-                                    .align(if (isSelected) Alignment.CenterEnd else Alignment.BottomEnd)
-                                    .padding(QelloTheme.spacing.spacing32)
-                                    .size(avatarSize)
-                                    .clip(CircleShape)
-                                    .background(QelloTheme.colors.status.destructive),
-                            )
+                                    .clip(RoundedCornerShape(QelloTheme.radius.radius20))
+                                    .background(QelloTheme.colors.imagefield.default)
+                                    .clickable { isSelected = true },
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .graphicsLayer { alpha = 1f - pageOffset.coerceIn(0f, 1f) }
+                                        .background(QelloTheme.gradient.cardHighlight),
+                                )
+                                QelloText(
+                                    text = question.questionText,
+                                    style = QelloTheme.typography.heading2,
+                                    color = QelloTheme.colors.label.strong,
+                                    modifier = Modifier
+                                        .align(if (isSelected) Alignment.CenterStart else Alignment.TopStart)
+                                        .padding(QelloTheme.spacing.spacing32),
+                                )
+                                Box(
+                                    modifier = Modifier
+                                        .align(if (isSelected) Alignment.CenterEnd else Alignment.BottomEnd)
+                                        .padding(QelloTheme.spacing.spacing32)
+                                        .size(avatarSize)
+                                        .clip(CircleShape)
+                                        .background(QelloTheme.colors.status.destructive),
+                                )
+                            }
                         }
                     }
 
@@ -356,7 +363,7 @@ fun QuestionComposeScreen(
                 Column(modifier = Modifier.padding(horizontal = screenHorizontalPadding)) {
                     Spacer(Modifier.height(QelloTheme.spacing.spacing20))
 
-                    if (isSelected && hasContent) {
+                    if (isSelected && hasContent && selectedQuestion != null) {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -372,7 +379,7 @@ fun QuestionComposeScreen(
                             QelloSmallButton(
                                 text = "방향 설정하러 가기",
                                 modifier = Modifier.weight(1f),
-                                onClick = { onNext(content, uiState.uploadedMediaId) },
+                                onClick = { onNext(content, uiState.uploadedMediaId, selectedQuestion.approvedQuestionId) },
                             )
                         }
                     } else {

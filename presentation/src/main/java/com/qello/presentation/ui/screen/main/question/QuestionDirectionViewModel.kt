@@ -38,11 +38,10 @@ class QuestionDirectionViewModel @Inject constructor(
     private val _sideEffect = Channel<QuestionDirectionSideEffect>(Channel.BUFFERED)
     val sideEffect: Flow<QuestionDirectionSideEffect> = _sideEffect.receiveAsFlow()
 
-    fun onSendClick(bodyText: String, mediaId: Long?, segmentKey: String) {
+    fun onSendClick(bodyText: String, mediaId: Long?, approvedQuestionId: Long, segmentKey: String) {
         suspend {
             directionRepository.submitDirectionPost(
-                // TODO: 승인된 질문 목록/할당 API가 생기면 실제 선택값으로 교체
-                approvedQuestionId = APPROVED_QUESTION_ID_TEMP,
+                approvedQuestionId = approvedQuestionId,
                 // TODO: 방향 구획 체계가 여러 개 운영되면 실제 활성 스킴 조회로 교체
                 schemeId = SCHEME_ID_TEMP,
                 segmentKey = segmentKey,
@@ -73,7 +72,6 @@ class QuestionDirectionViewModel @Inject constructor(
 
     private companion object {
         const val STOP_TIMEOUT_MILLIS = 5_000L
-        const val APPROVED_QUESTION_ID_TEMP = 1L
 
         // OCTANT 스킴이 서버 DB에 하나만 시드돼 있어 사실상 고정값(V1 마이그레이션 기준)
         const val SCHEME_ID_TEMP = 1L
