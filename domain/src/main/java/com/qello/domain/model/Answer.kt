@@ -6,7 +6,7 @@ data class Answer(
     val authorNickname: String,
     val authorCoarseRegionCode: String?,
     val bodyText: String,
-    val mediaIds: List<Long>,
+    val media: List<FeedMedia>,
     val bearingFromSenderDegrees: Double,
     val distanceM: Long?,
     val distanceBand: String?,

@@ -248,7 +248,7 @@ fun ReceivedQuestionListScreen(
                         items(uiState.cards, key = { it.postRecipientId }) { card ->
                             QelloQuestionCard(
                                 title = card.questionText,
-                                hasPhoto = card.mediaIds.isNotEmpty(),
+                                photo = card.media.firstOrNull(),
                                 location = card.senderCoarseRegionCode.orEmpty(),
                                 localTime = card.matchedAt.toLocalTimeLabel(),
                                 commentCount = card.answerCount.toInt(),

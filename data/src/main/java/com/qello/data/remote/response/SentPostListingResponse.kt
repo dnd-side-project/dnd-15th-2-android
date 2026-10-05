@@ -13,7 +13,7 @@ data class SentPostCardResponse(
     val postId: Long,
     val questionText: String,
     val bodyText: String? = null,
-    val mediaIds: List<Long> = emptyList(),
+    val media: List<FeedMediaResponse> = emptyList(),
     val coarseRegionCode: String? = null,
     val submittedAt: String,
     val expiresAt: String,

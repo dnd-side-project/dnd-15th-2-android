@@ -7,6 +7,7 @@ import com.qello.data.remote.request.UpdatePresenceRequest
 import com.qello.data.remote.response.AnswerResponse
 import com.qello.data.remote.response.ReportReceiptResponse
 import com.qello.domain.model.Answer
+import com.qello.domain.model.FeedMedia
 import com.qello.domain.model.PostReaction
 import com.qello.domain.model.ReportReason
 import com.qello.domain.model.ReportReceipt
@@ -132,7 +133,7 @@ class DirectionRepositoryImpl @Inject constructor(
         authorNickname = authorNickname,
         authorCoarseRegionCode = authorCoarseRegionCode,
         bodyText = bodyText,
-        mediaIds = mediaIds,
+        media = media.map { FeedMedia(mediaId = it.mediaId, url = it.url) },
         bearingFromSenderDegrees = bearingFromSenderDegrees,
         distanceM = distanceM,
         distanceBand = distanceBand,

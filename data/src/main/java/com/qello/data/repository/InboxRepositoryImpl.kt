@@ -5,6 +5,7 @@ import com.qello.data.remote.request.SubmitAnswerRequest
 import com.qello.data.remote.response.DirectionChipResponse
 import com.qello.data.remote.response.InboxCardResponse
 import com.qello.domain.model.DirectionChip
+import com.qello.domain.model.FeedMedia
 import com.qello.domain.model.InboxCard
 import com.qello.domain.model.InboxCategory
 import com.qello.domain.model.InboxDetail
@@ -60,7 +61,7 @@ class InboxRepositoryImpl @Inject constructor(
         status = PostRecipientStatus.valueOf(status),
         questionText = questionText,
         bodyText = bodyText,
-        mediaIds = mediaIds,
+        media = media.map { FeedMedia(mediaId = it.mediaId, url = it.url) },
         senderCoarseRegionCode = senderCoarseRegionCode,
         inboundBearingDegrees = inboundBearingDegrees,
         distanceM = distanceM,

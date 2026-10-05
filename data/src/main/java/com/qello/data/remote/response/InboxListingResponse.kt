@@ -15,7 +15,7 @@ data class InboxCardResponse(
     val status: String,
     val questionText: String,
     val bodyText: String? = null,
-    val mediaIds: List<Long> = emptyList(),
+    val media: List<FeedMediaResponse> = emptyList(),
     val senderCoarseRegionCode: String? = null,
     val inboundBearingDegrees: Double,
     val distanceM: Long? = null,
