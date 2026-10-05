@@ -8,6 +8,7 @@ import com.qello.domain.result.asResult
 import com.qello.presentation.common.toMessageRes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -57,8 +58,10 @@ class QuestionDirectionViewModel @Inject constructor(
                     AppResult.Loading -> isSending.value = true
 
                     is AppResult.Success -> {
-                        isSending.value = false
                         _sideEffect.send(QuestionDirectionSideEffect.NavigateToComplete)
+                        // 화면 전환(페이드)이 끝나기 전에 로딩 화면을 내리면 이전 화면이 잠깐 비쳐 깜빡이므로, 전환이 끝난 뒤에 내린다
+                        delay(NAVIGATION_TRANSITION_MILLIS)
+                        isSending.value = false
                     }
 
                     is AppResult.Error -> {
@@ -72,6 +75,7 @@ class QuestionDirectionViewModel @Inject constructor(
 
     private companion object {
         const val STOP_TIMEOUT_MILLIS = 5_000L
+        const val NAVIGATION_TRANSITION_MILLIS = 500L
 
         // OCTANT 스킴이 서버 DB에 하나만 시드돼 있어 사실상 고정값(V1 마이그레이션 기준)
         const val SCHEME_ID_TEMP = 1L
