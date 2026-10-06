@@ -4,7 +4,7 @@ data class SentPostCard(
     val postId: Long,
     val questionText: String,
     val bodyText: String?,
-    val mediaIds: List<Long>,
+    val media: List<FeedMedia>,
     val coarseRegionCode: String?,
     val submittedAt: String,
     val expiresAt: String,

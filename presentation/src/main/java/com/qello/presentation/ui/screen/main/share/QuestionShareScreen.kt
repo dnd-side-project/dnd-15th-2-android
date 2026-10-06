@@ -28,6 +28,7 @@ import com.qello.domain.model.Answer
 import com.qello.presentation.common.shareImage
 import com.qello.presentation.component.button.QelloBackButton
 import com.qello.presentation.component.button.QelloLargeButton
+import com.qello.presentation.component.image.QelloFeedImage
 import com.qello.presentation.component.loading.QelloLoadingOverlay
 import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.ui.designsystem.QelloColorPalette
@@ -100,15 +101,12 @@ fun QuestionShareScreen(
                         )
                     }
 
-                    // TODO: 실제 이미지(Coil AsyncImage) 연동 시 aspectRatio 강제하지 말고 원본 비율 그대로 표시
-                    if (uiState.mediaIds.isNotEmpty()) {
-                        Box(
+                    uiState.media.firstOrNull()?.let { photo ->
+                        QelloFeedImage(
+                            photo = photo,
                             modifier = Modifier
-                                .fillMaxWidth()
                                 .padding(top = QelloTheme.spacing.spacing16)
-                                .height(200.dp)
-                                .clip(RoundedCornerShape(QelloTheme.radius.radius16))
-                                .background(QelloTheme.colors.imagefield.default),
+                                .clip(RoundedCornerShape(QelloTheme.radius.radius16)),
                         )
                     }
 
@@ -173,15 +171,12 @@ private fun ShareAnswerItem(answer: Answer, modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(top = QelloTheme.spacing.spacing8),
             )
 
-            // TODO: 실제 이미지(Coil AsyncImage) 연동 시 aspectRatio 강제하지 말고 원본 비율 그대로 표시
-            if (answer.mediaIds.isNotEmpty()) {
-                Box(
+            answer.media.firstOrNull()?.let { photo ->
+                QelloFeedImage(
+                    photo = photo,
                     modifier = Modifier
-                        .fillMaxWidth()
                         .padding(top = QelloTheme.spacing.spacing8)
-                        .height(160.dp)
-                        .clip(RoundedCornerShape(QelloTheme.radius.radius16))
-                        .background(QelloTheme.colors.imagefield.default),
+                        .clip(RoundedCornerShape(QelloTheme.radius.radius16)),
                 )
             }
         }

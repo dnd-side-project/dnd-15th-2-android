@@ -2,6 +2,7 @@ package com.qello.data.repository
 
 import com.qello.data.remote.datasource.SentPostDataSource
 import com.qello.data.remote.response.SentPostCardResponse
+import com.qello.domain.model.FeedMedia
 import com.qello.domain.model.SentPostCard
 import com.qello.domain.model.SentPostCursor
 import com.qello.domain.model.SentPostDetail
@@ -35,7 +36,7 @@ class SentPostRepositoryImpl @Inject constructor(
         postId = postId,
         questionText = questionText,
         bodyText = bodyText,
-        mediaIds = mediaIds,
+        media = media.map { FeedMedia(mediaId = it.mediaId, url = it.url) },
         coarseRegionCode = coarseRegionCode,
         submittedAt = submittedAt,
         expiresAt = expiresAt,

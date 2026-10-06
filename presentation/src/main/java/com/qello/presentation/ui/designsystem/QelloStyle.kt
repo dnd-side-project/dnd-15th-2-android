@@ -9,11 +9,13 @@ object QelloSpacing {
     val spacing4: Dp = 4.dp
     val spacing6: Dp = 6.dp
     val spacing8: Dp = 8.dp
+    val spacing10: Dp = 10.dp
     val spacing12: Dp = 12.dp
     val spacing14: Dp = 14.dp
     val spacing16: Dp = 16.dp
     val spacing17: Dp = 17.dp
     val spacing20: Dp = 20.dp
+    val spacing22: Dp = 22.dp
     val spacing24: Dp = 24.dp
     val spacing28: Dp = 28.dp
     val spacing32: Dp = 32.dp

@@ -14,7 +14,7 @@ data class AnswerResponse(
     val authorNickname: String,
     val authorCoarseRegionCode: String? = null,
     val bodyText: String,
-    val mediaIds: List<Long> = emptyList(),
+    val media: List<FeedMediaResponse> = emptyList(),
     val bearingFromSenderDegrees: Double,
     val distanceM: Long? = null,
     val distanceBand: String? = null,

@@ -7,7 +7,7 @@ data class InboxCard(
     val status: PostRecipientStatus,
     val questionText: String,
     val bodyText: String?,
-    val mediaIds: List<Long>,
+    val media: List<FeedMedia>,
     val senderCoarseRegionCode: String?,
     val inboundBearingDegrees: Double,
     val distanceM: Long?,

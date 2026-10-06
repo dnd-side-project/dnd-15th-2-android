@@ -36,6 +36,7 @@ import com.qello.presentation.component.bottomsheet.QelloReportBottomSheet
 import com.qello.presentation.component.bottomsheet.QelloReportCompleteOverlay
 import com.qello.presentation.component.button.QelloBackButton
 import com.qello.presentation.component.button.QelloShareButton
+import com.qello.presentation.component.image.QelloFeedImage
 import com.qello.presentation.component.item.QelloCommentItem
 import com.qello.presentation.component.loading.QelloLoadingOverlay
 import com.qello.presentation.component.text.QelloText
@@ -115,16 +116,13 @@ fun SentQuestionDetailScreen(
                         }
                     }
 
-                    // TODO: 실제 이미지(Coil AsyncImage) 연동 시 aspectRatio 강제하지 말고 원본 비율 그대로 표시
-                    if (card?.mediaIds?.isNotEmpty() == true) {
-                        Box(
+                    card?.media?.firstOrNull()?.let { photo ->
+                        QelloFeedImage(
+                            photo = photo,
                             modifier = Modifier
-                                .fillMaxWidth()
                                 .padding(horizontal = QelloTheme.spacing.spacing20)
                                 .padding(top = QelloTheme.spacing.spacing16)
-                                .height(240.dp)
-                                .clip(RoundedCornerShape(QelloTheme.radius.radius20))
-                                .background(QelloTheme.colors.imagefield.default),
+                                .clip(RoundedCornerShape(QelloTheme.radius.radius20)),
                         )
                     }
 
@@ -156,7 +154,7 @@ fun SentQuestionDetailScreen(
                         meta = "${answer.publishedAt.toRelativeTimeLabel()} · ${answer.authorCoarseRegionCode.orEmpty()} · " +
                             answer.toDistanceLabel(),
                         text = answer.bodyText,
-                        hasPhoto = answer.mediaIds.isNotEmpty(),
+                        photo = answer.media.firstOrNull(),
                         likeCount = answer.reactionCount.toInt(),
                         showTranslate = false,
                         liked = answer.reactedByMe,

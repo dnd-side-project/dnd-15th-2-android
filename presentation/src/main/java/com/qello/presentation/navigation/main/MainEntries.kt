@@ -36,8 +36,14 @@ fun EntryProviderScope<NavKey>.mainEntries(
     entry<MainNavKey.QuestionCompose> {
         QuestionComposeScreen(
             onBack = { navigator.goBack() },
-            onNext = { bodyText, mediaId ->
-                navigator.navigate(MainNavKey.QuestionDirection(bodyText = bodyText, mediaId = mediaId))
+            onNext = { bodyText, mediaId, approvedQuestionId ->
+                navigator.navigate(
+                    MainNavKey.QuestionDirection(
+                        bodyText = bodyText,
+                        mediaId = mediaId,
+                        approvedQuestionId = approvedQuestionId,
+                    ),
+                )
             },
             onNavigateToSuggest = { navigator.navigate(MainNavKey.QuestionSuggestCompose) },
             showSnackbar = showSnackbar,
@@ -48,6 +54,7 @@ fun EntryProviderScope<NavKey>.mainEntries(
         QuestionDirectionScreen(
             bodyText = key.bodyText,
             mediaId = key.mediaId,
+            approvedQuestionId = key.approvedQuestionId,
             onBack = { navigator.goBack() },
             onSendComplete = {
                 navigator.navigate(MainNavKey.QuestionComplete(type = QuestionCompleteType.SEND_QUESTION))
@@ -146,18 +153,21 @@ fun EntryProviderScope<NavKey>.mainEntries(
 
     entry<MainNavKey.QuestionComplete> { key ->
         val content = key.type.toContent()
+        val navigateTo = { destination: MainNavKey? ->
+            navigator.popToTopLevelStart()
+            destination?.let { navigator.navigate(it) }
+            Unit
+        }
 
         QuestionCompleteScreen(
             titleLine1 = content.titleLine1,
             titleLine2 = content.titleLine2,
             caption = content.caption,
+            imageRes = content.imageRes,
             primaryButtonText = content.primaryButtonText,
             secondaryButtonText = content.secondaryButtonText,
-            onSendAnother = {
-                navigator.popToTopLevelStart()
-                navigator.navigate(MainNavKey.QuestionCompose)
-            },
-            onNavigateHome = { navigator.popToTopLevelStart() },
+            onPrimaryClick = { navigateTo(content.primaryDestination) },
+            onSecondaryClick = { navigateTo(content.secondaryDestination) },
         )
     }
 }

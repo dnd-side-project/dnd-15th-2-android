@@ -2,23 +2,17 @@ package com.qello.presentation.ui.screen.main.question
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.dp
 import com.qello.presentation.component.button.QelloSmallButton
-import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.ui.designsystem.theme.QelloTheme
 
 @Composable
@@ -26,53 +20,23 @@ fun QuestionCompleteScreen(
     titleLine1: String,
     titleLine2: String,
     caption: String,
+    @DrawableRes imageRes: Int,
     primaryButtonText: String,
     secondaryButtonText: String,
-    onSendAnother: () -> Unit,
-    onNavigateHome: () -> Unit,
+    onPrimaryClick: () -> Unit,
+    onSecondaryClick: () -> Unit,
 ) {
-    // 뒤로가기 버튼이 있는 화면(패딩 24dp + 버튼 48dp)과 버튼-텍스트 간격(57dp)을 더해 시작 위치를 맞춤
-    val headerTopSpacing = 24.dp + QelloTheme.iconSize.size48 + 57.dp
-
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(QelloTheme.gradient.backgroundStrong)
             .padding(horizontal = QelloTheme.spacing.spacing20),
     ) {
-        Spacer(Modifier.height(headerTopSpacing))
-
-        Column(modifier = Modifier.padding(horizontal = QelloTheme.spacing.spacing4)) {
-            QelloText(
-                text = titleLine1,
-                style = QelloTheme.typography.heading1,
-                color = QelloTheme.colors.label.strong,
-            )
-
-            QelloText(
-                text = titleLine2,
-                style = QelloTheme.typography.heading1,
-                color = QelloTheme.colors.label.strong,
-            )
-
-            Spacer(Modifier.height(QelloTheme.spacing.spacing8))
-
-            QelloText(
-                text = caption,
-                style = QelloTheme.typography.caption1,
-                color = QelloTheme.colors.primary.normal,
-            )
-        }
+        QuestionStatusHeader(titleLine1 = titleLine1, titleLine2 = titleLine2, caption = caption)
 
         Spacer(Modifier.weight(1f))
 
-        Box(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .size(300.dp)
-                .clip(RoundedCornerShape(QelloTheme.radius.radius24))
-                .background(QelloTheme.colors.imagefield.default),
-        )
+        QuestionStatusImage(modifier = Modifier.align(Alignment.CenterHorizontally), imageRes = imageRes)
 
         Spacer(Modifier.weight(1f))
 
@@ -85,11 +49,11 @@ fun QuestionCompleteScreen(
             QelloSmallButton(
                 text = primaryButtonText,
                 colors = QelloTheme.buttonColors.darkButtonColors,
-                onClick = onSendAnother,
+                onClick = onPrimaryClick,
             )
             QelloSmallButton(
                 text = secondaryButtonText,
-                onClick = onNavigateHome,
+                onClick = onSecondaryClick,
             )
         }
     }

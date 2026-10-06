@@ -21,7 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.qello.domain.model.FeedMedia
 import com.qello.presentation.R
+import com.qello.presentation.component.image.QelloFeedImage
 import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.ui.designsystem.QelloColorPalette
 import com.qello.presentation.ui.designsystem.theme.QelloTheme
@@ -31,7 +33,7 @@ fun QelloCommentItem(
     username: String,
     meta: String,
     text: String,
-    hasPhoto: Boolean,
+    photo: FeedMedia?,
     likeCount: Int,
     showTranslate: Boolean,
     onMoreClick: () -> Unit,
@@ -90,15 +92,12 @@ fun QelloCommentItem(
                 modifier = Modifier.padding(top = QelloTheme.spacing.spacing8),
             )
 
-            if (hasPhoto) {
-                // TODO: 실제 이미지(Coil AsyncImage) 연동 시 aspectRatio 강제하지 말고 원본 비율 그대로 표시
-                Box(
+            if (photo != null) {
+                QelloFeedImage(
+                    photo = photo,
                     modifier = Modifier
-                        .fillMaxWidth()
                         .padding(top = QelloTheme.spacing.spacing8)
-                        .height(160.dp)
-                        .clip(RoundedCornerShape(QelloTheme.radius.radius16))
-                        .background(QelloTheme.colors.imagefield.default),
+                        .clip(RoundedCornerShape(QelloTheme.radius.radius16)),
                 )
             }
 

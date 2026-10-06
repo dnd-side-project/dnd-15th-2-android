@@ -196,7 +196,7 @@ fun SentQuestionListScreen(
                         items(filtered, key = { it.postId }) { card ->
                             QelloQuestionCard(
                                 title = card.questionText,
-                                hasPhoto = card.mediaIds.isNotEmpty(),
+                                photo = card.media.firstOrNull(),
                                 location = card.coarseRegionCode.orEmpty(),
                                 localTime = card.submittedAt.toLocalTimeLabel(),
                                 commentCount = card.answerCount.toInt(),

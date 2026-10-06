@@ -21,7 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.qello.domain.model.FeedMedia
 import com.qello.presentation.R
+import com.qello.presentation.component.image.QelloFeedCropImage
 import com.qello.presentation.component.text.QelloText
 import com.qello.presentation.ui.designsystem.QelloColorPalette
 import com.qello.presentation.ui.designsystem.theme.QelloTheme
@@ -29,7 +31,7 @@ import com.qello.presentation.ui.designsystem.theme.QelloTheme
 @Composable
 fun QelloQuestionCard(
     title: String,
-    hasPhoto: Boolean,
+    photo: FeedMedia?,
     location: String,
     localTime: String,
     commentCount: Int,
@@ -63,14 +65,14 @@ fun QelloQuestionCard(
             )
         }
 
-        if (hasPhoto) {
-            Box(
+        if (photo != null) {
+            QelloFeedCropImage(
+                photo = photo,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 10.dp, end = 10.dp, top = if (badgeText != null) 0.dp else 10.dp)
                     .aspectRatio(16f / 10f)
-                    .clip(RoundedCornerShape(15.dp))
-                    .background(QelloTheme.colors.imagefield.default),
+                    .clip(RoundedCornerShape(15.dp)),
             )
         }
 

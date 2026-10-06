@@ -37,6 +37,7 @@ import com.qello.presentation.ui.designsystem.theme.QelloTheme
 fun QuestionDirectionScreen(
     bodyText: String,
     mediaId: Long?,
+    approvedQuestionId: Long,
     onBack: () -> Unit,
     onSendComplete: () -> Unit,
     showSnackbar: suspend (message: String) -> Unit,
@@ -61,37 +62,15 @@ fun QuestionDirectionScreen(
                 .background(QelloTheme.gradient.backgroundStrong)
                 .padding(horizontal = QelloTheme.spacing.spacing20),
         ) {
-            Spacer(Modifier.height(24.dp + QelloTheme.iconSize.size48))
-
-            QelloText(
-                text = "질문을 보내고 있어요!",
-                style = QelloTheme.typography.heading1,
-                color = QelloTheme.colors.label.strong,
-            )
-
-            QelloText(
-                text = "잠시만 기다려주세요.",
-                style = QelloTheme.typography.heading1,
-                color = QelloTheme.colors.label.strong,
-            )
-
-            Spacer(Modifier.height(QelloTheme.spacing.spacing8))
-
-            QelloText(
-                text = "켈로에서 많은 사람들과 질문하며 알아가요",
-                style = QelloTheme.typography.caption1,
-                color = QelloTheme.colors.primary.normal,
+            QuestionStatusHeader(
+                titleLine1 = "질문을 보내고 있어요!",
+                titleLine2 = "잠시만 기다려주세요.",
+                caption = "켈로에서 많은 사람들과 질문하며 알아가요",
             )
 
             Spacer(Modifier.weight(1f))
 
-            Box(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .size(300.dp)
-                    .clip(RoundedCornerShape(QelloTheme.radius.radius24))
-                    .background(QelloTheme.colors.imagefield.default),
-            )
+            QuestionStatusImage(modifier = Modifier.align(Alignment.CenterHorizontally))
 
             Spacer(Modifier.weight(1f))
 
@@ -141,6 +120,7 @@ fun QuestionDirectionScreen(
                             viewModel.onSendClick(
                                 bodyText = bodyText,
                                 mediaId = mediaId,
+                                approvedQuestionId = approvedQuestionId,
                                 segmentKey = direction.segmentKey,
                             )
                         }

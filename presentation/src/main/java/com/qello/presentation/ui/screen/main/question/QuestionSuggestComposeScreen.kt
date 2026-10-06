@@ -54,25 +54,10 @@ fun QuestionSuggestComposeScreen(
                 .background(QelloTheme.gradient.backgroundStrong)
                 .padding(horizontal = QelloTheme.spacing.spacing20),
         ) {
-            Spacer(Modifier.height(QelloTheme.spacing.spacing64))
-
-            QelloText(
-                text = "질문을 보내고 있어요!",
-                style = QelloTheme.typography.heading1,
-                color = QelloTheme.colors.label.strong,
-            )
-            QelloText(
-                text = "잠시만 기다려주세요.",
-                style = QelloTheme.typography.heading1,
-                color = QelloTheme.colors.label.strong,
-            )
-
-            Spacer(Modifier.height(QelloTheme.spacing.spacing8))
-
-            QelloText(
-                text = "켈로에서 많은 사람들과 질문하며 알아가요",
-                style = QelloTheme.typography.caption1,
-                color = QelloTheme.colors.primary.normal,
+            QuestionStatusHeader(
+                titleLine1 = "질문을 보내고 있어요!",
+                titleLine2 = "잠시만 기다려주세요.",
+                caption = "켈로에서 많은 사람들과 질문하며 알아가요",
             )
         }
     } else {

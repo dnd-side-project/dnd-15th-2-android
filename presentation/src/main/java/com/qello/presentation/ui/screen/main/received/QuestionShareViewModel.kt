@@ -55,7 +55,7 @@ class QuestionShareViewModel @Inject constructor(
                         uiStateFlow.value = QuestionShareUiState(
                             questionText = card.questionText,
                             bodyText = card.bodyText,
-                            mediaIds = card.mediaIds,
+                            media = card.media,
                             isLoading = false,
                         )
                         loadAnswers(card.postId)

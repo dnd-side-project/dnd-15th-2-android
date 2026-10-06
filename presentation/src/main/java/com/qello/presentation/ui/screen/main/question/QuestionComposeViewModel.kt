@@ -2,7 +2,9 @@ package com.qello.presentation.ui.screen.main.question
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.qello.domain.model.RecommendedQuestion
 import com.qello.domain.repository.MediaRepository
+import com.qello.domain.repository.QuestionRepository
 import com.qello.domain.result.AppResult
 import com.qello.domain.result.asResult
 import com.qello.presentation.R
@@ -25,19 +27,27 @@ import javax.inject.Inject
 @HiltViewModel
 class QuestionComposeViewModel @Inject constructor(
     private val mediaRepository: MediaRepository,
+    private val questionRepository: QuestionRepository,
 ) : ViewModel() {
+    private val questions = MutableStateFlow(emptyList<RecommendedQuestion>())
+    private val isLoadingQuestions = MutableStateFlow(false)
     private val photoUri = MutableStateFlow<String?>(null)
     private val content = MutableStateFlow("")
     private val isUploadingPhoto = MutableStateFlow(false)
     private val uploadedMediaId = MutableStateFlow<Long?>(null)
 
+    private val questionList = combine(questions, isLoadingQuestions) { questions, isLoading -> questions to isLoading }
+
     val uiState: StateFlow<QuestionComposeUiState> = combine(
+        questionList,
         photoUri,
         content,
         isUploadingPhoto,
         uploadedMediaId,
-    ) { photoUri, content, isUploadingPhoto, uploadedMediaId ->
+    ) { (questions, isLoadingQuestions), photoUri, content, isUploadingPhoto, uploadedMediaId ->
         QuestionComposeUiState(
+            questions = questions,
+            isLoadingQuestions = isLoadingQuestions,
             photoUri = photoUri,
             content = content,
             isUploadingPhoto = isUploadingPhoto,
@@ -51,6 +61,32 @@ class QuestionComposeViewModel @Inject constructor(
 
     private val _sideEffect = Channel<QuestionComposeSideEffect>(Channel.BUFFERED)
     val sideEffect: Flow<QuestionComposeSideEffect> = _sideEffect.receiveAsFlow()
+
+    init {
+        loadQuestions()
+    }
+
+    private fun loadQuestions() {
+        suspend { questionRepository.getRecommendedQuestions() }
+            .asFlow()
+            .asResult()
+            .onEach { result ->
+                when (result) {
+                    AppResult.Loading -> isLoadingQuestions.value = true
+
+                    is AppResult.Success -> {
+                        isLoadingQuestions.value = false
+                        questions.value = result.data
+                    }
+
+                    is AppResult.Error -> {
+                        isLoadingQuestions.value = false
+                        _sideEffect.send(QuestionComposeSideEffect.ShowSnackbar(result.error.toMessageRes()))
+                    }
+                }
+            }
+            .launchIn(viewModelScope)
+    }
 
     fun onContentChanged(text: String) {
         content.value = text
