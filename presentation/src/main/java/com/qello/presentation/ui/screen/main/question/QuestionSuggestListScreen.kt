@@ -18,10 +18,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,17 +42,10 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-private enum class QuestionSuggestListTab(val label: String) {
-    ALL("전체"),
-    REVIEWING("검토중"),
-    COMPLETED("검토완료"),
-}
-
 private val dateFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun QuestionSuggestListScreen(
+fun QuestionSuggestListRoute(
     onBack: () -> Unit,
     onNavigateToSuggestCompose: () -> Unit,
     showSnackbar: suspend (message: String) -> Unit,
@@ -73,15 +62,29 @@ fun QuestionSuggestListScreen(
         }
     }
 
-    var selectedTab by remember { mutableIntStateOf(0) }
-    var moreProposalId by remember { mutableStateOf<Long?>(null) }
+    QuestionSuggestListScreen(
+        uiState = uiState,
+        onBack = onBack,
+        onNavigateToSuggestCompose = onNavigateToSuggestCompose,
+        onTabSelected = viewModel::onTabSelected,
+        onMoreClick = viewModel::onMoreClicked,
+        onMoreDismiss = viewModel::onMoreDismissed,
+        onDeleteClick = viewModel::onDeleteClicked,
+    )
+}
 
-    val proposals = when (QuestionSuggestListTab.entries[selectedTab]) {
-        QuestionSuggestListTab.ALL -> uiState.proposals
-        QuestionSuggestListTab.REVIEWING -> uiState.proposals.filter { it.status.isReviewing() }
-        QuestionSuggestListTab.COMPLETED -> uiState.proposals.filter { !it.status.isReviewing() }
-    }
-
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun QuestionSuggestListScreen(
+    uiState: QuestionSuggestListUiState,
+    onBack: () -> Unit,
+    onNavigateToSuggestCompose: () -> Unit,
+    onTabSelected: (QuestionSuggestListTab) -> Unit,
+    onMoreClick: (proposalId: Long) -> Unit,
+    onMoreDismiss: () -> Unit,
+    onDeleteClick: () -> Unit,
+) {
+    val proposals = uiState.visibleProposals
     val groupedProposals = proposals.groupBy { it.createdAt.toDateLabel() }
 
     Column(
@@ -105,8 +108,8 @@ fun QuestionSuggestListScreen(
 
         QelloTabRow(
             tabs = QuestionSuggestListTab.entries.map { it.label },
-            selectedIndex = selectedTab,
-            onTabSelected = { selectedTab = it },
+            selectedIndex = uiState.selectedTab.ordinal,
+            onTabSelected = { onTabSelected(QuestionSuggestListTab.entries[it]) },
         )
 
         if (proposals.isEmpty()) {
@@ -191,7 +194,7 @@ fun QuestionSuggestListScreen(
                                 dotColor = dotColor,
                                 title = title,
                                 subtitle = proposal.proposedText,
-                                onMoreClick = { moreProposalId = proposal.id },
+                                onMoreClick = { onMoreClick(proposal.id) },
                             )
                         }
                     }
@@ -199,9 +202,9 @@ fun QuestionSuggestListScreen(
             }
         }
 
-        if (moreProposalId != null) {
+        if (uiState.moreProposalId != null) {
             ModalBottomSheet(
-                onDismissRequest = { moreProposalId = null },
+                onDismissRequest = onMoreDismiss,
                 containerColor = Color.Transparent,
                 shape = RoundedCornerShape(topStart = 50.dp, topEnd = 50.dp),
             ) {
@@ -216,7 +219,7 @@ fun QuestionSuggestListScreen(
                 ) {
                     QelloActionSheetItem(
                         text = "알림 받지 않기",
-                        onClick = { moreProposalId = null },
+                        onClick = onMoreDismiss,
                         modifier = Modifier.padding(horizontal = 30.dp),
                     )
 
@@ -224,10 +227,7 @@ fun QuestionSuggestListScreen(
 
                     QelloActionSheetItem(
                         text = "삭제하기",
-                        onClick = {
-                            viewModel.onDeleteProposal(moreProposalId!!)
-                            moreProposalId = null
-                        },
+                        onClick = onDeleteClick,
                         modifier = Modifier.padding(horizontal = 30.dp),
                     )
 
@@ -236,7 +236,7 @@ fun QuestionSuggestListScreen(
                     QelloLargeButton(
                         text = "닫기",
                         colors = QelloTheme.buttonColors.darkButtonColors,
-                        onClick = { moreProposalId = null },
+                        onClick = onMoreDismiss,
                         modifier = Modifier.padding(horizontal = 18.dp),
                     )
                 }
@@ -247,11 +247,6 @@ fun QuestionSuggestListScreen(
     if (uiState.isLoading) {
         QelloLoadingOverlay()
     }
-}
-
-private fun QuestionProposalStatus.isReviewing(): Boolean = when (this) {
-    QuestionProposalStatus.DRAFT, QuestionProposalStatus.SUBMITTED, QuestionProposalStatus.UNDER_REVIEW -> true
-    QuestionProposalStatus.APPROVED, QuestionProposalStatus.REJECTED, QuestionProposalStatus.ARCHIVED -> false
 }
 
 private fun String.toDateLabel(): String =

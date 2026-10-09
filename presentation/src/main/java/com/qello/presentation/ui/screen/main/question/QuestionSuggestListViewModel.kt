@@ -33,7 +33,22 @@ class QuestionSuggestListViewModel @Inject constructor(
         loadMyQuestionProposals()
     }
 
-    fun onDeleteProposal(proposalId: Long) {
+    fun onTabSelected(tab: QuestionSuggestListTab) {
+        _uiState.update { it.copy(selectedTab = tab) }
+    }
+
+    fun onMoreClicked(proposalId: Long) {
+        _uiState.update { it.copy(moreProposalId = proposalId) }
+    }
+
+    fun onMoreDismissed() {
+        _uiState.update { it.copy(moreProposalId = null) }
+    }
+
+    fun onDeleteClicked() {
+        val proposalId = _uiState.value.moreProposalId ?: return
+        _uiState.update { it.copy(moreProposalId = null) }
+
         suspend { questionRepository.deleteQuestionProposal(proposalId) }
             .asFlow()
             .asResult()
