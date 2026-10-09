@@ -74,7 +74,7 @@ fun QuestionSuggestListScreen(
     }
 
     var selectedTab by remember { mutableIntStateOf(0) }
-    var showMoreSheet by remember { mutableStateOf(false) }
+    var moreProposalId by remember { mutableStateOf<Long?>(null) }
 
     val proposals = when (QuestionSuggestListTab.entries[selectedTab]) {
         QuestionSuggestListTab.ALL -> uiState.proposals
@@ -191,7 +191,7 @@ fun QuestionSuggestListScreen(
                                 dotColor = dotColor,
                                 title = title,
                                 subtitle = proposal.proposedText,
-                                onMoreClick = { showMoreSheet = true },
+                                onMoreClick = { moreProposalId = proposal.id },
                             )
                         }
                     }
@@ -199,9 +199,9 @@ fun QuestionSuggestListScreen(
             }
         }
 
-        if (showMoreSheet) {
+        if (moreProposalId != null) {
             ModalBottomSheet(
-                onDismissRequest = { showMoreSheet = false },
+                onDismissRequest = { moreProposalId = null },
                 containerColor = Color.Transparent,
                 shape = RoundedCornerShape(topStart = 50.dp, topEnd = 50.dp),
             ) {
@@ -216,7 +216,7 @@ fun QuestionSuggestListScreen(
                 ) {
                     QelloActionSheetItem(
                         text = "알림 받지 않기",
-                        onClick = { showMoreSheet = false },
+                        onClick = { moreProposalId = null },
                         modifier = Modifier.padding(horizontal = 30.dp),
                     )
 
@@ -224,7 +224,10 @@ fun QuestionSuggestListScreen(
 
                     QelloActionSheetItem(
                         text = "삭제하기",
-                        onClick = { showMoreSheet = false },
+                        onClick = {
+                            viewModel.onDeleteProposal(moreProposalId!!)
+                            moreProposalId = null
+                        },
                         modifier = Modifier.padding(horizontal = 30.dp),
                     )
 
@@ -233,7 +236,7 @@ fun QuestionSuggestListScreen(
                     QelloLargeButton(
                         text = "닫기",
                         colors = QelloTheme.buttonColors.darkButtonColors,
-                        onClick = { showMoreSheet = false },
+                        onClick = { moreProposalId = null },
                         modifier = Modifier.padding(horizontal = 18.dp),
                     )
                 }

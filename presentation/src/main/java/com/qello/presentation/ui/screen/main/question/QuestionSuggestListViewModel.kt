@@ -33,6 +33,27 @@ class QuestionSuggestListViewModel @Inject constructor(
         loadMyQuestionProposals()
     }
 
+    fun onDeleteProposal(proposalId: Long) {
+        suspend { questionRepository.deleteQuestionProposal(proposalId) }
+            .asFlow()
+            .asResult()
+            .onEach { result ->
+                when (result) {
+                    AppResult.Loading -> _uiState.update { it.copy(isLoading = true) }
+
+                    is AppResult.Success -> _uiState.update { state ->
+                        state.copy(isLoading = false, proposals = state.proposals.filterNot { it.id == proposalId })
+                    }
+
+                    is AppResult.Error -> {
+                        _uiState.update { it.copy(isLoading = false) }
+                        _sideEffect.send(QuestionSuggestListSideEffect.ShowSnackbar(result.error.toMessageRes()))
+                    }
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
     fun loadMyQuestionProposals() {
         suspend { questionRepository.getMyQuestionProposals() }
             .asFlow()
