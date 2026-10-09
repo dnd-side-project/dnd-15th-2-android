@@ -10,7 +10,7 @@ import com.qello.presentation.ui.screen.main.question.QuestionCompleteScreen
 import com.qello.presentation.ui.screen.main.question.QuestionComposeScreen
 import com.qello.presentation.ui.screen.main.question.QuestionDirectionScreen
 import com.qello.presentation.ui.screen.main.question.QuestionSuggestComposeScreen
-import com.qello.presentation.ui.screen.main.question.QuestionSuggestListScreen
+import com.qello.presentation.ui.screen.main.question.QuestionSuggestListRoute
 import com.qello.presentation.ui.screen.main.received.ReceivedQuestionDetailScreen
 import com.qello.presentation.ui.screen.main.received.ReceivedQuestionListScreen
 import com.qello.presentation.ui.screen.main.received.ReceivedQuestionShareScreen
@@ -74,7 +74,7 @@ fun EntryProviderScope<NavKey>.mainEntries(
     }
 
     entry<MainNavKey.QuestionSuggestList> {
-        QuestionSuggestListScreen(
+        QuestionSuggestListRoute(
             onBack = { navigator.goBack() },
             onNavigateToSuggestCompose = { navigator.navigate(MainNavKey.QuestionSuggestCompose) },
             showSnackbar = showSnackbar,
