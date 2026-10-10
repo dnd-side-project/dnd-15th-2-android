@@ -9,7 +9,7 @@ import com.qello.domain.result.AppResult
 import com.qello.domain.result.asResult
 import com.qello.domain.validation.NicknameError
 import com.qello.domain.validation.NicknameValidator
-import com.qello.presentation.common.toMessageRes
+import com.qello.presentation.mapper.toMessageRes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow

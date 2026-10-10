@@ -7,7 +7,7 @@ import com.qello.domain.result.AppResult
 import com.qello.domain.result.asResult
 import com.qello.domain.validation.QuestionProposalError
 import com.qello.domain.validation.QuestionProposalValidator
-import com.qello.presentation.common.toMessageRes
+import com.qello.presentation.mapper.toMessageRes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay

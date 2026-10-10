@@ -1,4 +1,4 @@
-package com.qello.presentation.screen.main.question
+package com.qello.presentation.common
 
 import androidx.annotation.StringRes
 import com.qello.presentation.R

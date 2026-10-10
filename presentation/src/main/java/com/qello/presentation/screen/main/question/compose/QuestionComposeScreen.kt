@@ -65,7 +65,7 @@ import com.qello.presentation.designsystem.component.button.QelloSmallButton
 import com.qello.presentation.designsystem.component.loading.QelloLoadingOverlay
 import com.qello.presentation.designsystem.component.text.QelloText
 import com.qello.presentation.designsystem.component.text.QelloTextArea
-import com.qello.presentation.media.rememberSinglePhotoPicker
+import com.qello.presentation.common.rememberSinglePhotoPicker
 import com.qello.presentation.designsystem.theme.QelloColorPalette
 import com.qello.presentation.designsystem.theme.QelloSpacing
 import com.qello.presentation.designsystem.theme.QelloTheme

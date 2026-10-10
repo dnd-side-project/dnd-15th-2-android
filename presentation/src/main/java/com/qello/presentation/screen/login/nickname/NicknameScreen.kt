@@ -26,7 +26,7 @@ import com.qello.presentation.designsystem.component.item.QelloProfileImageField
 import com.qello.presentation.designsystem.component.loading.QelloLoadingOverlay
 import com.qello.presentation.designsystem.component.spacer.QelloSpacer
 import com.qello.presentation.designsystem.component.text.QelloTextField
-import com.qello.presentation.media.rememberSinglePhotoPicker
+import com.qello.presentation.common.rememberSinglePhotoPicker
 import com.qello.presentation.designsystem.theme.QelloTheme
 
 @Composable

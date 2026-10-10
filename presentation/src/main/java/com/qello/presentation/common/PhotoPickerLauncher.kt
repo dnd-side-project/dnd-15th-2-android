@@ -1,4 +1,4 @@
-package com.qello.presentation.media
+package com.qello.presentation.common
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest

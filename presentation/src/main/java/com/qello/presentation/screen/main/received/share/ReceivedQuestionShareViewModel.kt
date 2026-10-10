@@ -6,7 +6,7 @@ import com.qello.domain.repository.DirectionRepository
 import com.qello.domain.repository.InboxRepository
 import com.qello.domain.result.AppResult
 import com.qello.domain.result.asResult
-import com.qello.presentation.common.toMessageRes
+import com.qello.presentation.mapper.toMessageRes
 import com.qello.presentation.screen.main.share.QuestionShareSideEffect
 import com.qello.presentation.screen.main.share.QuestionShareUiState
 import dagger.hilt.android.lifecycle.HiltViewModel

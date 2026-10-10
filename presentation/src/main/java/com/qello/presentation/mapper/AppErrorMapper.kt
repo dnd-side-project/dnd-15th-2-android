@@ -1,4 +1,4 @@
-package com.qello.presentation.common
+package com.qello.presentation.mapper
 
 import androidx.annotation.StringRes
 import com.qello.domain.result.AppError
