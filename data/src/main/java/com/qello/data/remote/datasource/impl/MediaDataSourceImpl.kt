@@ -20,12 +20,10 @@ class MediaDataSourceImpl @Inject constructor(
     @RawHttpClient private val rawClient: HttpClient,
 ) : MediaDataSource {
     override suspend fun createUploadRequest(
-        byteSize: Long,
-        checksum: String,
-        contentType: String,
+        request: CreateUploadRequestRequest,
     ): UploadRequestResponse = client.post("media-assets/upload-requests") {
         contentType(ContentType.Application.Json)
-        setBody(CreateUploadRequestRequest(byteSize = byteSize, checksum = checksum, contentType = contentType))
+        setBody(request)
     }.body<ApiResponse<UploadRequestResponse>>().data
 
     override suspend fun uploadImageBytes(uploadUrl: String, contentType: String, bytes: ByteArray) {

@@ -3,6 +3,7 @@ package com.qello.data.repository
 import com.qello.data.local.media.ImageFileReader
 import com.qello.data.mapper.toDomain
 import com.qello.data.remote.datasource.MediaDataSource
+import com.qello.data.remote.model.media.CreateUploadRequestRequest
 import com.qello.domain.model.MediaAsset
 import com.qello.domain.repository.MediaRepository
 import javax.inject.Inject
@@ -15,9 +16,11 @@ class MediaRepositoryImpl @Inject constructor(
         val image = imageFileReader.read(imageUri)
 
         val uploadRequest = mediaDataSource.createUploadRequest(
-            byteSize = image.bytes.size.toLong(),
-            checksum = image.checksum,
-            contentType = image.contentType,
+            CreateUploadRequestRequest(
+                byteSize = image.bytes.size.toLong(),
+                checksum = image.checksum,
+                contentType = image.contentType,
+            ),
         )
 
         mediaDataSource.uploadImageBytes(

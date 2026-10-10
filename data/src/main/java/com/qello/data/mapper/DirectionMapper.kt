@@ -3,8 +3,10 @@ package com.qello.data.mapper
 import com.qello.data.remote.model.direction.AnswerResponse
 import com.qello.data.remote.model.direction.ReactionResponse
 import com.qello.data.remote.model.direction.ReportReceiptResponse
+import com.qello.data.remote.model.direction.SubmitReportRequest
 import com.qello.domain.model.Answer
 import com.qello.domain.model.PostReaction
+import com.qello.domain.model.ReportReason
 import com.qello.domain.model.ReportReceipt
 
 internal fun AnswerResponse.toDomain(): Answer = Answer(
@@ -32,3 +34,6 @@ internal fun ReportReceiptResponse.toDomain(): ReportReceipt = ReportReceipt(
     alreadyReceived = alreadyReceived,
     guidance = guidance,
 )
+
+internal fun ReportReason.toRequest(detail: String?, blockAuthor: Boolean): SubmitReportRequest =
+    SubmitReportRequest(reasonCode = name, detail = detail, blockAuthor = blockAuthor)

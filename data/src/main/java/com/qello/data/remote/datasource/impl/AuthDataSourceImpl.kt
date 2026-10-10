@@ -16,20 +16,9 @@ class AuthDataSourceImpl @Inject constructor(
     private val client: HttpClient,
 ) : AuthDataSource {
     override suspend fun registerDevice(
-        installationId: String,
-        nickname: String,
+        request: RegisterDeviceRequest,
     ): RegisterDeviceResponse = client.post("auth/devices") {
         contentType(ContentType.Application.Json)
-        setBody(
-            RegisterDeviceRequest(
-                installationId = installationId,
-                nickname = nickname,
-                platform = "ANDROID",
-                timezone = "Asia/Seoul",
-                countryCode = "KR",
-                coarseRegionCode = "KR-11",
-                locale = "ko_KR",
-            ),
-        )
+        setBody(request)
     }.body<ApiResponse<RegisterDeviceResponse>>().data
 }

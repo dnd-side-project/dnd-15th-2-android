@@ -2,6 +2,7 @@ package com.qello.data.repository
 
 import com.qello.data.local.datastore.UserPreferencesDataSource
 import com.qello.data.remote.datasource.AuthDataSource
+import com.qello.data.remote.model.auth.RegisterDeviceRequest
 import com.qello.domain.model.UserAccount
 import com.qello.domain.repository.UserAccountRepository
 import kotlinx.coroutines.NonCancellable
@@ -18,7 +19,17 @@ class UserAccountRepositoryImpl @Inject constructor(
 
     override suspend fun createAccount(nickname: String) {
         val installationId = userPreferencesDataSource.getOrCreateInstallationId()
-        val response = authDataSource.registerDevice(installationId, nickname)
+        val response = authDataSource.registerDevice(
+            RegisterDeviceRequest(
+                installationId = installationId,
+                nickname = nickname,
+                platform = "ANDROID",
+                timezone = "Asia/Seoul",
+                countryCode = "KR",
+                coarseRegionCode = "KR-11",
+                locale = "ko_KR",
+            ),
+        )
 
         withContext(NonCancellable) {
             userPreferencesDataSource.saveAccount(

@@ -1,9 +1,9 @@
 package com.qello.data.repository
 
 import com.qello.data.mapper.toDomain
+import com.qello.data.mapper.toRequest
 import com.qello.data.remote.datasource.DirectionDataSource
 import com.qello.data.remote.model.direction.SubmitDirectionPostRequest
-import com.qello.data.remote.model.direction.SubmitReportRequest
 import com.qello.data.remote.model.direction.UpdatePresenceRequest
 import com.qello.domain.model.Answer
 import com.qello.domain.model.PostReaction
@@ -85,7 +85,7 @@ class DirectionRepositoryImpl @Inject constructor(
     ): ReportReceipt =
         directionDataSource.reportPost(
             postId = postId,
-            request = SubmitReportRequest(reasonCode = reasonCode.name, detail = detail, blockAuthor = blockAuthor),
+            request = reasonCode.toRequest(detail = detail, blockAuthor = blockAuthor),
         ).toDomain()
 
     override suspend fun reportAnswer(
@@ -96,7 +96,7 @@ class DirectionRepositoryImpl @Inject constructor(
     ): ReportReceipt =
         directionDataSource.reportAnswer(
             answerId = answerId,
-            request = SubmitReportRequest(reasonCode = reasonCode.name, detail = detail, blockAuthor = blockAuthor),
+            request = reasonCode.toRequest(detail = detail, blockAuthor = blockAuthor),
         ).toDomain()
 
     override suspend fun markAnswersRead(postId: Long) {

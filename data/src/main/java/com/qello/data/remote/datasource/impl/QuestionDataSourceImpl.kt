@@ -18,10 +18,10 @@ class QuestionDataSourceImpl @Inject constructor(
     private val client: HttpClient,
 ) : QuestionDataSource {
     override suspend fun submitQuestionProposal(
-        proposedText: String,
+        request: QuestionProposalRequest,
     ): QuestionProposalResponse = client.post("questions/proposals") {
         contentType(ContentType.Application.Json)
-        setBody(QuestionProposalRequest(proposedText = proposedText))
+        setBody(request)
     }.body<ApiResponse<QuestionProposalResponse>>().data
 
     override suspend fun getMyQuestionProposals(): List<QuestionProposalResponse> =
