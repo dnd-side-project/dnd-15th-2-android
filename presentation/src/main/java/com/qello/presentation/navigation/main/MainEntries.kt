@@ -6,11 +6,11 @@ import com.qello.presentation.navigation.Navigator
 import com.qello.presentation.screen.main.MainScreen
 import com.qello.presentation.screen.main.my.MyScreen
 import com.qello.presentation.screen.main.notification.NotificationScreen
-import com.qello.presentation.screen.main.question.QuestionCompleteScreen
-import com.qello.presentation.screen.main.question.QuestionComposeScreen
-import com.qello.presentation.screen.main.question.QuestionDirectionScreen
-import com.qello.presentation.screen.main.question.QuestionSuggestComposeScreen
-import com.qello.presentation.screen.main.question.QuestionSuggestListScreen
+import com.qello.presentation.screen.main.question.complete.QuestionCompleteScreen
+import com.qello.presentation.screen.main.question.compose.QuestionComposeScreen
+import com.qello.presentation.screen.main.question.direction.QuestionDirectionScreen
+import com.qello.presentation.screen.main.question.suggest.QuestionSuggestComposeScreen
+import com.qello.presentation.screen.main.question.suggest.QuestionSuggestListScreen
 import com.qello.presentation.screen.main.received.ReceivedQuestionDetailScreen
 import com.qello.presentation.screen.main.received.ReceivedQuestionListScreen
 import com.qello.presentation.screen.main.received.ReceivedQuestionShareScreen

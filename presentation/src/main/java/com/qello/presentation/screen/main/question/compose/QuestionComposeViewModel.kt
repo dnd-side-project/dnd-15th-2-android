@@ -1,4 +1,4 @@
-package com.qello.presentation.screen.main.question
+package com.qello.presentation.screen.main.question.compose
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

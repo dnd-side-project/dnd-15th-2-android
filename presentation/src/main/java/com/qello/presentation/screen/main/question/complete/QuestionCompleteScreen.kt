@@ -1,4 +1,4 @@
-package com.qello.presentation.screen.main.question
+package com.qello.presentation.screen.main.question.complete
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.qello.presentation.designsystem.component.button.QelloSmallButton
 import com.qello.presentation.designsystem.theme.QelloTheme
+import com.qello.presentation.screen.main.question.component.QuestionStatusHeader
+import com.qello.presentation.screen.main.question.component.QuestionStatusImage
 
 @Composable
 fun QuestionCompleteScreen(

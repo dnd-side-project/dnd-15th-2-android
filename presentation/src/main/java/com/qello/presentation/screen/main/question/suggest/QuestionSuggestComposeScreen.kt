@@ -1,4 +1,4 @@
-package com.qello.presentation.screen.main.question
+package com.qello.presentation.screen.main.question.suggest
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -25,6 +25,7 @@ import com.qello.presentation.designsystem.component.button.QelloLargeButton
 import com.qello.presentation.designsystem.component.text.QelloText
 import com.qello.presentation.designsystem.component.text.QelloTextArea
 import com.qello.presentation.designsystem.theme.QelloTheme
+import com.qello.presentation.screen.main.question.component.QuestionStatusHeader
 
 @Composable
 fun QuestionSuggestComposeScreen(

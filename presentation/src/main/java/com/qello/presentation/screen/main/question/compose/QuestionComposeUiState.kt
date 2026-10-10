@@ -1,4 +1,4 @@
-package com.qello.presentation.screen.main.question
+package com.qello.presentation.screen.main.question.compose
 
 import com.qello.domain.model.RecommendedQuestion
 

@@ -1,4 +1,4 @@
-package com.qello.presentation.screen.main.question
+package com.qello.presentation.screen.main.question.suggest
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

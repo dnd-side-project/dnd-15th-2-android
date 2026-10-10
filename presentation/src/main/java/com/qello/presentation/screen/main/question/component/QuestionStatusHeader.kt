@@ -1,4 +1,4 @@
-package com.qello.presentation.screen.main.question
+package com.qello.presentation.screen.main.question.component
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image

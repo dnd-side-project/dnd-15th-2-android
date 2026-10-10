@@ -1,4 +1,4 @@
-package com.qello.presentation.screen.main.question
+package com.qello.presentation.screen.main.question.direction
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -32,6 +32,9 @@ import com.qello.presentation.designsystem.component.button.QelloLargeButton
 import com.qello.presentation.designsystem.component.map.QelloMap
 import com.qello.presentation.designsystem.component.text.QelloText
 import com.qello.presentation.designsystem.theme.QelloTheme
+import com.qello.presentation.screen.main.question.CompassDirection
+import com.qello.presentation.screen.main.question.component.QuestionStatusHeader
+import com.qello.presentation.screen.main.question.component.QuestionStatusImage
 
 @Composable
 fun QuestionDirectionScreen(
