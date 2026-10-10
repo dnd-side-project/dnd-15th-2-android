@@ -20,10 +20,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.qello.domain.validation.QuestionProposalError
 import com.qello.domain.validation.QuestionProposalValidator
 import com.qello.presentation.R
-import com.qello.presentation.component.button.QelloBackButton
-import com.qello.presentation.component.button.QelloLargeButton
-import com.qello.presentation.component.text.QelloText
-import com.qello.presentation.component.text.QelloTextArea
+import com.qello.presentation.designsystem.component.button.QelloBackButton
+import com.qello.presentation.designsystem.component.button.QelloLargeButton
+import com.qello.presentation.designsystem.component.text.QelloText
+import com.qello.presentation.designsystem.component.text.QelloTextArea
 import com.qello.presentation.designsystem.theme.QelloTheme
 
 @Composable

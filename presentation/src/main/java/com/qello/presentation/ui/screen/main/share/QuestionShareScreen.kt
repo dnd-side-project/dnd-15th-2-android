@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -23,14 +22,13 @@ import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import com.qello.domain.model.Answer
 import com.qello.presentation.common.shareImage
-import com.qello.presentation.component.button.QelloBackButton
-import com.qello.presentation.component.button.QelloLargeButton
-import com.qello.presentation.component.image.QelloFeedImage
-import com.qello.presentation.component.loading.QelloLoadingOverlay
-import com.qello.presentation.component.text.QelloText
+import com.qello.presentation.designsystem.component.button.QelloBackButton
+import com.qello.presentation.designsystem.component.button.QelloLargeButton
+import com.qello.presentation.designsystem.component.image.QelloFeedImage
+import com.qello.presentation.designsystem.component.loading.QelloLoadingOverlay
+import com.qello.presentation.designsystem.component.text.QelloText
 import com.qello.presentation.designsystem.theme.QelloColorPalette
 import com.qello.presentation.designsystem.theme.QelloTheme
 import kotlinx.coroutines.launch

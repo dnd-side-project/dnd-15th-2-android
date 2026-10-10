@@ -13,7 +13,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.qello.presentation.R
-import com.qello.presentation.component.text.QelloText
+import com.qello.presentation.designsystem.component.text.QelloText
 import com.qello.presentation.designsystem.theme.QelloTheme
 
 /** 질문을 보내는 중/보냈어요 화면 가운데에 들어가는 이미지. 두 화면이 같은 크기와 위치를 쓴다. */

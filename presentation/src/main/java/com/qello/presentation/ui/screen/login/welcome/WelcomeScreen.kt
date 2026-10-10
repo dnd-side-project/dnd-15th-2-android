@@ -16,9 +16,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.dropUnlessResumed
 import com.qello.presentation.R
-import com.qello.presentation.component.button.QelloLargeButton
-import com.qello.presentation.component.spacer.QelloSpacer
-import com.qello.presentation.component.text.QelloText
+import com.qello.presentation.designsystem.component.button.QelloLargeButton
+import com.qello.presentation.designsystem.component.spacer.QelloSpacer
+import com.qello.presentation.designsystem.component.text.QelloText
 import com.qello.presentation.designsystem.theme.QelloTheme
 
 @Composable

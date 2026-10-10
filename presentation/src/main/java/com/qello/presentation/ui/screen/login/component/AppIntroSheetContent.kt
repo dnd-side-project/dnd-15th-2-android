@@ -3,9 +3,9 @@ package com.qello.presentation.ui.screen.login.component
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.qello.presentation.R
-import com.qello.presentation.component.button.QelloLargeButton
-import com.qello.presentation.component.spacer.QelloSpacer
-import com.qello.presentation.component.text.QelloText
+import com.qello.presentation.designsystem.component.button.QelloLargeButton
+import com.qello.presentation.designsystem.component.spacer.QelloSpacer
+import com.qello.presentation.designsystem.component.text.QelloText
 import com.qello.presentation.designsystem.theme.QelloTheme
 
 @Composable

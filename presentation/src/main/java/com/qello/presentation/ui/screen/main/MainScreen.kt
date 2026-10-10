@@ -18,14 +18,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.mapbox.geojson.Point
 import com.qello.presentation.R
-import com.qello.presentation.component.bottombar.HomeBottomBarTab
-import com.qello.presentation.component.bottombar.QelloBottomBarScaffold
-import com.qello.presentation.component.bottomsheet.QelloBottomSheet
-import com.qello.presentation.component.button.QelloIconButton
-import com.qello.presentation.component.button.QelloLargeButton
-import com.qello.presentation.component.map.QelloMap
-import com.qello.presentation.component.spacer.QelloSpacer
-import com.qello.presentation.component.text.QelloText
+import com.qello.presentation.designsystem.component.bottombar.HomeBottomBarTab
+import com.qello.presentation.designsystem.component.bottombar.QelloBottomBarScaffold
+import com.qello.presentation.designsystem.component.bottomsheet.QelloBottomSheet
+import com.qello.presentation.designsystem.component.button.QelloIconButton
+import com.qello.presentation.designsystem.component.button.QelloLargeButton
+import com.qello.presentation.designsystem.component.map.QelloMap
+import com.qello.presentation.designsystem.component.spacer.QelloSpacer
+import com.qello.presentation.designsystem.component.text.QelloText
 import com.qello.presentation.designsystem.theme.QelloTheme
 
 @Suppress("COMPOSE_APPLIER_CALL_MISMATCH")

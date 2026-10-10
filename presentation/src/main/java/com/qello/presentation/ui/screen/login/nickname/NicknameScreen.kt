@@ -20,12 +20,12 @@ import androidx.lifecycle.compose.dropUnlessResumed
 import com.qello.domain.validation.NicknameError
 import com.qello.domain.validation.NicknameValidator
 import com.qello.presentation.R
-import com.qello.presentation.component.button.QelloBackButton
-import com.qello.presentation.component.button.QelloLargeButton
-import com.qello.presentation.component.item.QelloProfileImageField
-import com.qello.presentation.component.loading.QelloLoadingOverlay
-import com.qello.presentation.component.spacer.QelloSpacer
-import com.qello.presentation.component.text.QelloTextField
+import com.qello.presentation.designsystem.component.button.QelloBackButton
+import com.qello.presentation.designsystem.component.button.QelloLargeButton
+import com.qello.presentation.designsystem.component.item.QelloProfileImageField
+import com.qello.presentation.designsystem.component.loading.QelloLoadingOverlay
+import com.qello.presentation.designsystem.component.spacer.QelloSpacer
+import com.qello.presentation.designsystem.component.text.QelloTextField
 import com.qello.presentation.media.rememberSinglePhotoPicker
 import com.qello.presentation.designsystem.theme.QelloTheme
 

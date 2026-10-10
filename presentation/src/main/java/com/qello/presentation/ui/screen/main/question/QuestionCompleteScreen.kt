@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.qello.presentation.component.button.QelloSmallButton
+import com.qello.presentation.designsystem.component.button.QelloSmallButton
 import com.qello.presentation.designsystem.theme.QelloTheme
 
 @Composable

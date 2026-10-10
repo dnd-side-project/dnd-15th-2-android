@@ -3,7 +3,7 @@ package com.qello.presentation.ui.screen.login.component
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.qello.presentation.R
-import com.qello.presentation.component.dialog.QelloDialog
+import com.qello.presentation.designsystem.component.dialog.QelloDialog
 import com.qello.presentation.ui.screen.login.permission.LoginPermission
 
 /**

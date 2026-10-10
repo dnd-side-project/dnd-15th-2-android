@@ -27,10 +27,10 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mapbox.geojson.Point
 import com.qello.presentation.R
-import com.qello.presentation.component.button.QelloBackButton
-import com.qello.presentation.component.button.QelloLargeButton
-import com.qello.presentation.component.map.QelloMap
-import com.qello.presentation.component.text.QelloText
+import com.qello.presentation.designsystem.component.button.QelloBackButton
+import com.qello.presentation.designsystem.component.button.QelloLargeButton
+import com.qello.presentation.designsystem.component.map.QelloMap
+import com.qello.presentation.designsystem.component.text.QelloText
 import com.qello.presentation.designsystem.theme.QelloTheme
 
 @Composable
