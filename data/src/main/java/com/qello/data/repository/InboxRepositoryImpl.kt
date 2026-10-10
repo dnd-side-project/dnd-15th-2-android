@@ -1,9 +1,9 @@
 package com.qello.data.repository
 
 import com.qello.data.remote.datasource.InboxDataSource
-import com.qello.data.remote.request.SubmitAnswerRequest
-import com.qello.data.remote.response.DirectionChipResponse
-import com.qello.data.remote.response.InboxCardResponse
+import com.qello.data.remote.model.inbox.SubmitAnswerRequest
+import com.qello.data.remote.model.inbox.DirectionChipResponse
+import com.qello.data.remote.model.inbox.InboxCardResponse
 import com.qello.domain.model.DirectionChip
 import com.qello.domain.model.FeedMedia
 import com.qello.domain.model.InboxCard

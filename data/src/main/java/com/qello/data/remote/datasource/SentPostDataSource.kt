@@ -1,7 +1,7 @@
 package com.qello.data.remote.datasource
 
-import com.qello.data.remote.response.SentPostDetailResponse
-import com.qello.data.remote.response.SentPostListingResponse
+import com.qello.data.remote.model.sentpost.SentPostDetailResponse
+import com.qello.data.remote.model.sentpost.SentPostListingResponse
 
 interface SentPostDataSource {
     suspend fun getPosts(

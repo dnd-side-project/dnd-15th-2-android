@@ -1,6 +1,6 @@
 package com.qello.data.repository
 
-import com.qello.data.media.ImageFileReader
+import com.qello.data.local.media.ImageFileReader
 import com.qello.data.remote.datasource.MediaDataSource
 import com.qello.domain.model.MediaAsset
 import com.qello.domain.repository.MediaRepository

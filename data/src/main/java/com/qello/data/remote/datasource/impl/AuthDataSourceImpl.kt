@@ -1,9 +1,9 @@
 package com.qello.data.remote.datasource.impl
 
 import com.qello.data.remote.datasource.AuthDataSource
-import com.qello.data.remote.request.RegisterDeviceRequest
-import com.qello.data.remote.response.ApiResponse
-import com.qello.data.remote.response.RegisterDeviceResponse
+import com.qello.data.remote.model.auth.RegisterDeviceRequest
+import com.qello.data.remote.model.common.ApiResponse
+import com.qello.data.remote.model.auth.RegisterDeviceResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.post

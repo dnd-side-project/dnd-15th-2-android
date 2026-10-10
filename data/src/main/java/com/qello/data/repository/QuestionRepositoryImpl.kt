@@ -1,7 +1,7 @@
 package com.qello.data.repository
 
 import com.qello.data.remote.datasource.QuestionDataSource
-import com.qello.data.remote.response.QuestionProposalResponse
+import com.qello.data.remote.model.question.QuestionProposalResponse
 import com.qello.domain.model.QuestionProposal
 import com.qello.domain.model.QuestionProposalStatus
 import com.qello.domain.model.RecommendedQuestion

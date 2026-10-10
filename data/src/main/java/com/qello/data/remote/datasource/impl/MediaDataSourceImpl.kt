@@ -2,10 +2,10 @@ package com.qello.data.remote.datasource.impl
 
 import com.qello.data.di.RawHttpClient
 import com.qello.data.remote.datasource.MediaDataSource
-import com.qello.data.remote.request.CreateUploadRequestRequest
-import com.qello.data.remote.response.ApiResponse
-import com.qello.data.remote.response.MediaAssetResponse
-import com.qello.data.remote.response.UploadRequestResponse
+import com.qello.data.remote.model.media.CreateUploadRequestRequest
+import com.qello.data.remote.model.common.ApiResponse
+import com.qello.data.remote.model.media.MediaAssetResponse
+import com.qello.data.remote.model.media.UploadRequestResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.post

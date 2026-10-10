@@ -1,11 +1,11 @@
 package com.qello.data.repository
 
 import com.qello.data.remote.datasource.DirectionDataSource
-import com.qello.data.remote.request.SubmitDirectionPostRequest
-import com.qello.data.remote.request.SubmitReportRequest
-import com.qello.data.remote.request.UpdatePresenceRequest
-import com.qello.data.remote.response.AnswerResponse
-import com.qello.data.remote.response.ReportReceiptResponse
+import com.qello.data.remote.model.direction.SubmitDirectionPostRequest
+import com.qello.data.remote.model.direction.SubmitReportRequest
+import com.qello.data.remote.model.direction.UpdatePresenceRequest
+import com.qello.data.remote.model.direction.AnswerResponse
+import com.qello.data.remote.model.direction.ReportReceiptResponse
 import com.qello.domain.model.Answer
 import com.qello.domain.model.FeedMedia
 import com.qello.domain.model.PostReaction

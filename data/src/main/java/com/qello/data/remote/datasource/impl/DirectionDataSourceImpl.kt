@@ -1,15 +1,15 @@
 package com.qello.data.remote.datasource.impl
 
 import com.qello.data.remote.datasource.DirectionDataSource
-import com.qello.data.remote.request.SubmitDirectionPostRequest
-import com.qello.data.remote.request.SubmitReportRequest
-import com.qello.data.remote.request.UpdatePresenceRequest
-import com.qello.data.remote.response.AnswerListingResponse
-import com.qello.data.remote.response.ApiResponse
-import com.qello.data.remote.response.DirectionPostSubmissionResponse
-import com.qello.data.remote.response.ReactionResponse
-import com.qello.data.remote.response.ReportReceiptResponse
-import com.qello.data.remote.response.UpdatePresenceResponse
+import com.qello.data.remote.model.direction.SubmitDirectionPostRequest
+import com.qello.data.remote.model.direction.SubmitReportRequest
+import com.qello.data.remote.model.direction.UpdatePresenceRequest
+import com.qello.data.remote.model.direction.AnswerListingResponse
+import com.qello.data.remote.model.common.ApiResponse
+import com.qello.data.remote.model.direction.DirectionPostSubmissionResponse
+import com.qello.data.remote.model.direction.ReactionResponse
+import com.qello.data.remote.model.direction.ReportReceiptResponse
+import com.qello.data.remote.model.direction.UpdatePresenceResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.delete

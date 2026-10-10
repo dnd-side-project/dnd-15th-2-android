@@ -1,9 +1,9 @@
 package com.qello.data.remote.auth
 
 import com.qello.data.local.datastore.UserPreferencesDataSource
-import com.qello.data.remote.request.RefreshTokenRequest
-import com.qello.data.remote.response.ApiResponse
-import com.qello.data.remote.response.RefreshTokenResponse
+import com.qello.data.remote.model.auth.RefreshTokenRequest
+import com.qello.data.remote.model.common.ApiResponse
+import com.qello.data.remote.model.auth.RefreshTokenResponse
 import com.qello.domain.result.AppError
 import io.ktor.client.call.body
 import io.ktor.client.plugins.auth.providers.BearerTokens

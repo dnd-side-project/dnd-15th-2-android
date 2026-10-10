@@ -1,7 +1,7 @@
 package com.qello.data.remote.datasource
 
-import com.qello.data.remote.response.MediaAssetResponse
-import com.qello.data.remote.response.UploadRequestResponse
+import com.qello.data.remote.model.media.MediaAssetResponse
+import com.qello.data.remote.model.media.UploadRequestResponse
 
 interface MediaDataSource {
     /** 이미지를 올릴 임시 주소(uploadUrl)를 발급받는다. */

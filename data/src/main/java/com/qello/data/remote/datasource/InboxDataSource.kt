@@ -1,9 +1,9 @@
 package com.qello.data.remote.datasource
 
-import com.qello.data.remote.request.SubmitAnswerRequest
-import com.qello.data.remote.response.AnswerSubmissionResponse
-import com.qello.data.remote.response.InboxDetailResponse
-import com.qello.data.remote.response.InboxListingResponse
+import com.qello.data.remote.model.inbox.SubmitAnswerRequest
+import com.qello.data.remote.model.inbox.AnswerSubmissionResponse
+import com.qello.data.remote.model.inbox.InboxDetailResponse
+import com.qello.data.remote.model.inbox.InboxListingResponse
 
 interface InboxDataSource {
     suspend fun getInbox(category: String, directionSegmentKey: String?): InboxListingResponse
