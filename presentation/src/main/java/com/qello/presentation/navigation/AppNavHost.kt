@@ -16,7 +16,7 @@ import com.qello.presentation.navigation.login.LoginNavKey
 import com.qello.presentation.navigation.login.loginEntries
 import com.qello.presentation.navigation.main.MainNavKey
 import com.qello.presentation.navigation.main.mainEntries
-import com.qello.presentation.ui.screen.splash.SplashScreen
+import com.qello.presentation.screen.splash.SplashScreen
 
 private val TOP_LEVEL_KEYS: Set<NavKey> = setOf(
     AppNavKey.Splash,
