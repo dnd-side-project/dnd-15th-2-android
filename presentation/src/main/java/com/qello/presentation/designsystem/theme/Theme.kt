@@ -1,28 +1,8 @@
-package com.qello.presentation.ui.designsystem.theme
+package com.qello.presentation.designsystem.theme
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
-import com.qello.presentation.ui.designsystem.LocalQelloButtonColorsScheme
-import com.qello.presentation.ui.designsystem.LocalQelloCategoryColorsScheme
-import com.qello.presentation.ui.designsystem.LocalQelloColorScheme
-import com.qello.presentation.ui.designsystem.LocalQelloTextFieldColorsScheme
-import com.qello.presentation.ui.designsystem.LocalQelloTypography
-import com.qello.presentation.ui.designsystem.QelloBorderWidth
-import com.qello.presentation.ui.designsystem.QelloButtonColors
-import com.qello.presentation.ui.designsystem.QelloButtonColorsScheme
-import com.qello.presentation.ui.designsystem.QelloCategoryColors
-import com.qello.presentation.ui.designsystem.QelloCategoryColorsScheme
-import com.qello.presentation.ui.designsystem.QelloColorScheme
-import com.qello.presentation.ui.designsystem.QelloColors
-import com.qello.presentation.ui.designsystem.QelloGradient
-import com.qello.presentation.ui.designsystem.QelloIconSize
-import com.qello.presentation.ui.designsystem.QelloRadius
-import com.qello.presentation.ui.designsystem.QelloSpacing
-import com.qello.presentation.ui.designsystem.QelloTextFieldColors
-import com.qello.presentation.ui.designsystem.QelloTextFieldColorsScheme
-import com.qello.presentation.ui.designsystem.QelloTypography
-import com.qello.presentation.ui.designsystem.Typography
 
 @Composable
 fun QelloTheme(

@@ -38,7 +38,7 @@ import com.qello.presentation.component.button.QelloIconButton
 import com.qello.presentation.component.item.QelloQuestionCard
 import com.qello.presentation.component.loading.QelloLoadingOverlay
 import com.qello.presentation.component.text.QelloText
-import com.qello.presentation.ui.designsystem.theme.QelloTheme
+import com.qello.presentation.designsystem.theme.QelloTheme
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter

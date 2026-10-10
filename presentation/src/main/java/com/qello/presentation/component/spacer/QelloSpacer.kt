@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
-import com.qello.presentation.ui.designsystem.theme.QelloTheme
+import com.qello.presentation.designsystem.theme.QelloTheme
 
 @Composable
 fun QelloSpacer(

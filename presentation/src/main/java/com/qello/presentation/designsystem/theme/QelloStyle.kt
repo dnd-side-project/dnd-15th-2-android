@@ -1,4 +1,4 @@
-package com.qello.presentation.ui.designsystem
+package com.qello.presentation.designsystem.theme
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp

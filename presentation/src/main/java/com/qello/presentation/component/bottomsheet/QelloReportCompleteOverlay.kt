@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.qello.presentation.component.button.QelloLargeButton
 import com.qello.presentation.component.text.QelloText
-import com.qello.presentation.ui.designsystem.theme.QelloTheme
+import com.qello.presentation.designsystem.theme.QelloTheme
 
 /**
  * 신고 사유를 고른 뒤 뜨는 완료 안내.

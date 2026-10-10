@@ -32,8 +32,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.qello.presentation.R
 import com.qello.presentation.component.spacer.QelloSpacer
-import com.qello.presentation.ui.designsystem.QelloTextFieldColors
-import com.qello.presentation.ui.designsystem.theme.QelloTheme
+import com.qello.presentation.designsystem.theme.QelloTextFieldColors
+import com.qello.presentation.designsystem.theme.QelloTheme
 
 @Composable
 fun QelloTextField(

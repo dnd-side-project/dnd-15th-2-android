@@ -12,7 +12,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.qello.presentation.navigation.AppNavHost
-import com.qello.presentation.ui.designsystem.theme.QelloTheme
+import com.qello.presentation.designsystem.theme.QelloTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -1,4 +1,4 @@
-package com.qello.presentation.ui.designsystem
+package com.qello.presentation.designsystem.theme
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color

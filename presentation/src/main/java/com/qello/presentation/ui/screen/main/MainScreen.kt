@@ -26,7 +26,7 @@ import com.qello.presentation.component.button.QelloLargeButton
 import com.qello.presentation.component.map.QelloMap
 import com.qello.presentation.component.spacer.QelloSpacer
 import com.qello.presentation.component.text.QelloText
-import com.qello.presentation.ui.designsystem.theme.QelloTheme
+import com.qello.presentation.designsystem.theme.QelloTheme
 
 @Suppress("COMPOSE_APPLIER_CALL_MISMATCH")
 @OptIn(ExperimentalMaterial3Api::class)

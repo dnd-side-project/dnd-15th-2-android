@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.qello.presentation.component.button.QelloLargeButton
 import com.qello.presentation.component.item.QelloActionSheetItem
-import com.qello.presentation.ui.designsystem.theme.QelloTheme
+import com.qello.presentation.designsystem.theme.QelloTheme
 
 /** 질문글/답변 카드의 "..."를 눌렀을 때 처음 뜨는 글 숨기기/신고하기 선택 시트. */
 @OptIn(ExperimentalMaterial3Api::class)

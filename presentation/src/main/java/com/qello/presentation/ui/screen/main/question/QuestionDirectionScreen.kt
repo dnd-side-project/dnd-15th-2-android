@@ -31,7 +31,7 @@ import com.qello.presentation.component.button.QelloBackButton
 import com.qello.presentation.component.button.QelloLargeButton
 import com.qello.presentation.component.map.QelloMap
 import com.qello.presentation.component.text.QelloText
-import com.qello.presentation.ui.designsystem.theme.QelloTheme
+import com.qello.presentation.designsystem.theme.QelloTheme
 
 @Composable
 fun QuestionDirectionScreen(

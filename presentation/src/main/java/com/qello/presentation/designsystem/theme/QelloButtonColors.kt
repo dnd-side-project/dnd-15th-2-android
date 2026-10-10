@@ -1,15 +1,15 @@
-package com.qello.presentation.ui.designsystem
+package com.qello.presentation.designsystem.theme
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 
 @Immutable
-data class QelloCategoryColors(
+data class QelloButtonColors(
     val lightButtonColors: QelloStateThemeColors,
     val darkButtonColors: QelloStateThemeColors,
 )
 
-internal val QelloCategoryColorsScheme = QelloCategoryColors(
+internal val QelloButtonColorsScheme = QelloButtonColors(
     lightButtonColors = QelloStateThemeColors(
         container = QelloStateColors(
             default = QelloColorPalette.Bule50,
@@ -24,16 +24,16 @@ internal val QelloCategoryColorsScheme = QelloCategoryColors(
     ),
     darkButtonColors = QelloStateThemeColors(
         container = QelloStateColors(
-            default = QelloColorPalette.Navy30,
-            hover = QelloColorPalette.Navy20,
-            press = QelloColorPalette.Navy10
+            default = QelloColorPalette.Neutral30,
+            hover = QelloColorPalette.Neutral25,
+            press = QelloColorPalette.Neutral20
         ),
         label = QelloStateColors(
-            default = QelloColorPalette.Navy70,
-            hover = QelloColorPalette.Navy60,
-            press = QelloColorPalette.Navy50
+            default = QelloColorPalette.Bule70,
+            hover = QelloColorPalette.Bule60,
+            press = QelloColorPalette.Bule50
         )
     ),
 )
 
-val LocalQelloCategoryColorsScheme = staticCompositionLocalOf { QelloCategoryColorsScheme }
+val LocalQelloButtonColorsScheme = staticCompositionLocalOf { QelloButtonColorsScheme }

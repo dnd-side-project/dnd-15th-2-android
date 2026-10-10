@@ -51,8 +51,8 @@ import com.qello.presentation.component.button.QelloIconButton
 import com.qello.presentation.component.item.QelloQuestionCard
 import com.qello.presentation.component.loading.QelloLoadingOverlay
 import com.qello.presentation.component.text.QelloText
-import com.qello.presentation.ui.designsystem.QelloColorPalette
-import com.qello.presentation.ui.designsystem.theme.QelloTheme
+import com.qello.presentation.designsystem.theme.QelloColorPalette
+import com.qello.presentation.designsystem.theme.QelloTheme
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.ZoneId

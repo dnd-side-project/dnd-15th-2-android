@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.qello.domain.model.ReportReason
 import com.qello.presentation.component.button.QelloLargeButton
 import com.qello.presentation.component.item.QelloActionSheetItem
-import com.qello.presentation.ui.designsystem.theme.QelloTheme
+import com.qello.presentation.designsystem.theme.QelloTheme
 
 private val reportReasons = listOf(
     "성적 또는 노골적인 콘텐츠" to ReportReason.SEXUAL_CONTENT,

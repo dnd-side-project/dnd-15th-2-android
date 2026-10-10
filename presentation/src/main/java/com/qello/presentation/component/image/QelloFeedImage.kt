@@ -12,7 +12,7 @@ import coil3.compose.AsyncImage
 import coil3.compose.SubcomposeAsyncImage
 import coil3.request.ImageRequest
 import com.qello.domain.model.FeedMedia
-import com.qello.presentation.ui.designsystem.theme.QelloTheme
+import com.qello.presentation.designsystem.theme.QelloTheme
 
 private const val PLACEHOLDER_ASPECT_RATIO = 16f / 10f
 

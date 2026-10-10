@@ -19,7 +19,7 @@ import com.qello.presentation.R
 import com.qello.presentation.component.button.QelloLargeButton
 import com.qello.presentation.component.spacer.QelloSpacer
 import com.qello.presentation.component.text.QelloText
-import com.qello.presentation.ui.designsystem.theme.QelloTheme
+import com.qello.presentation.designsystem.theme.QelloTheme
 
 @Composable
 fun WelcomeScreen(

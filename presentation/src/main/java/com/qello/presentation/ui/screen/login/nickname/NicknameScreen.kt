@@ -27,7 +27,7 @@ import com.qello.presentation.component.loading.QelloLoadingOverlay
 import com.qello.presentation.component.spacer.QelloSpacer
 import com.qello.presentation.component.text.QelloTextField
 import com.qello.presentation.media.rememberSinglePhotoPicker
-import com.qello.presentation.ui.designsystem.theme.QelloTheme
+import com.qello.presentation.designsystem.theme.QelloTheme
 
 @Composable
 fun NicknameScreen(

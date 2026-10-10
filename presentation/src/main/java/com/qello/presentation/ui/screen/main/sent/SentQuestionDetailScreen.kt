@@ -40,7 +40,7 @@ import com.qello.presentation.component.image.QelloFeedImage
 import com.qello.presentation.component.item.QelloCommentItem
 import com.qello.presentation.component.loading.QelloLoadingOverlay
 import com.qello.presentation.component.text.QelloText
-import com.qello.presentation.ui.designsystem.theme.QelloTheme
+import com.qello.presentation.designsystem.theme.QelloTheme
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
