@@ -1,13 +1,11 @@
 package com.qello.data.repository
 
+import com.qello.data.mapper.toDomain
 import com.qello.data.remote.datasource.DirectionDataSource
 import com.qello.data.remote.model.direction.SubmitDirectionPostRequest
 import com.qello.data.remote.model.direction.SubmitReportRequest
 import com.qello.data.remote.model.direction.UpdatePresenceRequest
-import com.qello.data.remote.model.direction.AnswerResponse
-import com.qello.data.remote.model.direction.ReportReceiptResponse
 import com.qello.domain.model.Answer
-import com.qello.domain.model.FeedMedia
 import com.qello.domain.model.PostReaction
 import com.qello.domain.model.ReportReason
 import com.qello.domain.model.ReportReceipt
@@ -64,28 +62,20 @@ class DirectionRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun reactToPost(postId: Long): PostReaction {
-        val response = directionDataSource.reactToPost(postId)
-        return PostReaction(reacted = response.reacted, reactionCount = response.reactionCount)
-    }
+    override suspend fun reactToPost(postId: Long): PostReaction =
+        directionDataSource.reactToPost(postId).toDomain()
 
-    override suspend fun cancelPostReaction(postId: Long): PostReaction {
-        val response = directionDataSource.cancelPostReaction(postId)
-        return PostReaction(reacted = response.reacted, reactionCount = response.reactionCount)
-    }
+    override suspend fun cancelPostReaction(postId: Long): PostReaction =
+        directionDataSource.cancelPostReaction(postId).toDomain()
 
     override suspend fun getAnswers(postId: Long, limit: Int): List<Answer> =
         directionDataSource.getAnswers(postId, limit).answers.map { it.toDomain() }
 
-    override suspend fun reactToAnswer(answerId: Long): PostReaction {
-        val response = directionDataSource.reactToAnswer(answerId)
-        return PostReaction(reacted = response.reacted, reactionCount = response.reactionCount)
-    }
+    override suspend fun reactToAnswer(answerId: Long): PostReaction =
+        directionDataSource.reactToAnswer(answerId).toDomain()
 
-    override suspend fun cancelAnswerReaction(answerId: Long): PostReaction {
-        val response = directionDataSource.cancelAnswerReaction(answerId)
-        return PostReaction(reacted = response.reacted, reactionCount = response.reactionCount)
-    }
+    override suspend fun cancelAnswerReaction(answerId: Long): PostReaction =
+        directionDataSource.cancelAnswerReaction(answerId).toDomain()
 
     override suspend fun reportPost(
         postId: Long,
@@ -119,27 +109,4 @@ class DirectionRepositoryImpl @Inject constructor(
             Timber.d(e, "답변 읽음 처리에 실패했습니다")
         }
     }
-
-    private fun ReportReceiptResponse.toDomain() = ReportReceipt(
-        reportId = reportId,
-        status = status,
-        receivedAt = receivedAt,
-        alreadyReceived = alreadyReceived,
-        guidance = guidance,
-    )
-
-    private fun AnswerResponse.toDomain() = Answer(
-        answerId = answerId,
-        authorNickname = authorNickname,
-        authorCoarseRegionCode = authorCoarseRegionCode,
-        bodyText = bodyText,
-        media = media.map { FeedMedia(mediaId = it.mediaId, url = it.url) },
-        bearingFromSenderDegrees = bearingFromSenderDegrees,
-        distanceM = distanceM,
-        distanceBand = distanceBand,
-        publishedAt = publishedAt,
-        editedAt = editedAt,
-        reactedByMe = reactedByMe,
-        reactionCount = reactionCount,
-    )
 }

@@ -1,9 +1,7 @@
 package com.qello.data.repository
 
+import com.qello.data.mapper.toDomain
 import com.qello.data.remote.datasource.SentPostDataSource
-import com.qello.data.remote.model.sentpost.SentPostCardResponse
-import com.qello.domain.model.FeedMedia
-import com.qello.domain.model.SentPostCard
 import com.qello.domain.model.SentPostCursor
 import com.qello.domain.model.SentPostDetail
 import com.qello.domain.model.SentPostFilter
@@ -14,34 +12,14 @@ import javax.inject.Inject
 class SentPostRepositoryImpl @Inject constructor(
     private val sentPostDataSource: SentPostDataSource,
 ) : SentPostRepository {
-    override suspend fun getSentPosts(filter: SentPostFilter, cursor: SentPostCursor?, limit: Int): SentPostPage {
-        val response = sentPostDataSource.getPosts(
+    override suspend fun getSentPosts(filter: SentPostFilter, cursor: SentPostCursor?, limit: Int): SentPostPage =
+        sentPostDataSource.getPosts(
             filter = filter.name,
             cursorSubmittedAt = cursor?.submittedAt,
             cursorPostId = cursor?.postId,
             limit = limit,
-        )
-        return SentPostPage(
-            cards = response.cards.map { it.toDomain() },
-            nextCursor = response.nextCursor?.let { SentPostCursor(submittedAt = it.submittedAt, postId = it.postId) },
-        )
-    }
+        ).toDomain()
 
-    override suspend fun getSentPostDetail(postId: Long): SentPostDetail {
-        val response = sentPostDataSource.getDetail(postId)
-        return SentPostDetail(card = response.card.toDomain(), answersReadAt = response.answersReadAt)
-    }
-
-    private fun SentPostCardResponse.toDomain() = SentPostCard(
-        postId = postId,
-        questionText = questionText,
-        bodyText = bodyText,
-        media = media.map { FeedMedia(mediaId = it.mediaId, url = it.url) },
-        coarseRegionCode = coarseRegionCode,
-        submittedAt = submittedAt,
-        expiresAt = expiresAt,
-        answerCount = answerCount,
-        reactionCount = reactionCount,
-        unreadAnswerCount = unreadAnswerCount,
-    )
+    override suspend fun getSentPostDetail(postId: Long): SentPostDetail =
+        sentPostDataSource.getDetail(postId).toDomain()
 }

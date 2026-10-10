@@ -1,6 +1,7 @@
 package com.qello.data.repository
 
 import com.qello.data.local.media.ImageFileReader
+import com.qello.data.mapper.toDomain
 import com.qello.data.remote.datasource.MediaDataSource
 import com.qello.domain.model.MediaAsset
 import com.qello.domain.repository.MediaRepository
@@ -25,8 +26,6 @@ class MediaRepositoryImpl @Inject constructor(
             bytes = image.bytes,
         )
 
-        val confirmed = mediaDataSource.confirmUpload(uploadRequest.mediaId)
-
-        return MediaAsset(mediaId = confirmed.mediaId)
+        return mediaDataSource.confirmUpload(uploadRequest.mediaId).toDomain()
     }
 }
