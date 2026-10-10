@@ -1,4 +1,4 @@
-package com.qello.presentation.screen.main.received
+package com.qello.presentation.screen.main.sent.share
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -10,11 +10,11 @@ import com.qello.presentation.screen.main.share.QuestionShareScreen
 import com.qello.presentation.screen.main.share.QuestionShareSideEffect
 
 @Composable
-fun ReceivedQuestionShareScreen(
+fun SentQuestionShareScreen(
     questionId: Int,
     onBack: () -> Unit,
     showSnackbar: suspend (message: String) -> Unit,
-    viewModel: QuestionShareViewModel = hiltViewModel(),
+    viewModel: SentQuestionShareViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val resources = LocalResources.current

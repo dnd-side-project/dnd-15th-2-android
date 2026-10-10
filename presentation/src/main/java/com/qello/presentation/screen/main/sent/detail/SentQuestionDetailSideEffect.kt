@@ -1,4 +1,4 @@
-package com.qello.presentation.screen.main.sent
+package com.qello.presentation.screen.main.sent.detail
 
 sealed interface SentQuestionDetailSideEffect {
     data class ShowSnackbar(val message: Int) : SentQuestionDetailSideEffect

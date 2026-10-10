@@ -1,4 +1,4 @@
-package com.qello.presentation.screen.main.received
+package com.qello.presentation.screen.main.received.detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

@@ -1,4 +1,4 @@
-package com.qello.presentation.screen.main.sent
+package com.qello.presentation.screen.main.sent.share
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -11,12 +11,12 @@ import com.qello.presentation.screen.main.question.compose.QuestionComposeScreen
 import com.qello.presentation.screen.main.question.direction.QuestionDirectionScreen
 import com.qello.presentation.screen.main.question.suggest.QuestionSuggestComposeScreen
 import com.qello.presentation.screen.main.question.suggest.QuestionSuggestListScreen
-import com.qello.presentation.screen.main.received.ReceivedQuestionDetailScreen
-import com.qello.presentation.screen.main.received.ReceivedQuestionListScreen
-import com.qello.presentation.screen.main.received.ReceivedQuestionShareScreen
-import com.qello.presentation.screen.main.sent.SentQuestionDetailScreen
-import com.qello.presentation.screen.main.sent.SentQuestionListScreen
-import com.qello.presentation.screen.main.sent.SentQuestionShareScreen
+import com.qello.presentation.screen.main.received.detail.ReceivedQuestionDetailScreen
+import com.qello.presentation.screen.main.received.list.ReceivedQuestionListScreen
+import com.qello.presentation.screen.main.received.share.ReceivedQuestionShareScreen
+import com.qello.presentation.screen.main.sent.detail.SentQuestionDetailScreen
+import com.qello.presentation.screen.main.sent.list.SentQuestionListScreen
+import com.qello.presentation.screen.main.sent.share.SentQuestionShareScreen
 
 fun EntryProviderScope<NavKey>.mainEntries(
     navigator: Navigator,

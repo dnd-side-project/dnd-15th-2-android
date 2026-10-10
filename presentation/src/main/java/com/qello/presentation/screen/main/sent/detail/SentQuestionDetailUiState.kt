@@ -1,4 +1,4 @@
-package com.qello.presentation.screen.main.sent
+package com.qello.presentation.screen.main.sent.detail
 
 import com.qello.domain.model.Answer
 import com.qello.domain.model.SentPostDetail

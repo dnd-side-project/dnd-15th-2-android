@@ -1,4 +1,4 @@
-package com.qello.presentation.screen.main.received
+package com.qello.presentation.screen.main.received.share
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
-class QuestionShareViewModel @Inject constructor(
+class ReceivedQuestionShareViewModel @Inject constructor(
     private val inboxRepository: InboxRepository,
     private val directionRepository: DirectionRepository,
 ) : ViewModel() {

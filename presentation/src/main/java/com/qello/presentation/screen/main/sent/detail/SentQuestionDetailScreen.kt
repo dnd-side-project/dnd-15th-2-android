@@ -1,4 +1,4 @@
-package com.qello.presentation.screen.main.sent
+package com.qello.presentation.screen.main.sent.detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
