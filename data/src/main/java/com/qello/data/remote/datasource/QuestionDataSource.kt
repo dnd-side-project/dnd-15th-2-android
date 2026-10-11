@@ -8,5 +8,7 @@ interface QuestionDataSource {
 
     suspend fun getMyQuestionProposals(): List<QuestionProposalResponse>
 
+    suspend fun deleteQuestionProposal(proposalId: Long)
+
     suspend fun getRecommendedQuestions(): List<RecommendedQuestionResponse>
 }

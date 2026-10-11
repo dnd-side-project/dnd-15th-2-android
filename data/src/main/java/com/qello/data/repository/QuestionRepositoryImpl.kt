@@ -18,6 +18,10 @@ class QuestionRepositoryImpl @Inject constructor(
     override suspend fun getMyQuestionProposals(): List<QuestionProposal> =
         questionDataSource.getMyQuestionProposals().map { it.toDomain() }
 
+    override suspend fun deleteQuestionProposal(proposalId: Long) {
+        questionDataSource.deleteQuestionProposal(proposalId)
+    }
+
     override suspend fun getRecommendedQuestions(): List<RecommendedQuestion> =
         questionDataSource.getRecommendedQuestions().map {
             RecommendedQuestion(approvedQuestionId = it.approvedQuestionId, questionText = it.questionText)
