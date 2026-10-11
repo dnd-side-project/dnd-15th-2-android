@@ -7,6 +7,8 @@ import com.qello.presentation.screen.main.MainScreen
 import com.qello.presentation.screen.main.my.MyScreen
 import com.qello.presentation.screen.main.notification.NotificationScreen
 import com.qello.presentation.screen.main.question.complete.QuestionCompleteScreen
+import com.qello.presentation.screen.main.question.complete.QuestionCompleteType
+import com.qello.presentation.screen.main.question.complete.toContent
 import com.qello.presentation.screen.main.question.compose.QuestionComposeScreen
 import com.qello.presentation.screen.main.question.direction.QuestionDirectionScreen
 import com.qello.presentation.screen.main.question.suggest.QuestionSuggestComposeScreen
@@ -153,6 +155,11 @@ fun EntryProviderScope<NavKey>.mainEntries(
 
     entry<MainNavKey.QuestionComplete> { key ->
         val content = key.type.toContent()
+        // null이면 홈으로 이동한다
+        val (primaryDestination, secondaryDestination) = when (key.type) {
+            QuestionCompleteType.SEND_QUESTION -> MainNavKey.SentQuestionList to null
+            QuestionCompleteType.SUGGEST_QUESTION -> null to MainNavKey.QuestionCompose
+        }
         val navigateTo = { destination: MainNavKey? ->
             navigator.popToTopLevelStart()
             destination?.let { navigator.navigate(it) }
@@ -166,8 +173,8 @@ fun EntryProviderScope<NavKey>.mainEntries(
             imageRes = content.imageRes,
             primaryButtonText = content.primaryButtonText,
             secondaryButtonText = content.secondaryButtonText,
-            onPrimaryClick = { navigateTo(content.primaryDestination) },
-            onSecondaryClick = { navigateTo(content.secondaryDestination) },
+            onPrimaryClick = { navigateTo(primaryDestination) },
+            onSecondaryClick = { navigateTo(secondaryDestination) },
         )
     }
 }

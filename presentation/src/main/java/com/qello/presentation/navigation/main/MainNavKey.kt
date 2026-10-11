@@ -1,6 +1,7 @@
 package com.qello.presentation.navigation.main
 
 import androidx.navigation3.runtime.NavKey
+import com.qello.presentation.screen.main.question.complete.QuestionCompleteType
 import kotlinx.serialization.Serializable
 
 @Serializable
