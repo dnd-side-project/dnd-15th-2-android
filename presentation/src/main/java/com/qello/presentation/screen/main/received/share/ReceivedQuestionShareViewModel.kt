@@ -7,6 +7,7 @@ import com.qello.domain.repository.InboxRepository
 import com.qello.domain.result.AppResult
 import com.qello.domain.result.asResult
 import com.qello.presentation.mapper.toMessageRes
+import com.qello.presentation.mapper.toUiModel
 import com.qello.presentation.screen.main.share.QuestionShareSideEffect
 import com.qello.presentation.screen.main.share.QuestionShareUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -78,7 +79,7 @@ class ReceivedQuestionShareViewModel @Inject constructor(
                 when (result) {
                     AppResult.Loading -> Unit
 
-                    is AppResult.Success -> uiStateFlow.value = uiStateFlow.value.copy(answers = result.data)
+                    is AppResult.Success -> uiStateFlow.value = uiStateFlow.value.copy(answers = result.data.map { it.toUiModel() })
 
                     is AppResult.Error -> {
                         _sideEffect.send(QuestionShareSideEffect.ShowSnackbar(result.error.toMessageRes()))

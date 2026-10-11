@@ -10,6 +10,7 @@ import com.qello.domain.repository.InboxRepository
 import com.qello.domain.result.AppResult
 import com.qello.domain.result.asResult
 import com.qello.presentation.mapper.toMessageRes
+import com.qello.presentation.mapper.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -40,6 +41,7 @@ class ReceivedQuestionDetailViewModel @Inject constructor(
     val sideEffect: Flow<ReceivedQuestionDetailSideEffect> = _sideEffect.receiveAsFlow()
 
     private var loadedPostRecipientId: Long? = null
+    private var answers: List<Answer> = emptyList()
 
     fun load(postRecipientId: Long) {
         if (loadedPostRecipientId == postRecipientId) return
@@ -53,6 +55,7 @@ class ReceivedQuestionDetailViewModel @Inject constructor(
                     AppResult.Loading -> uiStateFlow.value = uiStateFlow.value.copy(isLoading = true)
 
                     is AppResult.Success -> {
+                        answers = emptyList()
                         uiStateFlow.value = ReceivedQuestionDetailUiState(detail = result.data, isLoading = false)
                         loadAnswers(result.data.card.postId)
                     }
@@ -74,7 +77,7 @@ class ReceivedQuestionDetailViewModel @Inject constructor(
                 when (result) {
                     AppResult.Loading -> Unit
 
-                    is AppResult.Success -> uiStateFlow.value = uiStateFlow.value.copy(answers = result.data)
+                    is AppResult.Success -> setAnswers(result.data)
 
                     is AppResult.Error -> {
                         _sideEffect.send(ReceivedQuestionDetailSideEffect.ShowSnackbar(result.error.toMessageRes()))
@@ -228,7 +231,7 @@ class ReceivedQuestionDetailViewModel @Inject constructor(
     }
 
     fun onAnswerReactionToggle(answerId: Long) {
-        val answer = uiStateFlow.value.answers.firstOrNull { it.answerId == answerId } ?: return
+        val answer = answers.firstOrNull { it.answerId == answerId } ?: return
         val wasReacted = answer.reactedByMe
 
         // 응답을 기다리지 않고 먼저 바꿔서 보여주고, 실패하면 원래 상태로 되돌린다
@@ -257,9 +260,12 @@ class ReceivedQuestionDetailViewModel @Inject constructor(
     }
 
     private fun updateAnswer(answer: Answer) {
-        uiStateFlow.value = uiStateFlow.value.copy(
-            answers = uiStateFlow.value.answers.map { if (it.answerId == answer.answerId) answer else it },
-        )
+        setAnswers(answers.map { if (it.answerId == answer.answerId) answer else it })
+    }
+
+    private fun setAnswers(answers: List<Answer>) {
+        this.answers = answers
+        uiStateFlow.value = uiStateFlow.value.copy(answers = answers.map { it.toUiModel() })
     }
 
     private companion object {

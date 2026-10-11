@@ -46,7 +46,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.qello.domain.model.Answer
 import com.qello.domain.model.InboxCard
 import com.qello.presentation.R
 import com.qello.presentation.designsystem.component.bottomsheet.QelloMoreBottomSheet
@@ -61,8 +60,6 @@ import com.qello.presentation.designsystem.component.text.QelloText
 import com.qello.presentation.designsystem.theme.QelloColorPalette
 import com.qello.presentation.designsystem.theme.QelloTheme
 import kotlinx.coroutines.launch
-import java.time.Instant
-import java.time.temporal.ChronoUnit
 
 @Composable
 fun ReceivedQuestionDetailScreen(
@@ -208,8 +205,8 @@ fun ReceivedQuestionDetailScreen(
                 itemsIndexed(uiState.answers, key = { _, answer -> answer.answerId }) { index, answer ->
                     QelloCommentItem(
                         username = answer.authorNickname,
-                        meta = "${answer.publishedAt.toRelativeTimeLabel()} · ${answer.authorCoarseRegionCode.orEmpty()} · " +
-                            answer.toDistanceLabel(),
+                        meta = "${answer.relativeTimeLabel} · ${answer.authorCoarseRegionCode.orEmpty()} · " +
+                            answer.distanceLabel,
                         text = answer.bodyText,
                         photo = answer.media.firstOrNull(),
                         likeCount = answer.reactionCount.toInt(),
@@ -391,21 +388,5 @@ private fun InboxCard?.toDistanceLabel(): String {
     distanceBand?.let { return it }
     val meters = distanceM ?: return ""
     return if (meters >= 1000) "${meters / 1000}km" else "${meters}m"
-}
-
-private fun Answer.toDistanceLabel(): String {
-    distanceBand?.let { return it }
-    val meters = distanceM ?: return ""
-    return if (meters >= 1000) "${meters / 1000}km" else "${meters}m"
-}
-
-private fun String.toRelativeTimeLabel(): String {
-    val minutes = ChronoUnit.MINUTES.between(Instant.parse(this), Instant.now()).coerceAtLeast(0)
-    return when {
-        minutes < 1 -> "방금 전"
-        minutes < 60 -> "${minutes}분 전"
-        minutes < 60 * 24 -> "${minutes / 60}시간 전"
-        else -> "${minutes / (60 * 24)}일 전"
-    }
 }
 
