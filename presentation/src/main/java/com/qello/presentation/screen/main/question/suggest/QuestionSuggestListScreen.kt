@@ -31,7 +31,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.qello.domain.model.QuestionProposalStatus
 import com.qello.presentation.R
 import com.qello.presentation.designsystem.component.button.QelloBackButton
 import com.qello.presentation.designsystem.component.button.QelloLargeButton
@@ -42,17 +41,13 @@ import com.qello.presentation.designsystem.component.loading.QelloLoadingOverlay
 import com.qello.presentation.designsystem.component.tab.QelloTabRow
 import com.qello.presentation.designsystem.component.text.QelloText
 import com.qello.presentation.designsystem.theme.QelloTheme
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
+import com.qello.presentation.model.ProposalStatusUi
 
 private enum class QuestionSuggestListTab(val label: String) {
     ALL("전체"),
     REVIEWING("검토중"),
     COMPLETED("검토완료"),
 }
-
-private val dateFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -78,11 +73,11 @@ fun QuestionSuggestListScreen(
 
     val proposals = when (QuestionSuggestListTab.entries[selectedTab]) {
         QuestionSuggestListTab.ALL -> uiState.proposals
-        QuestionSuggestListTab.REVIEWING -> uiState.proposals.filter { it.status.isReviewing() }
-        QuestionSuggestListTab.COMPLETED -> uiState.proposals.filter { !it.status.isReviewing() }
+        QuestionSuggestListTab.REVIEWING -> uiState.proposals.filter { it.status == ProposalStatusUi.REVIEWING }
+        QuestionSuggestListTab.COMPLETED -> uiState.proposals.filter { it.status != ProposalStatusUi.REVIEWING }
     }
 
-    val groupedProposals = proposals.groupBy { it.createdAt.toDateLabel() }
+    val groupedProposals = proposals.groupBy { it.dateLabel }
 
     Column(
         modifier = Modifier
@@ -174,17 +169,14 @@ fun QuestionSuggestListScreen(
 
                         item {
                             val (dotColor, title) = when (proposal.status) {
-                                QuestionProposalStatus.DRAFT,
-                                QuestionProposalStatus.SUBMITTED,
-                                QuestionProposalStatus.UNDER_REVIEW,
-                                -> QelloTheme.colors.primary.normal to "현재 검토중이예요!"
+                                ProposalStatusUi.REVIEWING -> QelloTheme.colors.primary.normal to "현재 검토중이예요!"
 
-                                QuestionProposalStatus.APPROVED ->
+                                ProposalStatusUi.APPROVED ->
                                     QelloTheme.colors.status.positive to "질문이 승인됐어요! 카드로 질문을 만나보세요!"
 
-                                QuestionProposalStatus.REJECTED -> QelloTheme.colors.status.destructive to "질문이 거절당했어요."
+                                ProposalStatusUi.REJECTED -> QelloTheme.colors.status.destructive to "질문이 거절당했어요."
 
-                                QuestionProposalStatus.ARCHIVED -> QelloTheme.colors.label.assistive to "보관된 제안이에요."
+                                ProposalStatusUi.ARCHIVED -> QelloTheme.colors.label.assistive to "보관된 제안이에요."
                             }
 
                             QelloSuggestQuestionStatusItem(
@@ -245,11 +237,3 @@ fun QuestionSuggestListScreen(
         QelloLoadingOverlay()
     }
 }
-
-private fun QuestionProposalStatus.isReviewing(): Boolean = when (this) {
-    QuestionProposalStatus.DRAFT, QuestionProposalStatus.SUBMITTED, QuestionProposalStatus.UNDER_REVIEW -> true
-    QuestionProposalStatus.APPROVED, QuestionProposalStatus.REJECTED, QuestionProposalStatus.ARCHIVED -> false
-}
-
-private fun String.toDateLabel(): String =
-    Instant.parse(this).atZone(ZoneId.systemDefault()).toLocalDate().format(dateFormatter)

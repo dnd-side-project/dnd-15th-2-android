@@ -6,6 +6,7 @@ import com.qello.domain.repository.QuestionRepository
 import com.qello.domain.result.AppResult
 import com.qello.domain.result.asResult
 import com.qello.presentation.mapper.toMessageRes
+import com.qello.presentation.mapper.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -42,7 +43,7 @@ class QuestionSuggestListViewModel @Inject constructor(
                     AppResult.Loading -> _uiState.update { it.copy(isLoading = true) }
 
                     is AppResult.Success -> _uiState.update {
-                        it.copy(isLoading = false, proposals = result.data)
+                        it.copy(isLoading = false, proposals = result.data.map { proposal -> proposal.toUiModel() })
                     }
 
                     is AppResult.Error -> {
