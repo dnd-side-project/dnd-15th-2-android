@@ -39,9 +39,6 @@ import com.qello.presentation.designsystem.component.image.QelloQuestionCard
 import com.qello.presentation.designsystem.component.loading.QelloLoadingOverlay
 import com.qello.presentation.designsystem.component.text.QelloText
 import com.qello.presentation.designsystem.theme.QelloTheme
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun SentQuestionListScreen(
@@ -198,10 +195,10 @@ fun SentQuestionListScreen(
                                 title = card.questionText,
                                 photo = card.media.firstOrNull(),
                                 location = card.coarseRegionCode.orEmpty(),
-                                localTime = card.submittedAt.toLocalTimeLabel(),
+                                localTime = card.localTimeLabel,
                                 commentCount = card.answerCount.toInt(),
                                 likeCount = card.reactionCount.toInt(),
-                                postedAt = card.submittedAt.toPostedAtLabel(),
+                                postedAt = card.postedAtLabel,
                                 distance = null,
                                 badgeText = if (card.unreadAnswerCount > 0) "새로운 답변 ${card.unreadAnswerCount}개" else null,
                                 onClick = { onItemClick(card.postId.toInt()) },
@@ -232,12 +229,3 @@ fun SentQuestionListScreen(
         }
     }
 }
-
-private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
-private val timeWithSecondsFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
-
-private fun String.toLocalTimeLabel(): String =
-    Instant.parse(this).atZone(ZoneId.systemDefault()).toLocalTime().format(timeFormatter)
-
-private fun String.toPostedAtLabel(): String =
-    Instant.parse(this).atZone(ZoneId.systemDefault()).toLocalTime().format(timeWithSecondsFormatter)

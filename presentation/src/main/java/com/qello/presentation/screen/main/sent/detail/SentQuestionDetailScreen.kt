@@ -51,7 +51,7 @@ fun SentQuestionDetailScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val resources = LocalResources.current
-    val card = uiState.detail?.card
+    val card = uiState.card
 
     var reportAnswerId by remember { mutableStateOf<Long?>(null) }
     var showReportComplete by remember { mutableStateOf(false) }
@@ -105,7 +105,7 @@ fun SentQuestionDetailScreen(
 
                         if (!card?.bodyText.isNullOrBlank()) {
                             QelloText(
-                                text = card?.bodyText.orEmpty(),
+                                text = card.bodyText,
                                 style = QelloTheme.typography.caption1,
                                 color = QelloTheme.colors.label.normal1,
                                 modifier = Modifier.padding(top = QelloTheme.spacing.spacing4),

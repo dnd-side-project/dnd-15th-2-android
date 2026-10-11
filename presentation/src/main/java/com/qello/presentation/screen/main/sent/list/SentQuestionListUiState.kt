@@ -1,9 +1,9 @@
 package com.qello.presentation.screen.main.sent.list
 
-import com.qello.domain.model.SentPostCard
+import com.qello.presentation.model.SentPostCardUiModel
 
 data class SentQuestionListUiState(
-    val cards: List<SentPostCard> = emptyList(),
+    val cards: List<SentPostCardUiModel> = emptyList(),
     val answeredOnly: Boolean = false,
     val isLoading: Boolean = false,
     val isLoadingMore: Boolean = false,

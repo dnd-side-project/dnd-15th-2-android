@@ -8,6 +8,7 @@ import com.qello.domain.repository.SentPostRepository
 import com.qello.domain.result.AppResult
 import com.qello.domain.result.asResult
 import com.qello.presentation.mapper.toMessageRes
+import com.qello.presentation.mapper.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -41,7 +42,7 @@ class SentQuestionListViewModel @Inject constructor(
         isLoadingMore,
     ) { cards, answeredOnly, isLoading, isLoadingMore ->
         SentQuestionListUiState(
-            cards = cards,
+            cards = cards.map { it.toUiModel() },
             answeredOnly = answeredOnly,
             isLoading = isLoading,
             isLoadingMore = isLoadingMore,

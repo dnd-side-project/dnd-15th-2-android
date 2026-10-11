@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.qello.domain.model.Answer
 import com.qello.domain.model.ReportReason
+import com.qello.domain.model.SentPostDetail
 import com.qello.domain.repository.DirectionRepository
 import com.qello.domain.repository.SentPostRepository
 import com.qello.domain.result.AppResult
@@ -40,6 +41,7 @@ class SentQuestionDetailViewModel @Inject constructor(
     val sideEffect: Flow<SentQuestionDetailSideEffect> = _sideEffect.receiveAsFlow()
 
     private var loadedPostId: Long? = null
+    private var detail: SentPostDetail? = null
     private var answers: List<Answer> = emptyList()
 
     fun load(postId: Long) {
@@ -54,8 +56,9 @@ class SentQuestionDetailViewModel @Inject constructor(
                     AppResult.Loading -> uiStateFlow.value = uiStateFlow.value.copy(isLoading = true)
 
                     is AppResult.Success -> {
+                        detail = result.data
                         answers = emptyList()
-                        uiStateFlow.value = SentQuestionDetailUiState(detail = result.data, isLoading = false)
+                        uiStateFlow.value = SentQuestionDetailUiState(card = result.data.card.toUiModel(), isLoading = false)
                         loadAnswers(postId)
                         viewModelScope.launch { directionRepository.markAnswersRead(postId) }
                     }
