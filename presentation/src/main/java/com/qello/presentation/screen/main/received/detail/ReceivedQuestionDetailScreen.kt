@@ -46,7 +46,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.qello.domain.model.InboxCard
 import com.qello.presentation.R
 import com.qello.presentation.designsystem.component.bottomsheet.QelloMoreBottomSheet
 import com.qello.presentation.designsystem.component.image.QelloReportBottomSheet
@@ -71,7 +70,7 @@ fun ReceivedQuestionDetailScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val resources = LocalResources.current
-    val card = uiState.detail?.card
+    val card = uiState.card
     val coroutineScope = rememberCoroutineScope()
     val hideSnackbarHostState = remember { SnackbarHostState() }
 
@@ -155,7 +154,7 @@ fun ReceivedQuestionDetailScreen(
 
                         if (!card?.bodyText.isNullOrBlank()) {
                             QelloText(
-                                text = card?.bodyText.orEmpty(),
+                                text = card.bodyText,
                                 style = QelloTheme.typography.caption1,
                                 color = QelloTheme.colors.label.normal1,
                                 modifier = Modifier.padding(top = QelloTheme.spacing.spacing4),
@@ -191,7 +190,7 @@ fun ReceivedQuestionDetailScreen(
                             )
                         }
 
-                        DetailStat(iconRes = R.drawable.ic_location, value = card.toDistanceLabel())
+                        DetailStat(iconRes = R.drawable.ic_location, value = card?.distanceLabel.orEmpty())
                     }
 
                     Box(
@@ -381,12 +380,5 @@ private fun DetailStat(
             color = QelloTheme.colors.label.assistive,
         )
     }
-}
-
-private fun InboxCard?.toDistanceLabel(): String {
-    if (this == null) return ""
-    distanceBand?.let { return it }
-    val meters = distanceM ?: return ""
-    return if (meters >= 1000) "${meters / 1000}km" else "${meters}m"
 }
 

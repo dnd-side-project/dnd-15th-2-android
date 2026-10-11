@@ -10,6 +10,7 @@ import com.qello.domain.repository.InboxRepository
 import com.qello.domain.result.AppResult
 import com.qello.domain.result.asResult
 import com.qello.presentation.mapper.toMessageRes
+import com.qello.presentation.mapper.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -41,7 +42,7 @@ class ReceivedQuestionListViewModel @Inject constructor(
         isLoading,
     ) { listing, selectedSegmentKey, answeredOnly, isLoading ->
         ReceivedQuestionListUiState(
-            cards = listing.cards,
+            cards = listing.cards.map { it.toUiModel() },
             chips = listing.chips,
             selectedSegmentKey = selectedSegmentKey,
             answeredOnly = answeredOnly,

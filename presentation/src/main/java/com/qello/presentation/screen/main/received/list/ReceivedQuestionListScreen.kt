@@ -40,7 +40,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.qello.domain.model.InboxCard
 import com.qello.presentation.R
 import com.qello.presentation.designsystem.component.bottombar.HomeBottomBarTab
 import com.qello.presentation.designsystem.component.bottombar.QelloBottomBarScaffold
@@ -53,10 +52,8 @@ import com.qello.presentation.designsystem.component.loading.QelloLoadingOverlay
 import com.qello.presentation.designsystem.component.text.QelloText
 import com.qello.presentation.designsystem.theme.QelloColorPalette
 import com.qello.presentation.designsystem.theme.QelloTheme
+import com.qello.presentation.model.InboxCardUiModel
 import kotlinx.coroutines.launch
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun ReceivedQuestionListScreen(
@@ -73,7 +70,7 @@ fun ReceivedQuestionListScreen(
     val coroutineScope = rememberCoroutineScope()
     val hideSnackbarHostState = remember { SnackbarHostState() }
 
-    var moreCard by remember { mutableStateOf<InboxCard?>(null) }
+    var moreCard by remember { mutableStateOf<InboxCardUiModel?>(null) }
     var reportTargetId by remember { mutableStateOf<Long?>(null) }
     var showReportComplete by remember { mutableStateOf(false) }
 
@@ -250,11 +247,11 @@ fun ReceivedQuestionListScreen(
                                 title = card.questionText,
                                 photo = card.media.firstOrNull(),
                                 location = card.senderCoarseRegionCode.orEmpty(),
-                                localTime = card.matchedAt.toLocalTimeLabel(),
+                                localTime = card.localTimeLabel,
                                 commentCount = card.answerCount.toInt(),
                                 likeCount = card.reactionCount.toInt(),
-                                postedAt = card.matchedAt.toPostedAtLabel(),
-                                distance = card.toDistanceLabel(),
+                                postedAt = card.postedAtLabel,
+                                distance = card.distanceLabel,
                                 onClick = { onItemClick(card.postRecipientId.toInt()) },
                                 onMoreClick = { moreCard = card },
                             )
@@ -330,19 +327,4 @@ private fun DirectionChipButton(
             color = if (selected) QelloTheme.colors.label.strong else QelloColorPalette.Navy60,
         )
     }
-}
-
-private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
-private val timeWithSecondsFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
-
-private fun String.toLocalTimeLabel(): String =
-    Instant.parse(this).atZone(ZoneId.systemDefault()).toLocalTime().format(timeFormatter)
-
-private fun String.toPostedAtLabel(): String =
-    Instant.parse(this).atZone(ZoneId.systemDefault()).toLocalTime().format(timeWithSecondsFormatter)
-
-private fun InboxCard.toDistanceLabel(): String {
-    distanceBand?.let { return it }
-    val meters = distanceM ?: return ""
-    return if (meters >= 1000) "${meters / 1000}km" else "${meters}m"
 }

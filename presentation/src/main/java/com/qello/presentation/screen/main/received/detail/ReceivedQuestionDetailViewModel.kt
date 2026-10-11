@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.qello.domain.model.Answer
 import com.qello.domain.model.InboxCard
+import com.qello.domain.model.InboxDetail
 import com.qello.domain.model.ReportReason
 import com.qello.domain.repository.DirectionRepository
 import com.qello.domain.repository.InboxRepository
@@ -41,6 +42,7 @@ class ReceivedQuestionDetailViewModel @Inject constructor(
     val sideEffect: Flow<ReceivedQuestionDetailSideEffect> = _sideEffect.receiveAsFlow()
 
     private var loadedPostRecipientId: Long? = null
+    private var detail: InboxDetail? = null
     private var answers: List<Answer> = emptyList()
 
     fun load(postRecipientId: Long) {
@@ -55,8 +57,9 @@ class ReceivedQuestionDetailViewModel @Inject constructor(
                     AppResult.Loading -> uiStateFlow.value = uiStateFlow.value.copy(isLoading = true)
 
                     is AppResult.Success -> {
+                        detail = result.data
                         answers = emptyList()
-                        uiStateFlow.value = ReceivedQuestionDetailUiState(detail = result.data, isLoading = false)
+                        uiStateFlow.value = ReceivedQuestionDetailUiState(card = result.data.card.toUiModel(), isLoading = false)
                         loadAnswers(result.data.card.postId)
                     }
 
@@ -155,7 +158,7 @@ class ReceivedQuestionDetailViewModel @Inject constructor(
     }
 
     fun onPostReportSubmit(reasonCode: ReportReason) {
-        val postId = uiStateFlow.value.detail?.card?.postId ?: return
+        val postId = detail?.card?.postId ?: return
         val detail = if (reasonCode == ReportReason.OTHER) "기타" else null
 
         suspend { directionRepository.reportPost(postId, reasonCode, detail) }
@@ -196,7 +199,7 @@ class ReceivedQuestionDetailViewModel @Inject constructor(
     }
 
     fun onReactionToggle() {
-        val card = uiStateFlow.value.detail?.card ?: return
+        val card = detail?.card ?: return
         val wasReacted = card.reactedByMe
         val postId = card.postId
 
@@ -226,8 +229,9 @@ class ReceivedQuestionDetailViewModel @Inject constructor(
     }
 
     private fun updateCard(card: InboxCard) {
-        val detail = uiStateFlow.value.detail ?: return
-        uiStateFlow.value = uiStateFlow.value.copy(detail = detail.copy(card = card))
+        val detail = detail ?: return
+        this.detail = detail.copy(card = card)
+        uiStateFlow.value = uiStateFlow.value.copy(card = card.toUiModel())
     }
 
     fun onAnswerReactionToggle(answerId: Long) {

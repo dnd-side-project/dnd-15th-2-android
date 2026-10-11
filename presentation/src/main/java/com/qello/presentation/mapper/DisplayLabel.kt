@@ -1,7 +1,12 @@
 package com.qello.presentation.mapper
 
 import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+
+private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+private val timeWithSecondsFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
 
 internal fun distanceLabel(distanceBand: String?, distanceM: Long?): String {
     distanceBand?.let { return it }
@@ -18,3 +23,9 @@ internal fun String.toRelativeTimeLabel(now: Instant): String {
         else -> "${minutes / (60 * 24)}일 전"
     }
 }
+
+internal fun String.toLocalTimeLabel(): String =
+    Instant.parse(this).atZone(ZoneId.systemDefault()).toLocalTime().format(timeFormatter)
+
+internal fun String.toPostedAtLabel(): String =
+    Instant.parse(this).atZone(ZoneId.systemDefault()).toLocalTime().format(timeWithSecondsFormatter)
