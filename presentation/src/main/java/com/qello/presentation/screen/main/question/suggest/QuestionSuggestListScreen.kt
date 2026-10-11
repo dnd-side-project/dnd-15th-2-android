@@ -39,13 +39,6 @@ import com.qello.presentation.designsystem.component.text.QelloText
 import com.qello.presentation.designsystem.theme.QelloTheme
 import com.qello.presentation.model.ProposalStatusUi
 
-private enum class QuestionSuggestListTab(val label: String) {
-    ALL("전체"),
-    REVIEWING("검토중"),
-    COMPLETED("검토완료"),
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuestionSuggestListRoute(
     onBack: () -> Unit,
@@ -74,16 +67,7 @@ fun QuestionSuggestListRoute(
         onDeleteClick = viewModel::onDeleteClicked,
     )
 }
-    var selectedTab by remember { mutableIntStateOf(0) }
-    var showMoreSheet by remember { mutableStateOf(false) }
 
-    val proposals = when (QuestionSuggestListTab.entries[selectedTab]) {
-        QuestionSuggestListTab.ALL -> uiState.proposals
-        QuestionSuggestListTab.REVIEWING -> uiState.proposals.filter { it.status == ProposalStatusUi.REVIEWING }
-        QuestionSuggestListTab.COMPLETED -> uiState.proposals.filter { it.status != ProposalStatusUi.REVIEWING }
-    }
-
-    val groupedProposals = proposals.groupBy { it.dateLabel }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuestionSuggestListScreen(
@@ -96,7 +80,7 @@ fun QuestionSuggestListScreen(
     onDeleteClick: () -> Unit,
 ) {
     val proposals = uiState.visibleProposals
-    val groupedProposals = proposals.groupBy { it.createdAt.toDateLabel() }
+    val groupedProposals = proposals.groupBy { it.dateLabel }
 
     Column(
         modifier = Modifier
