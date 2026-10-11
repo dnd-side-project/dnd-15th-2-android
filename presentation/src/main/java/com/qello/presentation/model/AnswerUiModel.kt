@@ -8,8 +8,10 @@ data class AnswerUiModel(
     val authorCoarseRegionCode: String?,
     val bodyText: String,
     val media: List<FeedMedia>,
+    val bearingFromSenderDegrees: Double,
     val relativeTimeLabel: String,
     val distanceLabel: String,
+    val editedAt: String?,
     val reactedByMe: Boolean,
     val reactionCount: Long,
 )
