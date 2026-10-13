@@ -1,9 +1,9 @@
 package com.qello.data.remote.datasource.impl
 
 import com.qello.data.remote.datasource.SentPostDataSource
-import com.qello.data.remote.response.ApiResponse
-import com.qello.data.remote.response.SentPostDetailResponse
-import com.qello.data.remote.response.SentPostListingResponse
+import com.qello.data.remote.model.common.ApiResponse
+import com.qello.data.remote.model.sentpost.SentPostDetailResponse
+import com.qello.data.remote.model.sentpost.SentPostListingResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get

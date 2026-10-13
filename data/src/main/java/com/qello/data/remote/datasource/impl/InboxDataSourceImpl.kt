@@ -1,11 +1,11 @@
 package com.qello.data.remote.datasource.impl
 
 import com.qello.data.remote.datasource.InboxDataSource
-import com.qello.data.remote.request.SubmitAnswerRequest
-import com.qello.data.remote.response.AnswerSubmissionResponse
-import com.qello.data.remote.response.ApiResponse
-import com.qello.data.remote.response.InboxDetailResponse
-import com.qello.data.remote.response.InboxListingResponse
+import com.qello.data.remote.model.inbox.SubmitAnswerRequest
+import com.qello.data.remote.model.inbox.AnswerSubmissionResponse
+import com.qello.data.remote.model.common.ApiResponse
+import com.qello.data.remote.model.inbox.InboxDetailResponse
+import com.qello.data.remote.model.inbox.InboxListingResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.delete

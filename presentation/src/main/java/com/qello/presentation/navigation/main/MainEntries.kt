@@ -3,20 +3,22 @@ package com.qello.presentation.navigation.main
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import com.qello.presentation.navigation.Navigator
-import com.qello.presentation.ui.screen.main.MainScreen
-import com.qello.presentation.ui.screen.main.my.MyScreen
-import com.qello.presentation.ui.screen.main.notification.NotificationScreen
-import com.qello.presentation.ui.screen.main.question.QuestionCompleteScreen
-import com.qello.presentation.ui.screen.main.question.QuestionComposeScreen
-import com.qello.presentation.ui.screen.main.question.QuestionDirectionScreen
-import com.qello.presentation.ui.screen.main.question.QuestionSuggestComposeScreen
-import com.qello.presentation.ui.screen.main.question.QuestionSuggestListRoute
-import com.qello.presentation.ui.screen.main.received.ReceivedQuestionDetailScreen
-import com.qello.presentation.ui.screen.main.received.ReceivedQuestionListScreen
-import com.qello.presentation.ui.screen.main.received.ReceivedQuestionShareScreen
-import com.qello.presentation.ui.screen.main.sent.SentQuestionDetailScreen
-import com.qello.presentation.ui.screen.main.sent.SentQuestionListScreen
-import com.qello.presentation.ui.screen.main.sent.SentQuestionShareScreen
+import com.qello.presentation.screen.main.MainScreen
+import com.qello.presentation.screen.main.my.MyScreen
+import com.qello.presentation.screen.main.notification.NotificationScreen
+import com.qello.presentation.screen.main.question.complete.QuestionCompleteScreen
+import com.qello.presentation.screen.main.question.complete.QuestionCompleteType
+import com.qello.presentation.screen.main.question.complete.toContent
+import com.qello.presentation.screen.main.question.compose.QuestionComposeScreen
+import com.qello.presentation.screen.main.question.direction.QuestionDirectionScreen
+import com.qello.presentation.screen.main.question.suggest.QuestionSuggestComposeScreen
+import com.qello.presentation.screen.main.question.suggest.QuestionSuggestListRoute
+import com.qello.presentation.screen.main.received.detail.ReceivedQuestionDetailScreen
+import com.qello.presentation.screen.main.received.list.ReceivedQuestionListScreen
+import com.qello.presentation.screen.main.received.share.ReceivedQuestionShareScreen
+import com.qello.presentation.screen.main.sent.detail.SentQuestionDetailScreen
+import com.qello.presentation.screen.main.sent.list.SentQuestionListScreen
+import com.qello.presentation.screen.main.sent.share.SentQuestionShareScreen
 
 fun EntryProviderScope<NavKey>.mainEntries(
     navigator: Navigator,
@@ -153,6 +155,11 @@ fun EntryProviderScope<NavKey>.mainEntries(
 
     entry<MainNavKey.QuestionComplete> { key ->
         val content = key.type.toContent()
+        // null이면 홈으로 이동한다
+        val (primaryDestination, secondaryDestination) = when (key.type) {
+            QuestionCompleteType.SEND_QUESTION -> MainNavKey.SentQuestionList to null
+            QuestionCompleteType.SUGGEST_QUESTION -> null to MainNavKey.QuestionCompose
+        }
         val navigateTo = { destination: MainNavKey? ->
             navigator.popToTopLevelStart()
             destination?.let { navigator.navigate(it) }
@@ -166,8 +173,8 @@ fun EntryProviderScope<NavKey>.mainEntries(
             imageRes = content.imageRes,
             primaryButtonText = content.primaryButtonText,
             secondaryButtonText = content.secondaryButtonText,
-            onPrimaryClick = { navigateTo(content.primaryDestination) },
-            onSecondaryClick = { navigateTo(content.secondaryDestination) },
+            onPrimaryClick = { navigateTo(primaryDestination) },
+            onSecondaryClick = { navigateTo(secondaryDestination) },
         )
     }
 }

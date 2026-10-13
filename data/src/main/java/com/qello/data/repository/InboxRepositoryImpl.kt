@@ -1,38 +1,22 @@
 package com.qello.data.repository
 
+import com.qello.data.mapper.toDomain
 import com.qello.data.remote.datasource.InboxDataSource
-import com.qello.data.remote.request.SubmitAnswerRequest
-import com.qello.data.remote.response.DirectionChipResponse
-import com.qello.data.remote.response.InboxCardResponse
-import com.qello.domain.model.DirectionChip
-import com.qello.domain.model.FeedMedia
-import com.qello.domain.model.InboxCard
+import com.qello.data.remote.model.inbox.SubmitAnswerRequest
 import com.qello.domain.model.InboxCategory
 import com.qello.domain.model.InboxDetail
 import com.qello.domain.model.InboxListing
-import com.qello.domain.model.PostRecipientStatus
 import com.qello.domain.repository.InboxRepository
 import javax.inject.Inject
 
 class InboxRepositoryImpl @Inject constructor(
     private val inboxDataSource: InboxDataSource,
 ) : InboxRepository {
-    override suspend fun getInbox(category: InboxCategory, directionSegmentKey: String?): InboxListing {
-        val response = inboxDataSource.getInbox(category.name, directionSegmentKey)
-        return InboxListing(
-            cards = response.cards.map { it.toDomain() },
-            chips = response.chips.map { it.toDomain() },
-        )
-    }
+    override suspend fun getInbox(category: InboxCategory, directionSegmentKey: String?): InboxListing =
+        inboxDataSource.getInbox(category.name, directionSegmentKey).toDomain()
 
-    override suspend fun getInboxDetail(postRecipientId: Long): InboxDetail {
-        val response = inboxDataSource.getDetail(postRecipientId)
-        return InboxDetail(
-            card = response.card.toDomain(),
-            openedAt = response.openedAt,
-            skipRequestedAt = response.skipRequestedAt,
-        )
-    }
+    override suspend fun getInboxDetail(postRecipientId: Long): InboxDetail =
+        inboxDataSource.getDetail(postRecipientId).toDomain()
 
     override suspend fun submitAnswer(
         postRecipientId: Long,
@@ -54,30 +38,4 @@ class InboxRepositoryImpl @Inject constructor(
     override suspend fun undoSkipInboxItem(postRecipientId: Long) {
         inboxDataSource.revertSkip(postRecipientId)
     }
-
-    private fun InboxCardResponse.toDomain() = InboxCard(
-        postRecipientId = postRecipientId,
-        postId = postId,
-        status = PostRecipientStatus.valueOf(status),
-        questionText = questionText,
-        bodyText = bodyText,
-        media = media.map { FeedMedia(mediaId = it.mediaId, url = it.url) },
-        senderCoarseRegionCode = senderCoarseRegionCode,
-        inboundBearingDegrees = inboundBearingDegrees,
-        distanceM = distanceM,
-        distanceBand = distanceBand,
-        matchedAt = matchedAt,
-        expiresAt = expiresAt,
-        answerCount = answerCount,
-        reactedByMe = reactedByMe,
-        reactionCount = reactionCount,
-        unreadAnswerCount = unreadAnswerCount,
-    )
-
-    private fun DirectionChipResponse.toDomain() = DirectionChip(
-        segmentKey = segmentKey,
-        displayName = displayName,
-        sortOrder = sortOrder,
-        count = count,
-    )
 }

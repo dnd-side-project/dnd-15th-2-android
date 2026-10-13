@@ -1,9 +1,9 @@
 package com.qello.data.remote.datasource.impl
 
 import com.qello.data.remote.datasource.AuthDataSource
-import com.qello.data.remote.request.RegisterDeviceRequest
-import com.qello.data.remote.response.ApiResponse
-import com.qello.data.remote.response.RegisterDeviceResponse
+import com.qello.data.remote.model.auth.RegisterDeviceRequest
+import com.qello.data.remote.model.common.ApiResponse
+import com.qello.data.remote.model.auth.RegisterDeviceResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.post
@@ -16,20 +16,9 @@ class AuthDataSourceImpl @Inject constructor(
     private val client: HttpClient,
 ) : AuthDataSource {
     override suspend fun registerDevice(
-        installationId: String,
-        nickname: String,
+        request: RegisterDeviceRequest,
     ): RegisterDeviceResponse = client.post("auth/devices") {
         contentType(ContentType.Application.Json)
-        setBody(
-            RegisterDeviceRequest(
-                installationId = installationId,
-                nickname = nickname,
-                platform = "ANDROID",
-                timezone = "Asia/Seoul",
-                countryCode = "KR",
-                coarseRegionCode = "KR-11",
-                locale = "ko_KR",
-            ),
-        )
+        setBody(request)
     }.body<ApiResponse<RegisterDeviceResponse>>().data
 }

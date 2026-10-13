@@ -4,9 +4,9 @@ import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import com.qello.presentation.navigation.Navigator
 import com.qello.presentation.navigation.main.MainNavKey
-import com.qello.presentation.ui.screen.login.LoginScreen
-import com.qello.presentation.ui.screen.login.nickname.NicknameScreen
-import com.qello.presentation.ui.screen.login.welcome.WelcomeScreen
+import com.qello.presentation.screen.login.LoginScreen
+import com.qello.presentation.screen.login.nickname.NicknameScreen
+import com.qello.presentation.screen.login.welcome.WelcomeScreen
 
 fun EntryProviderScope<NavKey>.loginEntries(
     navigator: Navigator,

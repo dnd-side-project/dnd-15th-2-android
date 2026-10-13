@@ -3,7 +3,7 @@ package com.qello.data.di
 import com.qello.data.BuildConfig
 import com.qello.data.local.datastore.UserPreferencesDataSource
 import com.qello.data.remote.auth.TokenRefresher
-import com.qello.data.remote.response.ErrorResponse
+import com.qello.data.remote.model.common.ErrorResponse
 import com.qello.domain.result.AppError
 import dagger.Module
 import dagger.Provides

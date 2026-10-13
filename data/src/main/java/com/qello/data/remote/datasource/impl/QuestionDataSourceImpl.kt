@@ -1,10 +1,10 @@
 package com.qello.data.remote.datasource.impl
 
 import com.qello.data.remote.datasource.QuestionDataSource
-import com.qello.data.remote.request.QuestionProposalRequest
-import com.qello.data.remote.response.ApiResponse
-import com.qello.data.remote.response.QuestionProposalResponse
-import com.qello.data.remote.response.RecommendedQuestionResponse
+import com.qello.data.remote.model.question.QuestionProposalRequest
+import com.qello.data.remote.model.common.ApiResponse
+import com.qello.data.remote.model.question.QuestionProposalResponse
+import com.qello.data.remote.model.question.RecommendedQuestionResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
@@ -19,10 +19,10 @@ class QuestionDataSourceImpl @Inject constructor(
     private val client: HttpClient,
 ) : QuestionDataSource {
     override suspend fun submitQuestionProposal(
-        proposedText: String,
+        request: QuestionProposalRequest,
     ): QuestionProposalResponse = client.post("questions/proposals") {
         contentType(ContentType.Application.Json)
-        setBody(QuestionProposalRequest(proposedText = proposedText))
+        setBody(request)
     }.body<ApiResponse<QuestionProposalResponse>>().data
 
     override suspend fun getMyQuestionProposals(): List<QuestionProposalResponse> =

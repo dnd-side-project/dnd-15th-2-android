@@ -1,9 +1,9 @@
 package com.qello.data.repository
 
+import com.qello.data.mapper.toDomain
 import com.qello.data.remote.datasource.QuestionDataSource
-import com.qello.data.remote.response.QuestionProposalResponse
+import com.qello.data.remote.model.question.QuestionProposalRequest
 import com.qello.domain.model.QuestionProposal
-import com.qello.domain.model.QuestionProposalStatus
 import com.qello.domain.model.RecommendedQuestion
 import com.qello.domain.repository.QuestionRepository
 import javax.inject.Inject
@@ -12,7 +12,7 @@ class QuestionRepositoryImpl @Inject constructor(
     private val questionDataSource: QuestionDataSource,
 ) : QuestionRepository {
     override suspend fun submitQuestionProposal(proposedText: String) {
-        questionDataSource.submitQuestionProposal(proposedText)
+        questionDataSource.submitQuestionProposal(QuestionProposalRequest(proposedText = proposedText))
     }
 
     override suspend fun getMyQuestionProposals(): List<QuestionProposal> =
@@ -23,16 +23,5 @@ class QuestionRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getRecommendedQuestions(): List<RecommendedQuestion> =
-        questionDataSource.getRecommendedQuestions().map {
-            RecommendedQuestion(approvedQuestionId = it.approvedQuestionId, questionText = it.questionText)
-        }
-
-    private fun QuestionProposalResponse.toDomain() = QuestionProposal(
-        id = id,
-        proposedText = proposedText,
-        status = QuestionProposalStatus.valueOf(status),
-        decisionReason = decisionReason,
-        submittedAt = submittedAt,
-        createdAt = createdAt,
-    )
+        questionDataSource.getRecommendedQuestions().map { it.toDomain() }
 }
