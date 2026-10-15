@@ -4,7 +4,6 @@ import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import com.qello.presentation.navigation.Navigator
 import com.qello.presentation.screen.main.MainScreen
-import com.qello.presentation.screen.main.my.MyScreen
 import com.qello.presentation.screen.main.notification.NotificationScreen
 import com.qello.presentation.screen.main.question.complete.QuestionCompleteScreen
 import com.qello.presentation.screen.main.question.complete.QuestionCompleteType
@@ -19,6 +18,7 @@ import com.qello.presentation.screen.main.received.share.ReceivedQuestionShareSc
 import com.qello.presentation.screen.main.sent.detail.SentQuestionDetailScreen
 import com.qello.presentation.screen.main.sent.list.SentQuestionListScreen
 import com.qello.presentation.screen.main.sent.share.SentQuestionShareScreen
+import com.qello.presentation.screen.main.setting.SettingScreen
 
 fun EntryProviderScope<NavKey>.mainEntries(
     navigator: Navigator,
@@ -31,7 +31,7 @@ fun EntryProviderScope<NavKey>.mainEntries(
             onNavigateToReceivedQuestion = { navigator.navigate(MainNavKey.ReceivedQuestionList) },
             onNavigateToSentQuestion = { navigator.navigate(MainNavKey.SentQuestionList) },
             onNavigateToQuestionSuggestList = { navigator.navigate(MainNavKey.QuestionSuggestList) },
-            onNavigateToMy = { navigator.navigate(MainNavKey.My) },
+            onNavigateToSetting = { navigator.navigate(MainNavKey.Setting) },
         )
     }
 
@@ -151,7 +151,7 @@ fun EntryProviderScope<NavKey>.mainEntries(
         )
     }
 
-    entry<MainNavKey.My> { MyScreen() }
+    entry<MainNavKey.Setting> { SettingScreen() }
 
     entry<MainNavKey.QuestionComplete> { key ->
         val content = key.type.toContent()

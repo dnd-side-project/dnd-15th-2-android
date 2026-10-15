@@ -14,7 +14,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.mapbox.geojson.Point
 import com.qello.presentation.R
@@ -37,7 +36,7 @@ fun MainScreen(
     onNavigateToReceivedQuestion: () -> Unit,
     onNavigateToSentQuestion: () -> Unit,
     onNavigateToQuestionSuggestList: () -> Unit,
-    onNavigateToMy: () -> Unit,
+    onNavigateToSetting: () -> Unit,
     viewModel: MainViewModel = hiltViewModel(),
 ) {
     var showQuestionSendSheet by remember { mutableStateOf(false) }
@@ -67,9 +66,15 @@ fun MainScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 68.dp, end = 21.dp),
-            horizontalArrangement = Arrangement.spacedBy(11.5.dp, Alignment.End)
+                .padding(top = QelloTheme.spacing.spacing69, end = QelloTheme.spacing.spacing20),
+            horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing20, Alignment.End)
         ) {
+            QelloIconButton(
+                painter = painterResource(R.drawable.ic_suggest_check),
+            ) {
+                onNavigateToQuestionSuggestList()
+            }
+
             QelloIconButton(
                 painter = painterResource(R.drawable.ic_bell),
             ) {
@@ -79,8 +84,10 @@ fun MainScreen(
             QelloIconButton(
                 painter = painterResource(R.drawable.ic_hamburgerbar),
             ) {
-                onNavigateToQuestionSuggestList()
+                onNavigateToSetting()
             }
+
+
         }
 
         // 바텀시트
@@ -107,7 +114,7 @@ fun MainScreen(
                     color = QelloTheme.colors.label.normal2,
                 )
 
-                QelloSpacer(44.dp)
+                QelloSpacer(QelloTheme.spacing.spacing44)
 
                 QelloLargeButton(
                     text = "질문하러가기",

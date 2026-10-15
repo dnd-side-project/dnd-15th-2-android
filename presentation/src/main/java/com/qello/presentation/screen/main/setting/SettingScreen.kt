@@ -1,4 +1,4 @@
-package com.qello.presentation.screen.main.my
+package com.qello.presentation.screen.main.setting
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,10 +9,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun MyScreen() {
+fun SettingScreen() {
     Column(
         modifier = Modifier.fillMaxSize().padding(24.dp),
     ) {
-        Text("My Screen")
+        Text("Setting Screen")
     }
 }

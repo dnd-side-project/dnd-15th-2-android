@@ -52,5 +52,5 @@ sealed interface MainNavKey : NavKey {
     data class SentQuestionShare(val questionId: Int) : MainNavKey
 
     @Serializable
-    data object My : MainNavKey
+    data object Setting : MainNavKey
 }
