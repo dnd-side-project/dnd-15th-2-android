@@ -1,5 +1,6 @@
 package com.qello.presentation.screen.main.question.compose
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
@@ -17,7 +18,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,7 +33,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
@@ -54,18 +53,21 @@ import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.qello.presentation.R
+import com.qello.presentation.common.rememberSinglePhotoPicker
 import com.qello.presentation.designsystem.component.button.QelloBackButton
 import com.qello.presentation.designsystem.component.button.QelloLargeButton
 import com.qello.presentation.designsystem.component.button.QelloSmallButton
+import com.qello.presentation.designsystem.component.item.QuestionCardContent
 import com.qello.presentation.designsystem.component.loading.QelloLoadingOverlay
+import com.qello.presentation.designsystem.component.spacer.QelloSpacer
 import com.qello.presentation.designsystem.component.text.QelloText
 import com.qello.presentation.designsystem.component.text.QelloTextArea
-import com.qello.presentation.common.rememberSinglePhotoPicker
 import com.qello.presentation.designsystem.theme.QelloColorPalette
 import com.qello.presentation.designsystem.theme.QelloSpacing
 import com.qello.presentation.designsystem.theme.QelloTheme
@@ -73,12 +75,12 @@ import kotlinx.coroutines.delay
 import kotlin.math.absoluteValue
 
 private const val sideCardScale = 0.838f
-private val screenHorizontalPadding = 20.dp
-private val carouselSidePadding = QelloSpacing.spacing72
+private val screenHorizontalPadding = QelloSpacing.spacing20
+private val carouselSidePaddingBrowsing = QelloSpacing.spacing72
+private val carouselSidePaddingSelected = QelloSpacing.spacing32
 private val carouselHeightSelected = 126.dp
-private val avatarSizeBrowsing = 140.dp
-private val avatarSizeSelected = 80.dp
 
+@SuppressLint("FrequentlyChangingValue")
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun QuestionComposeScreen(
@@ -148,13 +150,13 @@ fun QuestionComposeScreen(
             .fillMaxSize()
             .background(QelloTheme.gradient.backgroundStrong),
     ) {
-        Spacer(Modifier.height(24.dp))
+        QelloSpacer(QelloTheme.spacing.spacing24)
 
         Box(modifier = Modifier.padding(start = 18.dp)) {
             QelloBackButton(onClick = onBack)
         }
 
-        Spacer(Modifier.height(29.dp))
+        QelloSpacer(QelloTheme.spacing.spacing28)
 
         Box(
             modifier = Modifier
@@ -190,37 +192,45 @@ fun QuestionComposeScreen(
                 verticalArrangement = Arrangement.SpaceBetween,
             ) {
                 Column(modifier = Modifier.padding(horizontal = screenHorizontalPadding)) {
-                    Spacer(Modifier.height(QelloTheme.spacing.spacing24))
+                    QelloSpacer(QelloTheme.spacing.spacing24)
 
                     AnimatedContent(targetState = isSelected, label = "heading") { selected ->
                         Column(modifier = Modifier.padding(horizontal = QelloTheme.spacing.spacing4)) {
                             if (selected) {
+
                                 QelloText(
-                                    text = "사진 혹은",
+                                    text = stringResource(R.string.question_compose_write_title_line1),
                                     style = QelloTheme.typography.heading1,
                                     color = QelloTheme.colors.label.strong,
                                 )
+
                                 QelloText(
-                                    text = "글을 작성해보세요!",
+                                    text = stringResource(R.string.question_compose_write_title_line2),
                                     style = QelloTheme.typography.heading1,
                                     color = QelloTheme.colors.label.strong,
                                 )
-                                Spacer(Modifier.height(QelloTheme.spacing.spacing4))
+
+                                QelloSpacer(QelloTheme.spacing.spacing4)
+
                                 QelloText(
-                                    text = "사진 1장으로도 충분해요!",
+                                    text = stringResource(R.string.question_compose_write_caption),
                                     style = QelloTheme.typography.caption1,
                                     color = QelloTheme.colors.primary.normal,
                                 )
                             } else {
-                                QelloText(text = "좋아요!", style = QelloTheme.typography.heading1, color = QelloTheme.colors.label.strong)
                                 QelloText(
-                                    text = "질문을 선택해볼까요?",
+                                    text = stringResource(R.string.question_compose_select_title_line1),
                                     style = QelloTheme.typography.heading1,
                                     color = QelloTheme.colors.label.strong,
                                 )
-                                Spacer(Modifier.height(QelloTheme.spacing.spacing4))
                                 QelloText(
-                                    text = "마음에 드는 질문을 골라 보내보세요.",
+                                    text = stringResource(R.string.question_compose_select_title_line2),
+                                    style = QelloTheme.typography.heading1,
+                                    color = QelloTheme.colors.label.strong,
+                                )
+                                QelloSpacer(QelloTheme.spacing.spacing4)
+                                QelloText(
+                                    text = stringResource(R.string.question_compose_select_caption),
                                     style = QelloTheme.typography.caption1,
                                     color = QelloTheme.colors.primary.normal,
                                 )
@@ -230,16 +240,21 @@ fun QuestionComposeScreen(
                 }
 
                 Column {
-                    Spacer(Modifier.height(QelloTheme.spacing.spacing32))
+                    QelloSpacer(QelloTheme.spacing.spacing32)
 
+                    // 질문을 고르면 카드가 가로로 넓어지도록 좌우 여백을 줄인다
+                    val carouselSidePadding by animateDpAsState(
+                        targetValue = if (isSelected) carouselSidePaddingSelected else carouselSidePaddingBrowsing,
+                        label = "carouselSidePadding",
+                    )
                     val carouselHeight by animateDpAsState(
                         // 둘러보는 동안에는 카드가 정사각형이 되도록 높이를 카드 너비와 같게 둔다
-                        targetValue = if (isSelected) carouselHeightSelected else screenWidth - carouselSidePadding * 2,
+                        targetValue = if (isSelected) {
+                            carouselHeightSelected
+                        } else {
+                            screenWidth - carouselSidePaddingBrowsing * 2
+                        },
                         label = "carouselHeight",
-                    )
-                    val avatarSize by animateDpAsState(
-                        targetValue = if (isSelected) avatarSizeSelected else avatarSizeBrowsing,
-                        label = "avatarSize",
                     )
 
                     if (questions.isEmpty()) {
@@ -290,25 +305,16 @@ fun QuestionComposeScreen(
                                         .graphicsLayer { alpha = 1f - pageOffset.coerceIn(0f, 1f) }
                                         .background(QelloTheme.gradient.carouselCardHighlight),
                                 )
-                                QelloText(
-                                    text = question.questionText,
-                                    style = QelloTheme.typography.body1,
-                                    color = lerp(
+
+                                QuestionCardContent(
+                                    questionText = question.questionText,
+                                    textColor = lerp(
                                         QelloTheme.colors.label.strong,
                                         QelloColorPalette.Navy60,
                                         pageOffset.coerceIn(0f, 1f),
                                     ),
-                                    modifier = Modifier
-                                        .align(if (isSelected) Alignment.CenterStart else Alignment.TopStart)
-                                        .padding(QelloTheme.spacing.spacing22),
-                                )
-                                Box(
-                                    modifier = Modifier
-                                        .align(if (isSelected) Alignment.CenterEnd else Alignment.BottomEnd)
-                                        .padding(QelloTheme.spacing.spacing22)
-                                        .size(avatarSize)
-                                        .clip(CircleShape)
-                                        .background(QelloTheme.colors.status.destructive),
+                                    isSelected = isSelected,
+                                    modifier = Modifier.fillMaxSize(),
                                 )
                             }
                         }
@@ -326,7 +332,11 @@ fun QuestionComposeScreen(
                                 contentAlignment = Alignment.Center,
                             ) {
                                 QelloText(
-                                    text = "${pagerState.currentPage % questions.size + 1}/${questions.size}",
+                                    text = stringResource(
+                                        R.string.question_compose_page_indicator,
+                                        pagerState.currentPage % questions.size + 1,
+                                        questions.size,
+                                    ),
                                     style = QelloTheme.typography.caption3,
                                     color = QelloColorPalette.Navy80,
                                     modifier = Modifier
@@ -347,7 +357,7 @@ fun QuestionComposeScreen(
                         exit = fadeOut() + slideOutVertically(targetOffsetY = { fullHeight -> fullHeight }),
                     ) {
                         Column(modifier = Modifier.bringIntoViewRequester(photoSectionBringIntoViewRequester)) {
-                            Spacer(Modifier.height(QelloTheme.spacing.spacing20))
+                            QelloSpacer(QelloTheme.spacing.spacing20)
 
                             Box(
                                 modifier = Modifier
@@ -357,7 +367,7 @@ fun QuestionComposeScreen(
                             )
 
                             Column(modifier = Modifier.padding(horizontal = screenHorizontalPadding)) {
-                                Spacer(Modifier.height(QelloTheme.spacing.spacing20))
+                                QelloSpacer(QelloTheme.spacing.spacing20)
 
                                 Box(
                                     modifier = Modifier
@@ -396,11 +406,12 @@ fun QuestionComposeScreen(
                                     }
                                 }
 
-                                Spacer(Modifier.height(QelloTheme.spacing.spacing12))
+                                QelloSpacer(QelloTheme.spacing.spacing12)
 
                                 QelloTextArea(
                                     value = content,
                                     onValueChange = viewModel::onContentChanged,
+                                    placeholder = stringResource(R.string.question_compose_content_placeholder),
                                 )
                             }
                         }
@@ -408,7 +419,7 @@ fun QuestionComposeScreen(
                 }
 
                 Column(modifier = Modifier.padding(horizontal = screenHorizontalPadding)) {
-                    Spacer(Modifier.height(QelloTheme.spacing.spacing20))
+                    QelloSpacer(QelloTheme.spacing.spacing20)
 
                     if (isSelected && hasContent && selectedQuestion != null) {
                         Row(
@@ -418,20 +429,20 @@ fun QuestionComposeScreen(
                             horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing8),
                         ) {
                             QelloSmallButton(
-                                text = "질문 제안하러 가기",
+                                text = stringResource(R.string.question_compose_go_suggest_button),
                                 modifier = Modifier.weight(1f),
                                 colors = QelloTheme.buttonColors.darkButtonColors,
                                 onClick = onNavigateToSuggest,
                             )
                             QelloSmallButton(
-                                text = "방향 설정하러 가기",
+                                text = stringResource(R.string.question_compose_go_direction_button),
                                 modifier = Modifier.weight(1f),
                                 onClick = { onNext(content, uiState.uploadedMediaId, selectedQuestion.approvedQuestionId) },
                             )
                         }
                     } else {
                         QelloLargeButton(
-                            text = "질문 제안하러 가기",
+                            text = stringResource(R.string.question_compose_go_suggest_button),
                             colors = QelloTheme.buttonColors.darkButtonColors,
                             modifier = Modifier.padding(bottom = QelloTheme.spacing.spacing24),
                             onClick = onNavigateToSuggest,
