@@ -75,10 +75,21 @@
     <string name="direction_send_button">%1$s으로 질문 보내기</string>
     <string name="direction_finding_button">방향을 확인하고 있어요</string>
 
+    <!-- Question compose -->
+    <string name="question_compose_photo_upload_success">사진을 업로드했어요.</string>
+    <string name="question_compose_select_title_line1">좋아요!</string>
+    <string name="question_compose_select_title_line2">질문을 선택해볼까요?</string>
+    <string name="question_compose_select_caption">마음에 드는 질문을 골라 보내보세요.</string>
+    <string name="question_compose_write_title_line1">사진 혹은</string>
+    <string name="question_compose_write_title_line2">글을 작성해보세요!</string>
+    <string name="question_compose_write_caption">사진 1장으로도 충분해요!</string>
+    <string name="question_compose_page_indicator">%1$d/%2$d</string>
+    <string name="question_compose_content_placeholder">선택하신 질문에 대한 나의 생각을 자유롭게 적어보세요!</string>
+    <string name="question_compose_go_suggest_button">질문 제안하러 가기</string>
+    <string name="question_compose_go_direction_button">방향 설정하러 가기</string>
+
     <!-- Question suggest -->
     <string name="question_suggest_error_blank">제안할 질문을 입력해주세요.</string>
     <string name="question_suggest_error_out_of_length">%1$d자 이하로 입력해주세요.</string>
 
-    <!-- Question compose -->
-    <string name="question_compose_photo_upload_success">사진을 업로드했어요.</string>
 </resources>
