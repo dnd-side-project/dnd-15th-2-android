@@ -46,15 +46,18 @@ fun QuestionCompleteScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = QelloTheme.spacing.spacing24),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing8),
         ) {
             QelloSmallButton(
                 text = primaryButtonText,
+                modifier = Modifier.weight(1f),
                 colors = QelloTheme.buttonColors.darkButtonColors,
                 onClick = onPrimaryClick,
             )
+
             QelloSmallButton(
                 text = secondaryButtonText,
+                modifier = Modifier.weight(1f),
                 onClick = onSecondaryClick,
             )
         }
