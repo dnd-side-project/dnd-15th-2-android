@@ -14,6 +14,7 @@ object QelloSpacing {
     val spacing14: Dp = 14.dp
     val spacing16: Dp = 16.dp
     val spacing17: Dp = 17.dp
+    val spacing18: Dp = 18.dp
     val spacing20: Dp = 20.dp
     val spacing22: Dp = 22.dp
     val spacing24: Dp = 24.dp

@@ -92,4 +92,17 @@
     <string name="question_suggest_error_blank">제안할 질문을 입력해주세요.</string>
     <string name="question_suggest_error_out_of_length">%1$d자 이하로 입력해주세요.</string>
 
+    <!-- Setting -->
+    <string name="setting_title">설정</string>
+    <string name="setting_profile_edit">프로필 편집</string>
+    <string name="setting_section_activity">활동</string>
+    <string name="setting_section_info">정보</string>
+    <string name="setting_menu_notification">알림</string>
+    <string name="setting_menu_question_suggest">질문 제안 확인</string>
+    <string name="setting_menu_report_history">신고 조회</string>
+    <string name="setting_menu_app_info">앱 정보</string>
+    <string name="profile_edit_title">프로필 편집</string>
+    <string name="report_history_title">신고 조회</string>
+    <string name="app_info_title">앱 정보</string>
+
 </resources>

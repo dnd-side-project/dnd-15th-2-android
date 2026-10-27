@@ -53,4 +53,13 @@ sealed interface MainNavKey : NavKey {
 
     @Serializable
     data object Setting : MainNavKey
+
+    @Serializable
+    data object ProfileEdit : MainNavKey
+
+    @Serializable
+    data object ReportHistory : MainNavKey
+
+    @Serializable
+    data object AppInfo : MainNavKey
 }
