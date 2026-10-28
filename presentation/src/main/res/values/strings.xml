@@ -105,4 +105,13 @@
     <string name="report_history_title">신고 조회</string>
     <string name="app_info_title">앱 정보</string>
 
+    <!-- Profile edit -->
+    <string name="profile_edit_image_change">사진 변경</string>
+    <string name="profile_edit_image_description">프로필 사진 변경</string>
+    <string name="profile_edit_nickname_label">닉네임</string>
+    <string name="profile_edit_nickname_placeholder">새로운 닉네임을 입력해주세요.</string>
+    <string name="profile_edit_save">변경하기</string>
+    <string name="profile_edit_success">프로필을 변경했어요.</string>
+    <string name="profile_edit_nickname_unavailable">이미 사용 중이거나 아직 바꿀 수 없는 닉네임이에요.</string>
+    <string name="profile_edit_image_rejected">사용할 수 없는 사진이에요. 다른 사진을 골라주세요.</string>
 </resources>

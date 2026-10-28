@@ -191,7 +191,10 @@ fun EntryProviderScope<NavKey>.mainEntries(
     }
 
     entry<MainNavKey.ProfileEdit> {
-        ProfileEditScreen(onBack = { navigator.goBack() })
+        ProfileEditScreen(
+            onBack = { navigator.goBack() },
+            showSnackbar = showSnackbar,
+        )
     }
 
     entry<MainNavKey.ReportHistory> {
