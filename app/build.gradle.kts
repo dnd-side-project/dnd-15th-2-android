@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.qello.android.application)
     alias(libs.plugins.qello.android.hilt)
+    alias(libs.plugins.qello.android.coil)
     alias(libs.plugins.secrets.gradle.plugin)
 }
 
