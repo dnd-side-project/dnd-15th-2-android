@@ -3,12 +3,14 @@ package com.qello.data.di
 import com.qello.data.repository.DirectionRepositoryImpl
 import com.qello.data.repository.InboxRepositoryImpl
 import com.qello.data.repository.MediaRepositoryImpl
+import com.qello.data.repository.ProfileRepositoryImpl
 import com.qello.data.repository.QuestionRepositoryImpl
 import com.qello.data.repository.SentPostRepositoryImpl
 import com.qello.data.repository.UserAccountRepositoryImpl
 import com.qello.domain.repository.DirectionRepository
 import com.qello.domain.repository.InboxRepository
 import com.qello.domain.repository.MediaRepository
+import com.qello.domain.repository.ProfileRepository
 import com.qello.domain.repository.QuestionRepository
 import com.qello.domain.repository.SentPostRepository
 import com.qello.domain.repository.UserAccountRepository
@@ -57,4 +59,10 @@ interface RepositoryModule {
     fun bindsSentPostRepository(
         impl: SentPostRepositoryImpl,
     ): SentPostRepository
+
+    @Binds
+    @Singleton
+    fun bindsProfileRepository(
+        impl: ProfileRepositoryImpl,
+    ): ProfileRepository
 }
