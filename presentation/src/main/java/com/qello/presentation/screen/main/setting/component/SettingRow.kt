@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -23,8 +24,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
+import coil3.compose.AsyncImage
 import com.qello.presentation.R
 import com.qello.presentation.designsystem.component.text.QelloText
 import com.qello.presentation.designsystem.theme.QelloColorPalette
@@ -33,6 +36,7 @@ import com.qello.presentation.designsystem.theme.QelloTheme
 @Composable
 fun SettingProfileRow(
     nickname: String,
+    profileImageUrl: String?,
     caption: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -44,7 +48,16 @@ fun SettingProfileRow(
                 .clip(CircleShape)
                 .background(QelloTheme.colors.background.normalStrong)
                 .border(QelloTheme.borderWidth.border1, QelloTheme.colors.line.normal, CircleShape),
-        )
+        ) {
+            if (profileImageUrl != null) {
+                AsyncImage(
+                    model = profileImageUrl,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize(),
+                )
+            }
+        }
 
         Spacer(Modifier.width(QelloTheme.spacing.spacing12))
 

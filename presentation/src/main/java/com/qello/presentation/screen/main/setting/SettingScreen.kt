@@ -7,9 +7,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.qello.presentation.R
 import com.qello.presentation.designsystem.component.button.QelloBackButton
 import com.qello.presentation.designsystem.component.spacer.QelloSpacer
@@ -29,7 +34,20 @@ fun SettingScreen(
     onNavigateToQuestionSuggestList: () -> Unit,
     onNavigateToReportHistory: () -> Unit,
     onNavigateToAppInfo: () -> Unit,
+    showSnackbar: suspend (message: String) -> Unit,
+    viewModel: SettingViewModel = hiltViewModel(),
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val resources = LocalResources.current
+
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.collect { effect ->
+            when (effect) {
+                is SettingSideEffect.ShowSnackbar -> showSnackbar(resources.getString(effect.message))
+            }
+        }
+    }
+
     Column(
         modifier = Modifier.fillMaxSize().background(QelloTheme.gradient.backgroundStrong),
     ) {
@@ -54,7 +72,8 @@ fun SettingScreen(
         ) {
             SettingCard {
                 SettingProfileRow(
-                    nickname = "nickname",
+                    nickname = uiState.nickname,
+                    profileImageUrl = uiState.profileImageUrl,
                     caption = stringResource(R.string.setting_profile_edit),
                     onClick = onNavigateToProfileEdit,
                 )

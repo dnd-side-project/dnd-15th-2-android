@@ -187,6 +187,7 @@ fun EntryProviderScope<NavKey>.mainEntries(
             onNavigateToQuestionSuggestList = { navigator.navigate(MainNavKey.QuestionSuggestList) },
             onNavigateToReportHistory = { navigator.navigate(MainNavKey.ReportHistory) },
             onNavigateToAppInfo = { navigator.navigate(MainNavKey.AppInfo) },
+            showSnackbar = showSnackbar,
         )
     }
 
