@@ -3,10 +3,10 @@ package com.qello.presentation.screen.login.nickname
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.qello.domain.repository.MediaRepository
+import com.qello.domain.repository.ProfileRepository
 import com.qello.domain.repository.UserAccountRepository
 import com.qello.domain.result.AppError
-import com.qello.domain.result.AppResult
-import com.qello.domain.result.asResult
 import com.qello.domain.validation.NicknameError
 import com.qello.domain.validation.NicknameValidator
 import com.qello.presentation.mapper.toMessageRes
@@ -16,18 +16,19 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class NicknameViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val userAccountRepository: UserAccountRepository,
+    private val mediaRepository: MediaRepository,
+    private val profileRepository: ProfileRepository,
 ) : ViewModel(){
     private val nickname = savedStateHandle.getStateFlow(KEY_NICKNAME, "")
 
@@ -75,25 +76,40 @@ class NicknameViewModel @Inject constructor(
             return
         }
 
-        suspend { userAccountRepository.createAccount(trimmedNickname) }
-            .asFlow()
-            .asResult()
-            .onEach { result ->
-                when (result) {
-                    AppResult.Loading -> isSubmitting.value = true
+        viewModelScope.launch {
+            isSubmitting.value = true
 
-                    is AppResult.Success -> {
-                        isSubmitting.value = false
-                        _sideEffect.send(NicknameSideEffect.NavigateToWelcome(trimmedNickname))
-                    }
-
-                    is AppResult.Error -> {
-                        isSubmitting.value = false
-                        handleSignUpError(result.error)
-                    }
-                }
+            val isRegistered = try {
+                userAccountRepository.createAccount(trimmedNickname)
+                true
+            } catch (error: AppError) {
+                handleSignUpError(error)
+                false
             }
-            .launchIn(viewModelScope)
+
+            if (isRegistered) {
+                profileImageUri.value?.let { imageUri -> registerProfileImage(imageUri) }
+                isSubmitting.value = false
+                _sideEffect.send(NicknameSideEffect.NavigateToWelcome(trimmedNickname))
+            } else {
+                isSubmitting.value = false
+            }
+        }
+    }
+
+    private suspend fun registerProfileImage(imageUri: String) {
+        try {
+            val mediaAsset = mediaRepository.uploadImage(imageUri)
+
+            if (!mediaAsset.isReady) {
+                Timber.w("가입 후 프로필 사진이 거절됨(REJECTED), mediaId=${mediaAsset.mediaId}")
+                return
+            }
+
+            profileRepository.updateProfileImage(mediaAsset.mediaId)
+        } catch (error: AppError) {
+            Timber.w(error, "가입 후 프로필 사진 등록 실패")
+        }
     }
 
     private suspend fun handleSignUpError(error: AppError) {
