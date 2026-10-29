@@ -114,4 +114,18 @@
     <string name="profile_edit_success">프로필을 변경했어요.</string>
     <string name="profile_edit_nickname_unavailable">이미 사용 중이거나 아직 바꿀 수 없는 닉네임이에요.</string>
     <string name="profile_edit_image_rejected">사용할 수 없는 사진이에요. 다른 사진을 골라주세요.</string>
+
+    <!-- App Info -->
+    <string name="app_info_version">버전 %1$s</string>
+    <string name="app_info_section_terms">약관 및 정책</string>
+    <string name="app_info_terms_service">서비스 이용약관</string>
+    <string name="app_info_terms_privacy">개인정보 처리방침</string>
+    <string name="app_info_terms_location">위치기반서비스 이용약관</string>
+    <string name="app_info_terms_placeholder">약관을 준비하고 있어요.</string>
+    <string name="app_info_section_map">지도 정보</string>
+    <string name="app_info_map_mapbox">© Mapbox</string>
+    <string name="app_info_map_openstreetmap">© OpenStreetMap contributors</string>
+    <string name="app_info_map_privacy_policy">© Mapbox 개인정보 처리방침</string>
+    <string name="app_info_company_name">회사명</string>
+    <string name="app_info_copyright">© %1$s. All rights reserved.</string>
 </resources>
