@@ -45,6 +45,10 @@ class UserPreferencesDataSource @Inject constructor(
         }
     }
 
+    suspend fun updateNickname(nickname: String) {
+        dataStore.edit { preferences -> preferences[Keys.NICKNAME] = nickname }
+    }
+
     suspend fun getDeviceCredential(): DeviceCredential? {
         val preferences = dataStore.data.first()
         val installationId = preferences[Keys.INSTALLATION_ID] ?: return null

@@ -17,17 +17,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.compose.dropUnlessResumed
-import com.qello.domain.validation.NicknameError
-import com.qello.domain.validation.NicknameValidator
 import com.qello.presentation.R
+import com.qello.presentation.common.rememberSinglePhotoPicker
 import com.qello.presentation.designsystem.component.button.QelloBackButton
 import com.qello.presentation.designsystem.component.button.QelloLargeButton
 import com.qello.presentation.designsystem.component.item.QelloProfileImageField
 import com.qello.presentation.designsystem.component.loading.QelloLoadingOverlay
 import com.qello.presentation.designsystem.component.spacer.QelloSpacer
 import com.qello.presentation.designsystem.component.text.QelloTextField
-import com.qello.presentation.common.rememberSinglePhotoPicker
 import com.qello.presentation.designsystem.theme.QelloTheme
+import com.qello.presentation.mapper.message
 
 @Composable
 fun NicknameScreen(
@@ -102,16 +101,4 @@ fun NicknameScreen(
     if (uiState.isSubmitting) {
         QelloLoadingOverlay()
     }
-}
-
-@Composable
-private fun NicknameError.message(): String = when (this) {
-    NicknameError.BLANK -> stringResource(R.string.nickname_error_blank)
-    NicknameError.OUT_OF_LENGTH -> stringResource(
-        R.string.nickname_error_out_of_length,
-        NicknameValidator.MIN_LENGTH,
-        NicknameValidator.MAX_LENGTH,
-    )
-    NicknameError.DUPLICATED -> stringResource(R.string.nickname_error_duplicated)
-    NicknameError.INAPPROPRIATE -> stringResource(R.string.nickname_error_inappropriate)
 }

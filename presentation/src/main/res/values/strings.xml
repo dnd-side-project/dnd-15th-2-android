@@ -92,4 +92,40 @@
     <string name="question_suggest_error_blank">제안할 질문을 입력해주세요.</string>
     <string name="question_suggest_error_out_of_length">%1$d자 이하로 입력해주세요.</string>
 
+    <!-- Setting -->
+    <string name="setting_title">설정</string>
+    <string name="setting_profile_edit">프로필 편집</string>
+    <string name="setting_section_activity">활동</string>
+    <string name="setting_section_info">정보</string>
+    <string name="setting_menu_notification">알림</string>
+    <string name="setting_menu_question_suggest">질문 제안 확인</string>
+    <string name="setting_menu_report_history">신고 조회</string>
+    <string name="setting_menu_app_info">앱 정보</string>
+    <string name="profile_edit_title">프로필 편집</string>
+    <string name="report_history_title">신고 조회</string>
+    <string name="app_info_title">앱 정보</string>
+
+    <!-- Profile edit -->
+    <string name="profile_edit_image_change">사진 변경</string>
+    <string name="profile_edit_image_description">프로필 사진 변경</string>
+    <string name="profile_edit_nickname_label">닉네임</string>
+    <string name="profile_edit_nickname_placeholder">새로운 닉네임을 입력해주세요.</string>
+    <string name="profile_edit_save">변경하기</string>
+    <string name="profile_edit_success">프로필을 변경했어요.</string>
+    <string name="profile_edit_nickname_unavailable">이미 사용 중이거나 아직 바꿀 수 없는 닉네임이에요.</string>
+    <string name="profile_edit_image_rejected">사용할 수 없는 사진이에요. 다른 사진을 골라주세요.</string>
+
+    <!-- App Info -->
+    <string name="app_info_version">버전 %1$s</string>
+    <string name="app_info_section_terms">약관 및 정책</string>
+    <string name="app_info_terms_service">서비스 이용약관</string>
+    <string name="app_info_terms_privacy">개인정보 처리방침</string>
+    <string name="app_info_terms_location">위치기반서비스 이용약관</string>
+    <string name="app_info_terms_placeholder">약관을 준비하고 있어요.</string>
+    <string name="app_info_section_map">지도 정보</string>
+    <string name="app_info_map_mapbox">© Mapbox</string>
+    <string name="app_info_map_openstreetmap">© OpenStreetMap contributors</string>
+    <string name="app_info_map_privacy_policy">© Mapbox 개인정보 처리방침</string>
+    <string name="app_info_company_name">회사명</string>
+    <string name="app_info_copyright">© %1$s. All rights reserved.</string>
 </resources>

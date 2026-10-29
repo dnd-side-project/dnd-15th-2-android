@@ -19,6 +19,9 @@ import com.qello.presentation.screen.main.sent.detail.SentQuestionDetailScreen
 import com.qello.presentation.screen.main.sent.list.SentQuestionListScreen
 import com.qello.presentation.screen.main.sent.share.SentQuestionShareScreen
 import com.qello.presentation.screen.main.setting.SettingScreen
+import com.qello.presentation.screen.main.setting.info.AppInfoScreen
+import com.qello.presentation.screen.main.setting.profile.ProfileEditScreen
+import com.qello.presentation.screen.main.setting.report.ReportHistoryScreen
 
 fun EntryProviderScope<NavKey>.mainEntries(
     navigator: Navigator,
@@ -151,8 +154,6 @@ fun EntryProviderScope<NavKey>.mainEntries(
         )
     }
 
-    entry<MainNavKey.Setting> { SettingScreen() }
-
     entry<MainNavKey.QuestionComplete> { key ->
         val content = key.type.toContent()
         // null이면 홈으로 이동한다
@@ -176,5 +177,32 @@ fun EntryProviderScope<NavKey>.mainEntries(
             onPrimaryClick = { navigateTo(primaryDestination) },
             onSecondaryClick = { navigateTo(secondaryDestination) },
         )
+    }
+
+    entry<MainNavKey.Setting> {
+        SettingScreen(
+            onBack = { navigator.goBack() },
+            onNavigateToProfileEdit = { navigator.navigate(MainNavKey.ProfileEdit) },
+            onNavigateToNotification = { navigator.navigate(MainNavKey.Notification) },
+            onNavigateToQuestionSuggestList = { navigator.navigate(MainNavKey.QuestionSuggestList) },
+            onNavigateToReportHistory = { navigator.navigate(MainNavKey.ReportHistory) },
+            onNavigateToAppInfo = { navigator.navigate(MainNavKey.AppInfo) },
+            showSnackbar = showSnackbar,
+        )
+    }
+
+    entry<MainNavKey.ProfileEdit> {
+        ProfileEditScreen(
+            onBack = { navigator.goBack() },
+            showSnackbar = showSnackbar,
+        )
+    }
+
+    entry<MainNavKey.ReportHistory> {
+        ReportHistoryScreen(onBack = { navigator.goBack() })
+    }
+
+    entry<MainNavKey.AppInfo> {
+        AppInfoScreen(onBack = { navigator.goBack() })
     }
 }
