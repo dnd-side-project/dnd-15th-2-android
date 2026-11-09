@@ -24,16 +24,34 @@ import com.qello.presentation.R
 import com.qello.presentation.designsystem.component.text.QelloText
 import com.qello.presentation.designsystem.theme.QelloTheme
 
+/**
+ * 상태 색 점 + 상태 문구 + 부가 설명으로 이루어진 목록 항목. 제안한 질문, 신고 내역 목록에서 쓴다.
+ * @param onClick 항목 전체 탭. null이면 탭할 수 없다.
+ * @param onMoreClick 더보기 아이콘 탭. null이면 아이콘을 그리지 않는다.
+ */
 @Composable
-fun QelloSuggestQuestionStatusItem(
+fun QelloStatusItem(
     dotColor: Color,
     title: String,
     subtitle: String,
-    onMoreClick: () -> Unit,
     modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
+    onMoreClick: (() -> Unit)? = null,
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .then(
+                if (onClick != null) {
+                    Modifier.clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = onClick,
+                    )
+                } else {
+                    Modifier
+                },
+            ),
         horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing12),
     ) {
         Box(
@@ -52,18 +70,20 @@ fun QelloSuggestQuestionStatusItem(
                     modifier = Modifier.weight(1f),
                 )
 
-                Icon(
-                    painter = painterResource(R.drawable.ic_more),
-                    contentDescription = null,
-                    tint = QelloTheme.colors.label.strong,
-                    modifier = Modifier
-                        .size(QelloTheme.iconSize.size24)
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                            onClick = onMoreClick,
-                        ),
-                )
+                if (onMoreClick != null) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_more),
+                        contentDescription = null,
+                        tint = QelloTheme.colors.label.strong,
+                        modifier = Modifier
+                            .size(QelloTheme.iconSize.size24)
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                                onClick = onMoreClick,
+                            ),
+                    )
+                }
             }
 
             QelloText(

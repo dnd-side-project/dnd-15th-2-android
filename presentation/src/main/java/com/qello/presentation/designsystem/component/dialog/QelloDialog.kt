@@ -3,6 +3,7 @@ package com.qello.presentation.designsystem.component.dialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -33,6 +34,83 @@ fun QelloDialog(
     description: String? = null,
     onDismissRequest: () -> Unit = onDismissClick,
 ) {
+    QelloDialogContainer(
+        onDismissRequest = onDismissRequest,
+        modifier = modifier,
+    ) {
+        QelloDialogTitle(title = title)
+
+        if (description != null) {
+            QelloSpacer(QelloTheme.spacing.spacing8)
+
+            QelloText(
+                text = description,
+                style = QelloTheme.typography.caption1,
+                color = QelloTheme.colors.label.strong,
+            )
+        }
+
+        QelloSpacer(QelloTheme.spacing.spacing24)
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing8),
+        ) {
+            QelloSmallButton(
+                text = dismissText,
+                colors = QelloTheme.buttonColors.darkButtonColors,
+                onClick = onDismissClick,
+                modifier = Modifier.weight(1f),
+            )
+            QelloSmallButton(
+                text = confirmText,
+                onClick = onConfirmClick,
+                modifier = Modifier.weight(1f),
+            )
+        }
+    }
+}
+
+/**
+ * 확인 버튼 하나와 자유 콘텐츠 영역을 가지는 Qello 다이얼로그. 선택지 없이 정보를 보여줄 때 쓴다.
+ * @param onDismissRequest 뒤로가기 / 다이얼로그 바깥 영역 탭. 기본값은 [onConfirmClick]과 동일하다.
+ * @param content 제목과 확인 버튼 사이에 들어갈 내용. 가운데 정렬된 Column 안에 그려진다.
+ */
+@Composable
+fun QelloDialog(
+    title: String,
+    confirmText: String,
+    onConfirmClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    onDismissRequest: () -> Unit = onConfirmClick,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    QelloDialogContainer(
+        onDismissRequest = onDismissRequest,
+        modifier = modifier,
+    ) {
+        QelloDialogTitle(title = title)
+
+        QelloSpacer(QelloTheme.spacing.spacing8)
+
+        content()
+
+        QelloSpacer(QelloTheme.spacing.spacing24)
+
+        QelloSmallButton(
+            text = confirmText,
+            onClick = onConfirmClick,
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@Composable
+private fun QelloDialogContainer(
+    onDismissRequest: () -> Unit,
+    modifier: Modifier,
+    content: @Composable ColumnScope.() -> Unit,
+) {
     Dialog(
         onDismissRequest = onDismissRequest,
         // 기본 플랫폼 폭(고정 280dp 계열)을 끄고 좌우 여백을 직접 제어한다.
@@ -51,41 +129,16 @@ fun QelloDialog(
                     vertical = QelloTheme.spacing.spacing24,
                 ),
             horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            QelloText(
-                text = title,
-                style = QelloTheme.typography.body1,
-                color = QelloTheme.colors.label.strong,
-            )
-
-            if (description != null) {
-                QelloSpacer(QelloTheme.spacing.spacing8)
-
-                QelloText(
-                    text = description,
-                    style = QelloTheme.typography.caption1,
-                    color = QelloTheme.colors.label.strong,
-                )
-            }
-
-            QelloSpacer(QelloTheme.spacing.spacing24)
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(QelloTheme.spacing.spacing8),
-            ) {
-                QelloSmallButton(
-                    text = dismissText,
-                    colors = QelloTheme.buttonColors.darkButtonColors,
-                    onClick = onDismissClick,
-                    modifier = Modifier.weight(1f),
-                )
-                QelloSmallButton(
-                    text = confirmText,
-                    onClick = onConfirmClick,
-                    modifier = Modifier.weight(1f),
-                )
-            }
-        }
+            content = content,
+        )
     }
+}
+
+@Composable
+private fun QelloDialogTitle(title: String) {
+    QelloText(
+        text = title,
+        style = QelloTheme.typography.body1,
+        color = QelloTheme.colors.label.strong,
+    )
 }

@@ -102,7 +102,7 @@
     <string name="setting_menu_report_history">신고 조회</string>
     <string name="setting_menu_app_info">앱 정보</string>
     <string name="profile_edit_title">프로필 편집</string>
-    <string name="report_history_title">신고 조회</string>
+    <string name="report_history_title">신고 목록</string>
     <string name="app_info_title">앱 정보</string>
 
     <!-- Profile edit -->
@@ -128,4 +128,33 @@
     <string name="app_info_map_privacy_policy">© Mapbox 개인정보 처리방침</string>
     <string name="app_info_company_name">회사명</string>
     <string name="app_info_copyright">© %1$s. All rights reserved.</string>
+
+    <!-- Report history -->
+    <string name="report_history_tab_all">전체</string>
+    <string name="report_history_tab_reviewing">검토중</string>
+    <string name="report_history_tab_completed">검토완료</string>
+    <string name="report_history_empty_title">신고한 내역이 없어요.</string>
+    <string name="report_history_empty_caption">불편한 질문이나 답변을 신고하면 여기에서 확인할 수 있어요.</string>
+    <string name="report_status_reviewing_title">현재 검토중이에요!</string>
+    <string name="report_status_actioned_title">신고가 처리됐어요.</string>
+    <string name="report_status_no_violation_title">위반 사항이 확인되지 않았어요.</string>
+    <string name="report_status_reviewing_label">검토중</string>
+    <string name="report_status_actioned_label">조치 완료</string>
+    <string name="report_status_no_violation_label">위반 없음</string>
+    <string name="report_status_reviewing_description">운영팀이 신고 내용을 확인하고 있어요.\n결과가 나오면 이곳에서 알려드릴게요.</string>
+    <string name="report_status_actioned_description">운영 정책 위반이 확인되어 조치했어요.\n신고해 주셔서 감사해요.</string>
+    <string name="report_status_no_violation_description">검토 결과 운영 정책 위반이 확인되지 않았어요.\n불편한 점이 있다면 언제든 다시 알려주세요.</string>
+    <string name="report_detail_status">처리 상태</string>
+    <string name="report_detail_reason">신고 사유</string>
+    <string name="report_detail_received_at">접수일</string>
+    <string name="report_detail_resolved_at">처리일</string>
+    <string name="report_detail_confirm">확인</string>
+    <string name="report_reason_sexual_content">성적 또는 노골적인 콘텐츠</string>
+    <string name="report_reason_violence_or_threat">폭력 및 위험</string>
+    <string name="report_reason_hate_or_harassment">혐오 및 괴롭힘</string>
+    <string name="report_reason_privacy_violation">개인정보 노출</string>
+    <string name="report_reason_spam_or_advertising">스팸 및 광고</string>
+    <string name="report_reason_impersonation">사칭</string>
+    <string name="report_reason_illegal_or_dangerous">불법 거래 및 위험 행동</string>
+    <string name="report_reason_other">기타</string>
 </resources>

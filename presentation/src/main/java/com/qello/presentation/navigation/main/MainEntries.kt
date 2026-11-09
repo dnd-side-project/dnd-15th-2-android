@@ -21,7 +21,7 @@ import com.qello.presentation.screen.main.sent.share.SentQuestionShareScreen
 import com.qello.presentation.screen.main.setting.SettingScreen
 import com.qello.presentation.screen.main.setting.info.AppInfoScreen
 import com.qello.presentation.screen.main.setting.profile.ProfileEditScreen
-import com.qello.presentation.screen.main.setting.report.ReportHistoryScreen
+import com.qello.presentation.screen.main.setting.report.ReportHistoryRoute
 
 fun EntryProviderScope<NavKey>.mainEntries(
     navigator: Navigator,
@@ -199,7 +199,10 @@ fun EntryProviderScope<NavKey>.mainEntries(
     }
 
     entry<MainNavKey.ReportHistory> {
-        ReportHistoryScreen(onBack = { navigator.goBack() })
+        ReportHistoryRoute(
+            onBack = { navigator.goBack() },
+            showSnackbar = showSnackbar,
+        )
     }
 
     entry<MainNavKey.AppInfo> {
