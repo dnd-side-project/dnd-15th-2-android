@@ -8,6 +8,7 @@ import java.time.temporal.ChronoUnit
 private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 private val timeWithSecondsFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
 private val dateFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
+private val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")
 
 internal fun distanceLabel(distanceBand: String?, distanceM: Long?): String {
     distanceBand?.let { return it }
@@ -33,3 +34,6 @@ internal fun String.toPostedAtLabel(): String =
 
 internal fun String.toDateLabel(): String =
     Instant.parse(this).atZone(ZoneId.systemDefault()).toLocalDate().format(dateFormatter)
+
+internal fun String.toDateTimeLabel(): String =
+    Instant.parse(this).atZone(ZoneId.systemDefault()).format(dateTimeFormatter)
