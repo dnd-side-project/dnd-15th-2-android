@@ -32,7 +32,7 @@ import com.qello.presentation.designsystem.component.button.QelloBackButton
 import com.qello.presentation.designsystem.component.button.QelloLargeButton
 import com.qello.presentation.designsystem.component.button.QelloSmallButton
 import com.qello.presentation.designsystem.component.item.QelloActionSheetItem
-import com.qello.presentation.designsystem.component.item.QelloSuggestQuestionStatusItem
+import com.qello.presentation.designsystem.component.item.QelloStatusItem
 import com.qello.presentation.designsystem.component.loading.QelloLoadingOverlay
 import com.qello.presentation.designsystem.component.tab.QelloTabRow
 import com.qello.presentation.designsystem.component.text.QelloText
@@ -182,7 +182,7 @@ fun QuestionSuggestListScreen(
                                 ProposalStatusUi.ARCHIVED -> QelloTheme.colors.label.assistive to "보관된 제안이에요."
                             }
 
-                            QelloSuggestQuestionStatusItem(
+                            QelloStatusItem(
                                 dotColor = dotColor,
                                 title = title,
                                 subtitle = proposal.proposedText,
